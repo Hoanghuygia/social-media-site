@@ -1,0 +1,36 @@
+{
+  "name": "nodejs-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "prettier": "prettier --single-quote --trailing-comma all --tab-width 4 --semi true --write 'src/**/*.{js,json,scss}'",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon --inspect src/index.js",
+    "watch": "node-sass  -w src/res/scss/ -o src/public/css/"
+  },
+  "author": "NTram, GHuy, AHuy",
+  "license": "ISC",
+  "lint-staged": {
+    "src/**/*.{js,json,scss}": "prettier --single-quote --trailing-comma all --tab-width 4 --semi true --write"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-handlebars": "^5.1.0",
+    "mongoose": "^8.3.3"
+  },
+  "devDependencies": {
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2",
+    "morgan": "^1.10.0",
+    "node-sass": "^9.0.0",
+    "nodemon": "^3.1.0",
+    "prettier": "^3.2.5"
+  }
+}
