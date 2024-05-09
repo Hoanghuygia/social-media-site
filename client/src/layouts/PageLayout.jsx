@@ -12,7 +12,7 @@ const PageLayout = ({ children }) => {
                     gridTemplateColumns={'300px auto'}
                     w='100vw'
                 >
-                    <GridItem bg='orange.300' area={'header'}>
+                    <GridItem bg='bg-color.300' area={'header'}>
                         <Header/>
                     </GridItem>
                     <GridItem h='100vh' pl='2' bg='pink.300' area={'nav'}>

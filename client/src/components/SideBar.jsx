@@ -1,5 +1,9 @@
+import {} from "@chakra-ui/react";
+
 function SideBar() {
-    return ( <p>SideBar</p>);
+    return (
+         SideBar
+        );
 }
 
 export default SideBar;
