@@ -6,7 +6,6 @@ import { Fragment } from 'react';
 function App() {
   return (
       <Router>
-      	{/* <PageLayout> */}
 	          <Routes>
 	              {publicRoutes.map((route, index) =>{
 					const Page = route.component;
@@ -19,10 +18,10 @@ function App() {
 					return <Route key={index} path={route.path} element={<Layout><Page/></Layout>}/>
 				  })};
 	          </Routes>
-	      {/* </PageLayout> */}
       </Router>
 
     )
 }
+
 
 export default App
