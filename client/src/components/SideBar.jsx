@@ -4,14 +4,14 @@ import SideBarNav from './SideBarNav';
 
 function SideBar() {
     return (
-        <Flex flexDir='column' h='100%' boxShadow='4px 0px 28px rgba(239, 209, 216, 1)' gap={4}>
+        <Flex flexDir='column' h='100%' boxShadow='4px 0px 28px rgba(239, 202, 204, 1)' gap={4}>
             <Flex flexDir='column' mt='24px' textAlign="center" gap={3}>
                 <Center><Avatar size='xl' name='profile' src={'/img/avatar.png'} /></Center>
                 <Heading as="h2" fontSize='2xl' >Swilrl Lollipop</Heading>
                 <Text>Lorem ipsum dolor sit</Text>
             </Flex>
 
-            <Flex pt='10px' justifyContent='space-around' gap='24px'>
+            <Flex pt='24px' justifyContent='space-around' gap='24px'>
                 <Box>
                     <Heading fontSize='xl'>60</Heading>
                     <Text fontSize='xs' color='RGBA(0, 0, 0, 0.48)' >Posts</Text>
