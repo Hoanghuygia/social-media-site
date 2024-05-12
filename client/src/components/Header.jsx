@@ -1,12 +1,9 @@
 import {
     Avatar,
-    Center,
     Flex,
     Heading,
     Image,
     Spacer,
-    FormControl,
-    Input,
 } from "@chakra-ui/react";
 import React, { useRef } from 'react';
 import { SearchIcon } from "@chakra-ui/icons";
