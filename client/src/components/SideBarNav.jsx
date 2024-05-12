@@ -5,29 +5,6 @@ import styled from "styled-components";
 
 function SideBarNav() {
     return (
-        // <List align="center" spacing={3} mt="28px">
-        //     <ListItem>
-        //         <NavLink to="/">
-        //             <Icon as={SlHome} /> Home
-        //         </NavLink>
-        //     </ListItem>
-
-        //     <ListItem>
-        //         <NavLink to="/message">Message</NavLink>
-        //     </ListItem>
-
-        //     <ListItem>
-        //         <NavLink to="/explore">Explore</NavLink>
-        //     </ListItem>
-
-        //     <ListItem>
-        //         <NavLink to="/notification">Notification</NavLink>
-        //     </ListItem>
-
-        //     <ListItem>
-        //         <NavLink to="/profile">Profile</NavLink>
-        //     </ListItem>
-        // </List>
         <Flex flexDir="column" gap={3} mt="10px">
             <Flex>
                 <Box h="36px" bg="bg-color.100" w="30%"></Box>

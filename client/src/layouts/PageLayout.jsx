@@ -22,13 +22,13 @@ const PageLayout = ({ children }) => {
                 gridTemplateColumns={'300px auto'}
                 w='100vw'
             >
-                <GridItem className='header' bg='red.100' area={'header'}>
-                    <Header/>
+                <GridItem className='header' bg='white' area={'header'}>
+                    <Header postion='fixed'/>
                 </GridItem>
                 <GridItem h={`${sidebarHeight}px`} bg='bg-color.100' area={'nav'} >
-                    <SideBar/>
+                    <SideBar postion='fixed'/>
                 </GridItem>
-                <GridItem bg='white.300' area={'main'}>
+                <GridItem bg='purple.500' area={'main'}>
                     {children}
                 </GridItem>
             </Grid>
