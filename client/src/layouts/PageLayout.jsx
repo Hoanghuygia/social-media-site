@@ -28,7 +28,7 @@ const PageLayout = ({ children }) => {
                 <GridItem h={`${sidebarHeight}px`} bg='bg-color.100' area={'nav'} >
                     <SideBar postion='fixed'/>
                 </GridItem>
-                <GridItem bg='purple.500' area={'main'}>
+                <GridItem bg='red.500' area={'main'}>
                     {children}
                 </GridItem>
             </Grid>
