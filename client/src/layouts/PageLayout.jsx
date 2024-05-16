@@ -1,6 +1,6 @@
 import { Flex, Grid, GridItem} from "@chakra-ui/react";
 import React, { useEffect, useState } from 'react';
-import SideBar from "../components/SideBar.jsx";
+import SideBar from "../components/SideBar/SideBar.jsx";
 import Header from "../components/Header.jsx";
 
 const PageLayout = ({ children }) => {
