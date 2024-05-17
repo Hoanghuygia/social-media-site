@@ -1,4 +1,4 @@
-import { Flex, Icon, Box, Button } from "@chakra-ui/react";
+import { Flex, Icon, Box } from "@chakra-ui/react";
 import { NavLink } from "react-router-dom";
 import { SlHome } from "react-icons/sl";
 import styled from "styled-components";
