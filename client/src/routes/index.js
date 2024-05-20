@@ -1,5 +1,5 @@
-import {Home, Message, Explore, Notification, Profile, Login, Signup} from './../pages/index.js';
-import { PageLayout } from '../layouts/index.js';
+import {Home, Message, Explore, Notification, Profile, Login, Signup, ProfileDetail} from './../pages/index.js';
+import { PageLayout, PageLayout_2 } from '../layouts/index.js';
 
 const publicRoutes = [
     { path: '/', component: Home, layout: PageLayout},
@@ -9,6 +9,7 @@ const publicRoutes = [
     { path: '/profile', component: Profile, layout: PageLayout},
     { path: '/login', component: Login, layout: null},
     { path: '/signup', component: Signup, layout: null},
+    { path: '/profile/detail', component: ProfileDetail, layout: PageLayout_2},
 ];
 
 const privateRoutes = [];
