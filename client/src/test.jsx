@@ -1,8 +1,81 @@
-import { Button, Center, HStack, Tab } from '@chakra-ui/react';
-import {Box, Image} from 'chakra-ui/React';
+import { Button, Center, HStack, Tab } from "@chakra-ui/react";
+import { Box, Image } from "chakra-ui/React";
+import { useEffect, useReducer, useState } from "react";
 
 function test() {
+	// const [showGoToTop, setShowGoToTop] = useState(false);
+    const initState = {
+        job: '',
+        jobs: []
+    }
+
+    const SET_JOB = 'set_hob'
+    const ADD_JOB = 'add_job'
+    const DELETE_JOB = 'delete_job'
+
+    const setJob = payload =>{
+        return {
+            type: SET_JOB,
+            payload
+        }
+    }
+
+    const addJob = payload =>{
+        return {
+            type: ADD_JOB,
+            payload
+        }
+    }
+
+    const reducer = (state, action) =>{
+        switch(action.type){
+            case SET_JOB: 
+                return {
+                    ...state,
+                    job: action.payload
+                }
+            case ADD_JOB:
+                return{
+                    ...state,
+                    jobs: [...state.jobs, action.payload]
+                }
+            default:
+                throw new Error('Invalid action')
+
+        }
+    }
+
+    const [state, dispatch] = useReducer(reducer, initState);
+    // =
+    const {job, jobs} = state
+
+    const handleSubmit = () =>{
+        dispatch(addJob(job))
+        dispatch(setJob(''))
+    }
+
+    // useEffect(() => {
+	// 	const handleScroll = () =>{
+	// 		setShowGoToTop(window.scrollY >= 200); // only one line to replace if else
+	// 	}
+
+	// 	window.addEventListener('scroll', handleScroll)
+	// }, []);
     return (
+
+        <div>
+            <h3>Todo</h3>
+            <input value={job} placeholder="Enter todo...." onChange={e =>{
+                dispatch(setJob(e.target.value))
+            }}/>
+            <button onClick={handleSubmit}>Add</button>
+            <ul>
+            {jobs.map((job, index) =>(
+                <li key={index}>{job}</li>
+            ))}
+                <li></li>
+            </ul>
+        </div>
         // <Center bg='gray.100' h='100vh'>
         //     <Box maxW='420px' bg='white' p='6'>
         //         <Image
@@ -35,75 +108,8 @@ function test() {
         //         </Center>
         //     </Box>
         // </Center>
-        function AirbnbCard() {
-            const property = {
-              imageUrl: 'https://bit.ly/2Z4KKcF',
-              imageAlt: 'Rear view of modern home with pool',
-              beds: 3,
-              baths: 2,
-              title: 'Modern home in city center in the heart of historic Los Angeles',
-              formattedPrice: '$1,900.00',
-              reviewCount: 34,
-              rating: 4,
-            }
-          
-            return (
-              <Box maxW='sm' borderWidth='1px' borderRadius='lg' overflow='hidden'>
-                <Image src={property.imageUrl} alt={property.imageAlt} />
-          
-                <Box p='6'>
-                  <Box display='flex' alignItems='baseline'>
-                    <Badge borderRadius='full' px='2' colorScheme='teal'>
-                      New
-                    </Badge>
-                    <Box
-                      color='gray.500'
-                      fontWeight='semibold'
-                      letterSpacing='wide'
-                      fontSize='xs'
-                      textTransform='uppercase'
-                      ml='2'
-                    >
-                      {property.beds} beds &bull; {property.baths} baths
-                    </Box>
-                  </Box>
-          
-                  <Box
-                    mt='1'
-                    fontWeight='semibold'
-                    as='h4'
-                    lineHeight='tight'
-                    noOfLines={1}
-                  >
-                    {property.title}
-                  </Box>
-          
-                  <Box>
-                    {property.formattedPrice}
-                    <Box as='span' color='gray.600' fontSize='sm'>
-                      / wk
-                    </Box>
-                  </Box>
-          
-                  <Box display='flex' mt='2' alignItems='center'>
-                    {Array(5)
-                      .fill('')
-                      .map((_, i) => (
-                        <StarIcon
-                          key={i}
-                          color={i < property.rating ? 'teal.500' : 'gray.300'}
-                        />
-                      ))}
-                    <Box as='span' ml='2' color='gray.600' fontSize='sm'>
-                      {property.reviewCount} reviews
-                    </Box>
-                  </Box>
-                </Box>
-              </Box>
-            )
-          }
-      );
+       
+    );
 }
 
 export default test;
-
