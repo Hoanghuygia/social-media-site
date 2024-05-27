@@ -16,7 +16,7 @@ function Header() {
     };
 
     return (
-        <Flex as="nav" p="7px" alignItems="center">
+        <Flex className=" flex" as="nav" p="7px" alignItems="center">
             <Image
                 src="/img/sprite.png"
                 alt="sprite icon"

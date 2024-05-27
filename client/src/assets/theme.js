@@ -5,6 +5,7 @@ const colors = {
     100: '#fef9f8',
     200: '#efd1d8',
     300: '#efcacc',
+    400: '#FCF9FF'
   },
   'text-color': {
     100: '#cac3e4',

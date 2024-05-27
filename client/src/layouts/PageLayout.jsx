@@ -15,18 +15,18 @@ const PageLayout = ({ children }) => {
     }, []);
 
     return (
-        <Flex>
-            <Grid   
+        <Flex >
+            <Grid 
                 templateAreas={`"header header" "nav main"`}
                 gridTemplateRows={'75px auto'}
-                gridTemplateColumns={'300px auto'}
+                gridTemplateColumns={'300px auto' }
                 w='100vw'
             >
-                <GridItem className='header' bg='white' area={'header'}>
-                    <Header postion='fixed'/>
+                <GridItem className='header sticky min-h-20 flex flex-col' area={'header'}>
+                    <Header/>
                 </GridItem>
-                <GridItem h={`${sidebarHeight}px`} bg='bg-color.100' area={'nav'} >
-                    <SideBar postion='fixed'/>
+                <GridItem h={`${sidebarHeight}px`} className="bg-pastel-pink-100 sticky" area={'nav'} >
+                    <SideBar/>
                 </GridItem>
                 <GridItem bg='red.100' area={'main'}>
                     {children}

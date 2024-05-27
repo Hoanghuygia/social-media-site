@@ -17,7 +17,7 @@ function SideBar() {
     return (
         <Flex
             flexDir="column"
-            h="100%"
+            className= " min-h-full fixed min-w-[300px] bg-pastel-pink-100 "
             boxShadow="4px 0px 28px rgba(239, 202, 204, 1)"
             gap={4}
         >

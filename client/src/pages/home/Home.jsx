@@ -1,6 +1,6 @@
 function Home() {
     return ( 
-    <div>
+    <div className="min-h-screen max-w-full">
     Home Page
     </div>
 );

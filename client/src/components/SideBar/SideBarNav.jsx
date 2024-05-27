@@ -7,7 +7,7 @@ function SideBarNav() {
     return (
         <Flex flexDir="column" gap={3} mt="10px">
             <Flex>
-                <Box h="36px" bg="bg-color.100" w="30%"></Box>
+                <Box h="36px" w="30%"></Box>
                 <Box
                     w="70%"
                     h="36px"
@@ -35,7 +35,7 @@ function SideBarNav() {
             </Flex>
 
             <Flex>
-                <Box h="36px" bg="bg-color.100" w="30%"></Box>
+                <Box h="36px"  w="30%"></Box>
                 <Box
                     w="70%"
                     h="36px"
@@ -63,7 +63,7 @@ function SideBarNav() {
             </Flex>
 
             <Flex>
-                <Box h="36px" bg="bg-color.100" w="30%"></Box>
+                <Box h="36px"  w="30%"></Box>
                 <Box
                     w="70%"
                     h="36px"
@@ -84,14 +84,14 @@ function SideBarNav() {
                     }}
                     transition="background-color 0.3s"
                 >
-                    <StyledNavLink to="/explore">
+                    <StyledNavLink to="/explore/reels">
                         <Icon as={SlHome} mx="5px" /> Explore
                     </StyledNavLink>
                 </Box>
             </Flex>
 
             <Flex>
-                <Box h="36px" bg="bg-color.100" w="30%"></Box>
+                <Box h="36px" w="30%"></Box>
                 <Box
                     w="70%"
                     h="36px"
@@ -119,7 +119,7 @@ function SideBarNav() {
             </Flex>
 
             <Flex>
-                <Box h="36px" bg="bg-color.100" w="30%"></Box>
+                <Box h="36px" w="30%"></Box>
                 <Box
                     w="70%"
                     h="36px"
