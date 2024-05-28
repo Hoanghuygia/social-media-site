@@ -1,6 +1,6 @@
-import {Home, Message, Notification, Profile, Login, Signup, ExploreReels, ExploreTrending} from './../pages/index.js';
+import {Home, Message, ExploreReels, ExploreTrending, ProfileDetail, Notification, Profile, Login, Signup} from './../pages/index.js';
 import { PageLayout } from '../layouts/index.js';
-import { layout } from '@chakra-ui/react';
+import { PageLayout_2 } from '../layouts/index.js';
 
 const publicRoutes = [
     { path: '/', component: Home, layout: PageLayout},
@@ -11,6 +11,7 @@ const publicRoutes = [
     { path: '/explore/trending', component: ExploreTrending, layout: PageLayout},
     { path: '/login', component: Login, layout: null},
     { path: '/signup', component: Signup, layout: null},
+    { path: '/profile/detail', component: ProfileDetail, layout: PageLayout_2},
 ];
 
 const privateRoutes = [];
