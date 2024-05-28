@@ -16,9 +16,11 @@ import SideBarNav from "./SideBarNav";
 function SideBar() {
     return (
         <Flex
+            pr={"20px"}
             flexDir="column"
             h="100%"
-            boxShadow="4px 0px 28px rgba(239, 202, 204, 1)"
+            boxShadow="4px 0px 16px rgba(239, 202, 204, 1)"
+            // boxShadow="0px -10px 28px rgba(239, 202, 204, 1), 0px 10px 28px rgba(239, 202, 204, 1)"
             gap={4}
         >
             <Flex flexDir="column" mt="24px" textAlign="center" gap={3}>
