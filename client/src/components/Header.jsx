@@ -5,19 +5,12 @@ import {
     Image,
     Spacer,
 } from "@chakra-ui/react";
-import React, { useRef } from 'react';
-import { SearchIcon } from "@chakra-ui/icons";
 import SearchBar from "./SearchBar";
 
 function Header() {
-    // const inputRef = useRef(null);
-
-    // const focusInput = () => {
-    //     inputRef.current.focus();
-    // };
 
     return (
-        <Flex className=" flex" as="nav" p="7px" alignItems="center">
+        <Flex as="nav" p="7px" alignItems="center" h={"100%"}>
             <Image
                 src="/img/sprite.png"
                 alt="sprite icon"

@@ -15,18 +15,20 @@ const PageLayout = ({ children }) => {
 
     useEffect(() => {
         const updateDimensions = () => {
-            const headerHeight = document.querySelector(".header").offsetHeight;
-            const headerWidth = document.querySelector(".header").offsetWidth;
-
             const windowHeight = window.innerHeight;
             const windowWidth = window.innerWidth;
 
+            const headerHeight = document.querySelector(".header").offsetHeight;
+            const headerWidth = document.querySelector(".header").offsetWidth;
+            console.log("Header Height: " + headerHeight)
+
             const mainHeight = document.querySelector(".main").offsetHeight;
             const mainWidth = document.querySelector(".main").offsetWidth;
+            console.log("Main Height: " + mainHeight)
 
             const navHeight = windowHeight - mainHeight;
-            console.log("Nav Height: " + navHeight);
             const navWidth = windowWidth - mainWidth;
+            console.log("Nav Height: " + navHeight);
             console.log("Nav Width: " + navWidth);
 
             dispatch({ type: "SET_HEADER_HEIGHT", payload: headerHeight });
@@ -53,17 +55,19 @@ const PageLayout = ({ children }) => {
         <Flex>
             <Grid
                 templateAreas={`"nav header" "nav main"`}
-                gridTemplateRows={"7.25% auto"}
-                gridTemplateColumns={"25% 75%"}
+                gridTemplateRows={"15% auto"}
+                gridTemplateColumns={"25% auto"}
                 w="100vw"
-                overflow="hidden"
+                h={"100vh"}
+                overflowY={"auto"}
+                overflowX={"hidden"}
             >
                 <GridItem
                     className="header"
-                    bg="white"
                     area={"header"}
-                    ml={"17px"}
+                    ml={"15px"}
                     zIndex={3}
+                    overflow="hidden"
                 >
                     <Header />
                 </GridItem>
@@ -73,17 +77,25 @@ const PageLayout = ({ children }) => {
                     bg="bg-color.100"
                     area={"nav"}
                     zIndex={2}
-                    pos={"fixed"}
-                    w={`${navWidth}px`}
                     // pos={"fixed"}
+                    pos={"sticky"}
+                    top={0}
+                    overflowX="hidden"
+                    boxShadow="4px 0px 16px rgba(239, 202, 204, 1)"
+                    // w={`${navWidth}px`}
                 >
                     <SideBar />
                 </GridItem>
                 <GridItem
-                   
                     area={"main"}
                     className="main"
                     zIndex={1}
+                    // overflowY="auto"
+                    // overflowX="hidden"
+                    // h={"auto"}
+                    // h={"85vh"}
+                    // minHeight="100%"
+                    bg="bg-color.100"
                 >
                     {children}
                 </GridItem>
