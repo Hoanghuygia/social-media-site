@@ -1,8 +1,8 @@
-import { Box, Icon } from "@chakra-ui/react";
+import { Box, Icon, Button } from "@chakra-ui/react";
 
 function PostInfor({infor, icon}) {
     return (
-        <Box
+        <Button
             py="4px"
             mt="5px"
             px="10px"
@@ -12,7 +12,7 @@ function PostInfor({infor, icon}) {
             flex="1"
         >
             <Icon boxSize={6} as={icon}/> {infor} 
-        </Box>
+        </Button>
     );
 }
 

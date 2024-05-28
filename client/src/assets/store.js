@@ -6,7 +6,9 @@ const initialState = {
   windowHeight: 0,
   windowWidth: 0,
   mainHeight: 0,
-  mainWidth: 0
+  mainWidth: 0,
+  navHeight: 0,
+  navWidth: 0
 };
 
 
@@ -42,6 +44,16 @@ function layoutReducer(state = initialState, action) {
             ...state,
             mainWidth: action.payload
         };
+	case 'SET_NAV_HEIGHT':
+		return {
+			...state,
+			navHeight: action.payload
+		};
+	case 'SET_NAV_WIDTH':
+		return {
+			...state,
+			navWidth: action.payload
+		};
     default:
       return state;
   }

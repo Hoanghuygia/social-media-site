@@ -1,4 +1,4 @@
-import { Avatar, Box, Flex } from "@chakra-ui/react";
+import { Avatar, Box, Flex, Text } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 
 function StoryFrame() {
@@ -29,13 +29,50 @@ function StoryFrame() {
                 },
             }}
         >
-            <Avatar ml={"50px"} size="lg" borderColor="bg-color.300" borderWidth="3px"></Avatar>
-            <Avatar size="lg" name="chat-bubble" src={"/img/avatar.png"} borderColor="bg-color.300" borderWidth="3px" ></Avatar>
-            <Avatar size="lg" name="chat-bubble" src={"/img/avatar.png"} borderColor="bg-color.300" borderWidth="3px" ></Avatar>
-            <Avatar size="lg" name="chat-bubble" src={"/img/avatar.png"} borderColor="bg-color.300" borderWidth="3px" ></Avatar>
-            <Avatar size="lg" name="chat-bubble" src={"/img/avatar.png"} borderColor="bg-color.300" borderWidth="3px" ></Avatar>
-            <Avatar size="lg" name="chat-bubble" src={"/img/avatar.png"} borderColor="bg-color.300" borderWidth="3px" ></Avatar>
-            
+            <Avatar
+                ml={"50px"}
+                size="lg"
+                borderColor="bg-color.300"
+                borderWidth="3px"
+            ></Avatar>
+            <Box      >
+                <Avatar
+                    size="lg"
+                    name="chat-bubble"
+                    src={"/img/avatar.png"}
+                    borderColor="bg-color.300"
+                    borderWidth="3px"
+                ></Avatar>
+                <Text>_thepany_a</Text>
+            </Box>
+            <Avatar
+                size="lg"
+                name="chat-bubble"
+                src={"/img/avatar.png"}
+                borderColor="bg-color.300"
+                borderWidth="3px"
+            ></Avatar>
+            <Avatar
+                size="lg"
+                name="chat-bubble"
+                src={"/img/avatar.png"}
+                borderColor="bg-color.300"
+                borderWidth="3px"
+            ></Avatar>
+            <Avatar
+                size="lg"
+                name="chat-bubble"
+                src={"/img/avatar.png"}
+                borderColor="bg-color.300"
+                borderWidth="3px"
+            ></Avatar>
+            <Avatar
+                size="lg"
+                name="chat-bubble"
+                src={"/img/avatar.png"}
+                borderColor="bg-color.300"
+                borderWidth="3px"
+            ></Avatar>
         </Flex>
     );
 }
