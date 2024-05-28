@@ -38,9 +38,6 @@ function ChatList() {
             <ChatListItem/>
             <ChatListItem/>
             <ChatListItem/>
-            <ChatListItem/>
-            <ChatListItem/>
-            <ChatListItem/>
             
         </Flex>
     );

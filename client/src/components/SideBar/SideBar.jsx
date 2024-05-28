@@ -19,7 +19,8 @@ function SideBar() {
             pr={"20px"}
             flexDir="column"
             h="100%"
-            boxShadow="4px 0px 16px rgba(239, 202, 204, 1)"
+            // boxShadow="4px 0px 16px rgba(239, 202, 204, 1)"
+            border="1px solid RGBA(0, 0, 0, 0.16)"
             // boxShadow="0px -10px 28px rgba(239, 202, 204, 1), 0px 10px 28px rgba(239, 202, 204, 1)"
             gap={4}
         >
