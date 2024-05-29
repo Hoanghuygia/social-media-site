@@ -23,7 +23,7 @@ export default function StatusBar() {
   };
 
   return (
-    <div className="flex flex-col items-center px-20">
+    <div className="flex flex-col items-center px-[85px]">
       <div className="bg-[#F3E9FF] py-4 px-2 rounded-full w-full flex flex-row justify-center items-center gap-7">
         <div className="relative w-[50px] h-[50px] rounded-full overflow-hidden flex justify-center">
           <img
@@ -33,7 +33,7 @@ export default function StatusBar() {
           />
         </div>
         <div
-          className="bg-white py-2 w-5/6 rounded-full pr-10 pl-5 flex justify-between hover:bg-gray-100 cursor-pointer"
+          className="bg-white py-1 w-5/6 rounded-full pr-10 pl-5 flex justify-between hover:bg-gray-100 cursor-pointer"
           onClick={handleOpenModal}
         >
           <p className="font-inter text-gray-400 tracking-wide py-2">
