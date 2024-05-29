@@ -6,7 +6,7 @@ function PostInfor({infor, icon}) {
             py="4px"
             mt="5px"
             px="10px"
-            borderRadius="xl"
+            borderRadius="2xl"
             bg="bg-color.300"
             align='center'
             flex="1"

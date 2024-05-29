@@ -47,7 +47,7 @@ const data = [
 
 function PostZone() {
   return (
-    <Flex bg={"white"} h={"100%"} w={"50%"} flexDir={"column"} gap={2}>
+    <Flex h={"100%"} w={"50%"} flexDir={"column"} gap={2}>
       {data.map((postData, index) => ( 
         <Post key={index} data={postData} /> 
       ))}
