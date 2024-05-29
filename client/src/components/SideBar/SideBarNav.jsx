@@ -1,8 +1,6 @@
-import { Flex, Icon, Box } from "@chakra-ui/react";
-import { NavLink } from "react-router-dom";
+import { Flex } from "@chakra-ui/react";
 import { HiOutlineBellAlert, HiOutlineHome, HiOutlineChatBubbleOvalLeftEllipsis , HiOutlineGlobeAlt, HiOutlineUser} from "react-icons/hi2";
 import Bar from "./Bar";
-import styled from "styled-components";
 
 function SideBarNav() {
     return (
@@ -15,18 +13,5 @@ function SideBarNav() {
         </Flex>
     );
 }
-
-const StyledNavLink = styled(NavLink)`
-    text-emphasis: none;
-    text-decoration: none;
-    color: black;
-    display: flex;
-    align-items: center;
-    &:hover {
-        text-emphasis: none;
-        text-decoration: none;
-        color: black;
-    }
-`;
 
 export default SideBarNav;

@@ -23,5 +23,4 @@ function Message() {
     );
 }
 
-// problem at row 16
 export default Message;
