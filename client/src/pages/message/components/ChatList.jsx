@@ -2,6 +2,21 @@ import {Box, Flex} from "@chakra-ui/react";
 import SearchBar from "../../../components/SearchBar";
 import ChatListItem from "./ChatListItem";
 
+let data = [
+    {
+        avatar: "/img/avatar.png",
+        status: "Online",
+        name: "Ngọc Trâm",
+        lastMesssage: "tramngu"
+    },
+    {
+        avatar: "/img/avatar.png",
+        status: "Offline",
+        name: "Gia Huy",
+        lastMesssage: "huy dep trai"
+    }
+]
+
 function ChatList() {
     return (
         <Flex
@@ -28,20 +43,9 @@ function ChatList() {
             >
                 <SearchBar className="w-9/12" />
             </Box>
-            <ChatListItem/>
-            <ChatListItem/>
-            <ChatListItem/>
-            <ChatListItem/>
-            <ChatListItem/>
-            <ChatListItem/>
-            <ChatListItem/>
-            {/* <ChatListItem/>
-            <ChatListItem/>
-            <ChatListItem/>
-            <ChatListItem/>
-            <ChatListItem/>
-            <ChatListItem/> */}
-            
+            {data.map((item, index) => (
+                <ChatListItem key={index} data={item}/> 
+            ))} 
         </Flex>
     );
 }

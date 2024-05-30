@@ -1,0 +1,286 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+.page {
+    min-width: 100vw;
+    width: auto;
+    min-height: 100vh;
+    height: auto;
+    background-color: #fef9f8;
+}
+
+.page img{
+    position: absolute;
+}
+.page .star{
+    top: 0%;
+    height: 100vh;
+}
+.page .logo{
+    left: 57.75%;
+    top: 9.81%;
+    width: 35.53%;
+}
+.page .rectangle{
+    left: 30.55%;
+    bottom: 0px;
+    width: 19.44%;
+}
+.page .sugar{
+    left: 8.85%;
+    top: 15.62%;
+    width: 37.5%;
+}
+
+.formLogin {
+    font-family: 'Inter';
+    display: flex;
+    position: absolute;
+    left: 56.25%;
+    top: 15.04%;
+    width: 35.24%;
+    height: 79.82%;
+    border-radius: 60px;
+    background: #fef9f8;
+    padding: none;
+    box-shadow: 0px 5px 5px rgb(0, 0, 0, 0.25);
+}
+
+.formLogin form{
+    width: 100%;
+    height: 100%;
+    padding-top: 16.31%;
+}
+
+
+.formLogin .inputbox{
+    position: relative;
+    width: 87.03%;
+    height: 10.7%;
+    margin: 0 auto;
+    margin-bottom: 4.14%;
+    
+}
+.inputbox input{
+    width: 100%;
+    height: 100%;
+    background: rgb(255, 255, 255);
+    border: none;
+    outline: none;
+    border: inset 4px solid rgb(255, 255, 255, 0.7);
+    border-radius: 30px;
+    padding: 20px 55px 20px 20px;
+    box-shadow: inset 0px 4px 4px rgb(0, 0, 0, 0.25);
+}
+.inputbox input::placeholder {
+    font-weight: bold;
+    color: rgb(0, 0, 0, 0.35);
+}
+.inputbox .icon {
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 150%;
+    color: #959595;
+}
+
+
+.formLogin button {    
+    display: block;
+    position: relative;
+    width: 40.32%;
+    height: 8.75%;
+    margin: 0 auto;
+    margin-top: 10.28%;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    border-radius: 59px;
+    background: #EFD1D8;
+    font-size: 23px;
+    color: #555555;
+}
+
+
+.formLogin .orLogIn{
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #A3A3A3;
+    font-weight: bold;
+    font-size: 20px;
+    margin-top: 5%;
+}
+.orLogIn::before,
+.orLogIn::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #000;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+.orLogIn:not(:empty)::before {
+    margin-right: 1em;
+}
+.orLogIn:not(:empty)::after {
+    margin-left: 1em;
+}
+
+
+.formLogin .loginWithIcon{
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    top: 10%;
+    transform: translateY(-50%);
+    font-size: 300%;
+}
+.formLogin .loginWithIcon .Facebook{
+    margin-left: 10%;
+    margin-right: 10%;
+    font-size: 90%;
+}
+
+.formLogin .SigninLink{
+    text-align: center;
+    margin-top: 20%;
+    font-size: 24px;
+    font-weight: bold;
+    color: #7F7F7F;
+}
+
+.formLogin .SigninLink p a{
+    font-size: 25px;
+    color: #9D6567;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+
+
+/*
+#####################################################################################
+#####################################################################################
+#####################################################################################
+#####################################################################################
+*/
+
+
+
+.formSignin {
+    font-family: 'Inter';
+    display: flex;
+    position: absolute;
+    left: 58.5%;
+    top: 4.32%;
+    width: 34.6%;
+    height: 95.67%;
+    border-radius: 60px;
+    background: #fef9f8;
+    padding: none;
+    /* box-shadow: 0px 5px 5px rgb(0, 0, 0, 0.25); */
+}
+
+.formSignin form{
+    width: 100%;
+    height: 100%;
+}
+
+.formSignin .attribute {
+    border-radius: 60px;
+    height: 77.08%;
+    box-shadow: 0px 5px 5px rgb(0, 0, 0, 0.25);
+}
+
+.attribute .SigninLink{
+    text-align: center;
+    font-size: 26px;
+    font-weight: bold;
+    padding-top: 5%;
+    color: #7F7F7F;
+}
+
+.attribute .signinWithIcon{
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    top: 7%;
+    transform: translateY(-50%);
+    font-size: 300%;
+}
+.attribute .signinWithIcon .Facebook{
+    margin-left: 10%;
+    margin-right: 10%;
+    font-size: 90%;
+}
+
+
+.attribute .orSignIn{
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #A3A3A3;
+    font-weight: bold;
+    font-size: 20px;
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+.orSignIn::before,
+.orSignIn::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #000;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+.orSignIn:not(:empty)::before {
+    margin-right: 1em;
+}
+.orSignIn:not(:empty)::after {
+    margin-left: 1em;
+}
+
+
+.attribute .inputbox{
+    position: relative;
+    width: 87.03%;
+    height: 10.7%;
+    margin: 0 auto;
+    margin-bottom: 4.14%;
+    
+}
+.inputbox input{
+    width: 100%;
+    height: 100%;
+    background: rgb(255, 255, 255);
+    border: none;
+    outline: none;
+    border: inset 4px solid rgb(255, 255, 255, 0.7);
+    border-radius: 30px;
+    padding: 20px 55px 20px 20px;
+    box-shadow: inset 0px 4px 4px rgb(0, 0, 0, 0.25);
+}
+.inputbox input::placeholder {
+    font-weight: bold;
+    color: rgb(0, 0, 0, 0.35);
+}
+
+
+.formSignin button {    
+    display: block;
+    position: relative;
+    width: 79.09%;
+    height: 10%;
+    margin: 0 auto;
+    margin-top: 8%;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    border-radius: 59px;
+    background: #EFD1D8;
+    font-size: 24px;
+    color: #555555;
+    font-weight: bold;
+}

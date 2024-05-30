@@ -7,7 +7,20 @@ import {
     Text,
 } from "@chakra-ui/react";
 
-function ChatListItem() {
+function ChatListItem({data}) {
+    const {avatar, status, name, lastMesssage} = data;
+
+    const getBadgeColor = (status) => {
+        switch (status){
+            case "Online":
+                return "green.300"
+            case "Offline":
+                return "red.300"
+            default:
+                throw console.error("Wrong status");
+        }
+    }
+
     return (
         <Box
             minH="12%"
@@ -17,19 +30,19 @@ function ChatListItem() {
             maxW="100%"
         >
             <Flex h="100%" alignItems={"center"}>
-                <Avatar src={"/img/avatar.png"} ml="10px">
+                <Avatar src={avatar} ml="10px">
                     <AvatarBadge
                         boxSize=".75em"
-                        bg="green.500"
+                        bg={getBadgeColor(status)}
                         borderWidth="2px"
                     />
                 </Avatar>
                 <Box mx="10px">
                     <Heading as="h2" fontSize="md">
-                        Swirl Lolipop
+                        {name}   
                     </Heading>
                     <Text noOfLines={1}>
-                        Lorem ipsumnnnnhhhhhhhhhhhhhhhhhhhhhh
+                        {lastMesssage}
                     </Text>
                 </Box>
             </Flex>
