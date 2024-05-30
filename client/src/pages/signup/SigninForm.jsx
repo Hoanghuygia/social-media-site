@@ -1,6 +1,8 @@
 import { AiFillInstagram } from "react-icons/ai";
 import { FaFacebook } from "react-icons/fa";
 import { AiFillTwitterCircle } from "react-icons/ai";
+import { NavLink, useNavigate } from "react-router-dom";
+import {useState, useEffect } from 'react';
 
 
 
@@ -14,17 +16,31 @@ function SigninForm(props){
         color: "#A3A3A3"
     }
     const colorButton = {
-        color: "#555555",
-        background: "#EFD1D8"
+        color: "#555555"
     }
     const colorSigin = {
         color: "#7F7F7F"
     }
+
+    const navigate = useNavigate();
+
+    const [isSubmit, setIsSubmit] = useState(false);
+
+    const handleSubmit = (err) => {
+        err.preventDefault();
+        setIsSubmit(true);
+    }
+
+    useEffect(() => {
+        if (isSubmit) {
+            return (navigate('/login'));
+        }
+    });
     
     return(
         <>
             <div className="flex absolute right-32 top-10 w-1/3 h-full rounded-3xl p-0" style={stylefont}>
-                <form action="" className="w-full h-full">
+                <form action="" className="w-full h-full" onSubmit={handleSubmit}>
                     <div className="rounded-3xl shadow-xl">
                         <div className="text-center	text-2xl font-bold pt-9" style={colorSigin}>
                             <p>
@@ -68,7 +84,9 @@ function SigninForm(props){
                     </div>
 
                     <button type="submit" className="block relative w-4/5 h-16 ml-auto mr-auto mt-10 border-none 
-                        outline-none cursor-pointer rounded-full text-2xl font-bold" style={colorButton}>Sign in</button>
+                        outline-none cursor-pointer rounded-full text-2xl font-bold bg-rose-200 hover:bg-rose-300" style={colorButton}>
+                            Sign in
+                    </button>
                     
                 </form>
             </div>

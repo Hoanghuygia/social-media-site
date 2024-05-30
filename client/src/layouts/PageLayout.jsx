@@ -26,7 +26,7 @@ const PageLayout = ({ children }) => {
                     <Header postion='fixed'/>
                 </GridItem>
                 <GridItem h={`${sidebarHeight}px`} bg='bg-color.100' area={'nav'} >
-                    <SideBar postion='fixed'/>
+                    <SideBar postion='fixed' className="z-30"/>
                 </GridItem>
                 <GridItem bg='red.100' area={'main'}>
                     {children}
