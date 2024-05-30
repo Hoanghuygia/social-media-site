@@ -14,11 +14,17 @@ const StatusModal = ({ isOpen, onClose, onSubmit }) => {
   };
 
   const handleImageChange = (e) => {
-    setImage(e.target.files[0]);
+    const file = e.target.files[0];
+    if (file) {
+      setImage(URL.createObjectURL(file));
+    }
   };
 
   const handleVideoChange = (e) => {
-    setVideo(e.target.files[0]);
+    const file = e.target.files[0];
+    if (file) {
+      setVideo(URL.createObjectURL(file));
+    }
   };
 
   const adjustTextareaHeight = () => {
@@ -42,6 +48,14 @@ const StatusModal = ({ isOpen, onClose, onSubmit }) => {
     setImage(null);
     setVideo(null);
     onClose();
+  };
+
+  const removeImage = () => {
+    setImage(null);
+  };
+
+  const removeVideo = () => {
+    setVideo(null);
   };
 
   if (!isOpen) return null;
@@ -75,12 +89,9 @@ const StatusModal = ({ isOpen, onClose, onSubmit }) => {
           </div>
         </div>
 
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col pl-[82px] pr-10"
-        >
+        <form onSubmit={handleSubmit} className="flex flex-col pl-[82px] pr-10">
           <textarea
-            className=" bg-transparent outline-none resize-none overflow-hidden font-inter tracking-wide text-sm "
+            className="bg-transparent outline-none resize-none overflow-hidden font-inter tracking-wide text-sm"
             ref={textareaRef}
             value={status}
             onChange={handleStatusChange}
@@ -88,6 +99,30 @@ const StatusModal = ({ isOpen, onClose, onSubmit }) => {
             rows="2"
             style={{ minHeight: "2em" }}
           />
+          {image && (
+            <div className="relative mt-4">
+              <img src={image} alt="preview" className="w-full h-auto rounded-md" />
+              <button
+                type="button"
+                className="absolute top-0 right-0 bg-transparent text-black rounded-full p-1 text-xl"
+                onClick={removeImage}
+              >
+                &times;
+              </button>
+            </div>
+          )}
+          {video && (
+            <div className="relative mt-4">
+              <video src={video} controls className="w-full h-auto rounded-md" />
+              <button
+                type="button"
+                className="absolute top-0 right-0 bg-transparent text-white rounded-full p-1 text-xl"
+                onClick={removeVideo}
+              >
+                &times;
+              </button>
+            </div>
+          )}
           <div className="flex gap-10 pt-4">
             <div className="flex items-center">
               <FaRegImage
@@ -119,7 +154,7 @@ const StatusModal = ({ isOpen, onClose, onSubmit }) => {
           <div className="flex justify-end">
             <button
               type="submit"
-              className=" bg-pastel-purple-200 font-khumb-sans tracking-wide font-medium text- py-2 px-4 rounded-2xl hover:bg-pastel-purple-300 text-white"
+              className="bg-pastel-purple-200 font-khumb-sans tracking-wide font-medium text- py-2 px-4 rounded-2xl hover:bg-pastel-purple-300 text-white"
             >
               Post
             </button>
