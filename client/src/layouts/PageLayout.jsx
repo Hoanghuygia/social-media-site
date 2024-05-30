@@ -7,12 +7,6 @@ import Header from "../components/Header.jsx";
 const PageLayout = ({ children }) => {
     const dispatch = useDispatch();
 
-    const { navHeight, navWidth } = useSelector((state) => ({
-        navHeight: state.navHeight,
-        navWidth: state.navWidth,
-    }));
-    //we edit here later
-
     useEffect(() => {
         const updateDimensions = () => {
             const windowHeight = window.innerHeight;
@@ -20,16 +14,12 @@ const PageLayout = ({ children }) => {
 
             const headerHeight = document.querySelector(".header").offsetHeight;
             const headerWidth = document.querySelector(".header").offsetWidth;
-            console.log("Header Height: " + headerHeight)
 
             const mainHeight = document.querySelector(".main").offsetHeight;
             const mainWidth = document.querySelector(".main").offsetWidth;
-            console.log("Main Height: " + mainHeight)
 
             const navHeight = windowHeight - mainHeight;
             const navWidth = windowWidth - mainWidth;
-            console.log("Nav Height: " + navHeight);
-            console.log("Nav Width: " + navWidth);
 
             dispatch({ type: "SET_HEADER_HEIGHT", payload: headerHeight });
             dispatch({ type: "SET_HEADER_WIDTH", payload: headerWidth });

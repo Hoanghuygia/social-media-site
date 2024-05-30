@@ -1,4 +1,12 @@
-import { Flex, Box, Icon, Input, Button } from "@chakra-ui/react";
+import {
+    Flex,
+    Box,
+    Icon,
+    Input,
+    Button,
+    Image,
+    Spacer,
+} from "@chakra-ui/react";
 import React, { useRef, useEffect } from "react";
 import {
     HiOutlineCamera,
@@ -6,6 +14,7 @@ import {
     HiOutlinePhotograph,
     HiOutlineEmojiHappy,
 } from "react-icons/hi";
+import { HiOutlineFolderPlus, HiMiniXMark, HiXCircle } from "react-icons/hi2";
 import EmojiPicker from "emoji-picker-react";
 import { useState } from "react";
 
@@ -13,6 +22,7 @@ function ChatMessageBar() {
     //USE STATE
     const [open, setOpen] = useState(false);
     const [text, setText] = useState("");
+    const [image, setImage] = useState(null);
 
     //HANDLE
     const handleEmoji = (e) => {
@@ -34,6 +44,14 @@ function ChatMessageBar() {
         event.stopPropagation();
         setOpen((prev) => !prev);
     };
+    const handleImageChage = (event) => {
+        const file = event.target.files[0];
+        console.log(file);
+        setImage(event.target.files[0]);
+    };
+    const deleteImageFromBuffer = () => {
+        setImage("");
+    }
 
     useEffect(() => {
         function handleClickOutside(event) {
@@ -49,14 +67,20 @@ function ChatMessageBar() {
     const sendImage = useRef();
 
     return (
-        <Box>
+        <Box mb={"2px"}>
             <input
                 type="file"
                 id="file"
                 style={{ display: "none" }}
                 ref={sendImage}
+                onChange={handleImageChage}
             />
-            <Flex alignItems={"center"} gap={2} mb={"6px"} mx={"10px"}>
+            <Flex
+                alignItems={image ? "flex-end" : "center"}
+                gap={2}
+                mb={"6px"}
+                mx={"10px"}
+            >
                 <Flex fontSize={"2xl"} display={"flex"} flexDir={"row"} gap={3}>
                     <Icon
                         as={HiOutlinePhotograph}
@@ -66,19 +90,59 @@ function ChatMessageBar() {
                     <Icon as={HiOutlineCamera} cursor="pointer" />
                     <Icon as={HiOutlineMicrophone} cursor="pointer" />
                 </Flex>
-                <Input
-                    py="4px"
-                    mt="5px"
-                    pl="10px"
-                    value={text}
-                    variant="unstyled"
-                    placeholder="Type a message"
-                    borderRadius="xl"
+                <Box
+                    display="flex"
+                    alignItems="flex-end"
+                    h={image ? "80px" : "auto"}
                     bg="RGBA(0, 0, 0, 0.08)"
-                    onChange={(e) => {
-                        setText(e.target.value);
-                    }}
-                />
+                    borderRadius="xl"
+                    px="10px"
+                    flex="1"
+                    flexDir={"column"}
+                >
+                    {image && (
+                        <Flex w={"100%"} mt={"10px"}>
+                            <Box
+                                boxSize={"35px"}
+                                display={"flex"}
+                                alignItems={"center"}
+                                justifyContent={"center"}
+                            >
+                                <Icon as={HiOutlineFolderPlus} />
+                            </Box>
+                            <Box position="relative">
+                                <Image
+                                    objectFit="cover"
+                                    boxSize="35px"
+                                    src={URL.createObjectURL(image)}
+                                />
+                                <Icon
+                                    position="absolute"
+                                    top="0"
+                                    right="0"
+                                    transform="translate(25%, -25%)"
+                                    as={HiXCircle}
+                                    boxSize="6"
+                                    color="RGBA(0, 0, 0, 0.6)"
+                                    _hover={{
+                                        color:"RGBA(0, 0, 0, 0.4)"
+                                    }}
+                                    onClick={deleteImageFromBuffer}
+                                />
+                            </Box>
+                        </Flex>
+                    )}
+                    <Input
+                        value={text}
+                        variant="unstyled"
+                        placeholder="Type a message"
+                        py="4px"
+                        mt="5px"
+                        onChange={(e) => {
+                            setText(e.target.value);
+                        }}
+                    />
+                </Box>
                 <Box position="relative">
                     <Icon
                         _hover={{ bg: "RGBA(0, 0, 0, 0.08)" }}

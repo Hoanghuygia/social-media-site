@@ -8,10 +8,10 @@ const publicRoutes = [
     { path: '/explore/reels', component: ExploreReels, layout: PageLayout},
     { path: '/notification', component: Notification, layout: PageLayout},
     { path: '/profile', component: Profile, layout: PageLayout},
+    { path: '/profile/detail', component: ProfileDetail, layout: PageLayout_2},
     { path: '/explore/trending', component: ExploreTrending, layout: PageLayout},
     { path: '/login', component: Login, layout: null},
     { path: '/signup', component: Signup, layout: null},
-    { path: '/profile/detail', component: ProfileDetail, layout: PageLayout_2},
 ];
 
 const privateRoutes = [];
