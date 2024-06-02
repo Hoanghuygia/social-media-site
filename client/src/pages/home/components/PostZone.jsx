@@ -24,7 +24,7 @@ const data = [
       text: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam
         id dictum neque, id dignissim tellus. In fermentum sagittis
         lorem vehicula blandit`,
-      image: "/img/image_1.png"
+      image: "/img/Sugarcube.png"
     },
     like: 89,
     comment: 34,

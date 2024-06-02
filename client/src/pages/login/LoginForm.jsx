@@ -42,7 +42,7 @@ function LoginForm() {
     const [lockShowen, setLockShowen] = useState(false);
 
     const handleSubmit = (err) => {
-        err.preventDefault();
+        err.preventDefault();   
         setIsSubmit(true);
     }
 
@@ -63,7 +63,7 @@ function LoginForm() {
 
     return (
         <>
-            <div className="flex absolute right-32 top-20 w-1/3 h-4/5 rounded-3xl p-0 shadow-2xl" style={stylefont}>
+            <div className="flex absolute right-32 top-20 w-1/3 h-4/5 rounded-3xl p-0 shadow-2xl font-inter">
                 <form action="" className="w-full h-full pt-20" onSubmit={handleSubmit}>
                     <div className="relative w-11/12 h-1/12 ml-auto mr-auto mb-5">
                         <input type="text" placeholder="Email or phone number" className="placeholder:font-bold placeholder:text-slate-400 

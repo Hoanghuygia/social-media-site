@@ -39,7 +39,7 @@ function SigninForm(props){
     
     return(
         <>
-            <div className="flex absolute right-32 top-10 w-1/3 h-full rounded-3xl p-0" style={stylefont}>
+            <div className="flex absolute right-32 top-10 w-1/3 h-full rounded-3xl p-0 font-inter">
                 <form action="" className="w-full h-full" onSubmit={handleSubmit}>
                     <div className="rounded-3xl shadow-xl">
                         <div className="text-center	text-2xl font-bold pt-9" style={colorSigin}>

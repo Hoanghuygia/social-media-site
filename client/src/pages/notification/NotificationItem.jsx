@@ -4,35 +4,41 @@ import {
     Text,
     Heading,
     Avatar,
-    AvatarBadge
 } from "@chakra-ui/react";
+import { color } from "framer-motion";
+import { useState, useEffect } from 'react';
 
-function NotificationItem() {
-    const bgColor = {
-        backgroundColor: "#f7e9f1"
-    }
+function NotificationItem({ data }) {
+    const { ava, name, descri } = data;
+    const [bgcolor, setBgColor] = useState("transparent");
+    const [textcolor, setTextColor] = useState("#000000");
+    const click = () => {
+        setBgColor("#eddae6");
+        setTextColor("#8a8a8a");
+    };
     return ( 
     <>
        <Box
-            minH="11%"
-            bg="transparent"
+            minH="70px"
             borderBottom="1px"
             borderColor="RGBA(0, 0, 0, 0.16)"
             maxW="100%"
-            maxH="11%"
+            maxH="70px"
             overflow="hidden"
-            mt="10px"
+            pt="10px"
+            style={{backgroundColor: bgcolor}}
+            onClick={click}
+            className="hover:shadow-[inset_0px_0px_10px_2px_rgb(0,0,0,0.25)]"
         >
-            <Flex h="100%" alignItems={"center"}>
-                <Avatar src={"/img/avatar.png"} ml="16px" mb="20px" display="inline-block">
+            <Flex h="100%" alignItems={"top"}>
+                <Avatar src={ava} ml="16px" mb="20px" display="inline-block">
                 </Avatar>
-                <Box mx="16px">
+                <Box mx="16px" color={textcolor}>
                     <Heading as="h2" fontSize="md">
-                        Swirl Lolipop
+                        {name}
                     </Heading>
                     <Text>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam perferendis at nulla nobis delectus? Ea, ab sequi dolor unde molestias nisi in aut eum quis enim, dignissimos impedit quos totam!
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sunt animi reiciendis magni, vero neque repellat sed? Eligendi, odio. Quasi saepe dolore, placeat aliquam amet optio quia id perferendis itaque cum!
+                        {descri}
                     </Text>
                 </Box>
             </Flex>
