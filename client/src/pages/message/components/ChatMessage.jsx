@@ -7,32 +7,11 @@ import {} from "react-icons/hi";
 import ChatMessageHeader from "./ChatMessageHeader";
 import ChatMessageBar from "./ChatMessageBar";
 import AMessage from "./AMessage";
+import { useSelector } from 'react-redux';
 
-let messages = [
-    "ABC",
-    "Box Chakra UI/React",
-    "you'd like to truncate the text after a specific number of lines, pass the noOfLines prop. This will render an ellipsis when the text exceeds the width of the viewport or maxWidth prop.",
-    "fsds",
-    "fdadd",
-    "fsds",
-    "fsds",
-    "fdadd",
-    "fsds",
-    "fsds",
-    "fdadd",
-    "fsds",
-    "fsds",
-    "fdadd",
-    "fsds",
-    "fsds",
-    "fdadd",
-    "fsds",
-    "fsds",
-    "fdadd",
-    "fsds",
-]
 
 function ChatMessage() {
+    let messages = useSelector((state) => state.messages);
     const flexRef = useRef(null);
 
     useEffect(() => {//đổi use effect thành cái gì đó tính trước render sau á >-<

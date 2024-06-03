@@ -7,24 +7,51 @@ import {
     Image,
     Spacer,
 } from "@chakra-ui/react";
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import {
     HiOutlineCamera,
     HiOutlineMicrophone,
     HiOutlinePhotograph,
     HiOutlineEmojiHappy,
 } from "react-icons/hi";
-import { HiOutlineFolderPlus, HiMiniXMark, HiXCircle } from "react-icons/hi2";
+import { HiOutlineFolderPlus, HiXCircle } from "react-icons/hi2";
 import EmojiPicker from "emoji-picker-react";
-import { useState } from "react";
+// import ImageBar from "./ImageBar";
+import IconTest from "./IconTest";
+import { useDispatch } from 'react-redux';
 
 function ChatMessageBar() {
     //USE STATE
     const [open, setOpen] = useState(false);
     const [text, setText] = useState("");
     const [image, setImage] = useState(null);
+    // const [message, setMessage] = useState("");
+    const ADD_MESSAGE = 'ADD_MESSAGE';
 
-    //HANDLE
+    const dispatch = useDispatch();
+  
+    const addMessage = (message) => ({
+        type: ADD_MESSAGE,
+        payload: message,
+      });
+
+    //HANDLER
+    const handleKeyPress = (event) => {
+        if (event.key === "Enter") {
+            handleSendMessage();
+        }
+    };
+
+    const handleSendMessage = (e) => {
+        if(text === "") return;
+        
+        dispatch(addMessage({
+            content: text,
+            user: true
+        }));
+        setText("");
+    };
+
     const handleEmoji = (e) => {
         setText((prev) => prev + e.emoji);
         setOpen(false);
@@ -44,13 +71,16 @@ function ChatMessageBar() {
         event.stopPropagation();
         setOpen((prev) => !prev);
     };
-    const handleImageChage = (event) => {
+
+    const handleImageChange = (event) => {
         const file = event.target.files[0];
         console.log(file);
         setImage(event.target.files[0]);
+        // setText((prev) => prev + e.emoji)
     };
+
     const deleteImageFromBuffer = () => {
-        setImage("");
+        setImage(null);
     }
 
     useEffect(() => {
@@ -73,7 +103,7 @@ function ChatMessageBar() {
                 id="file"
                 style={{ display: "none" }}
                 ref={sendImage}
-                onChange={handleImageChage}
+                onChange={handleImageChange}
             />
             <Flex
                 alignItems={image ? "flex-end" : "center"}
@@ -129,6 +159,7 @@ function ChatMessageBar() {
                                     }}
                                     onClick={deleteImageFromBuffer}
                                 />
+                                {/* <IconTest handleTest={deleteImageFromBuffer}/> */}
                             </Box>
                         </Flex>
                     )}
@@ -141,6 +172,7 @@ function ChatMessageBar() {
                         onChange={(e) => {
                             setText(e.target.value);
                         }}
+                        onKeyPress={handleKeyPress}
                     />
                 </Box>
                 <Box position="relative">
@@ -167,7 +199,7 @@ function ChatMessageBar() {
                     )}
                 </Box>
 
-                <Button mr={"5px"}>Send</Button>
+                <Button mr={"5px"} onClick={handleSendMessage}>Send</Button>
             </Flex>
         </Box>
     );

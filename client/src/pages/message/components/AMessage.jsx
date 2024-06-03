@@ -1,6 +1,7 @@
 import {Box} from "@chakra-ui/react";
 
 function AMessage({message}) {
+    const {content, user} = message;
     return (
         <Box
             py="4px"
@@ -15,9 +16,10 @@ function AMessage({message}) {
             maxWidth="75%"
             boxSizing="border-box"
             overflowWrap='break-word' wordBreak='break-all'
-            
+            ml={user ? "auto" : "0"}
+            mr={user ? "0" : "auto"}
         >
-            {message}
+            {content}
         </Box>
     );
 }
