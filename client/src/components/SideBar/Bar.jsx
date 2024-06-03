@@ -5,9 +5,7 @@ import { useLocation } from "react-router-dom";
 
 function Bar({ icon, barName, route }) {
     const location = useLocation();
-    console.log("Location: " + location.pathname);
     const isActive = location.pathname === route;
-    console.log("Active: " + isActive);
 
     return (
         <Flex>
