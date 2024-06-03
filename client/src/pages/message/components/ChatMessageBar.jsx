@@ -5,7 +5,6 @@ import {
     Input,
     Button,
     Image,
-    Spacer,
 } from "@chakra-ui/react";
 import React, { useRef, useEffect, useState } from "react";
 import {
@@ -16,40 +15,56 @@ import {
 } from "react-icons/hi";
 import { HiOutlineFolderPlus, HiXCircle } from "react-icons/hi2";
 import EmojiPicker from "emoji-picker-react";
-// import ImageBar from "./ImageBar";
-import IconTest from "./IconTest";
 import { useDispatch } from 'react-redux';
+import uploadImage from "../../../utils/uploadImage";
 
 function ChatMessageBar() {
-    //USE STATE
     const [open, setOpen] = useState(false);
     const [text, setText] = useState("");
-    const [image, setImage] = useState(null);
-    // const [message, setMessage] = useState("");
+    const [image, setImage] = useState({
+        file: null,
+        url: "",
+    });
     const ADD_MESSAGE = 'ADD_MESSAGE';
 
     const dispatch = useDispatch();
-  
+
     const addMessage = (message) => ({
         type: ADD_MESSAGE,
         payload: message,
-      });
+    });
 
-    //HANDLER
     const handleKeyPress = (event) => {
         if (event.key === "Enter") {
             handleSendMessage();
         }
     };
 
-    const handleSendMessage = (e) => {
-        if(text === "") return;
-        
+    const handleSendMessage = async () => {
+        if (text === "" && !image.file) return;
+
+        let imgURL = null;
+
+        if (image.file) {
+            try {
+                imgURL = await uploadImage(image.file);
+            } catch (error) {
+                console.error("Image upload failed: ", error);
+                return;
+            }
+        }
+
         dispatch(addMessage({
             content: text,
-            user: true
+            imageURL: imgURL,
+            user: true,
         }));
+
         setText("");
+        setImage({
+            file: null,
+            url: "",
+        });
     };
 
     const handleEmoji = (e) => {
@@ -73,18 +88,24 @@ function ChatMessageBar() {
     };
 
     const handleImageChange = (event) => {
-        const file = event.target.files[0];
-        console.log(file);
-        setImage(event.target.files[0]);
-        // setText((prev) => prev + e.emoji)
+        if (event.target.files[0]) {
+            setImage({
+                file: event.target.files[0],
+                url: URL.createObjectURL(event.target.files[0])
+            });
+            event.target.value = null;
+        }
     };
 
     const deleteImageFromBuffer = () => {
-        setImage(null);
-    }
+        setImage({
+            file: null,
+            url: "",
+        });
+    };
 
     useEffect(() => {
-        function handleClickOutside(event) {
+        function handleClickOutside() {
             setOpen(false);
         }
 
@@ -106,7 +127,7 @@ function ChatMessageBar() {
                 onChange={handleImageChange}
             />
             <Flex
-                alignItems={image ? "flex-end" : "center"}
+                alignItems={image.file ? "flex-end" : "center"}
                 gap={2}
                 mb={"6px"}
                 mx={"10px"}
@@ -123,14 +144,14 @@ function ChatMessageBar() {
                 <Box
                     display="flex"
                     alignItems="flex-end"
-                    h={image ? "80px" : "auto"}
+                    h={image.file ? "80px" : "auto"}
                     bg="RGBA(0, 0, 0, 0.08)"
                     borderRadius="xl"
                     px="10px"
                     flex="1"
                     flexDir={"column"}
                 >
-                    {image && (
+                    {image.file && (
                         <Flex w={"100%"} mt={"10px"}>
                             <Box
                                 boxSize={"35px"}
@@ -144,7 +165,7 @@ function ChatMessageBar() {
                                 <Image
                                     objectFit="cover"
                                     boxSize="35px"
-                                    src={URL.createObjectURL(image)}
+                                    src={image.url}
                                 />
                                 <Icon
                                     position="absolute"
@@ -155,11 +176,10 @@ function ChatMessageBar() {
                                     boxSize="6"
                                     color="RGBA(0, 0, 0, 0.6)"
                                     _hover={{
-                                        color:"RGBA(0, 0, 0, 0.4)"
+                                        color: "RGBA(0, 0, 0, 0.4)"
                                     }}
                                     onClick={deleteImageFromBuffer}
                                 />
-                                {/* <IconTest handleTest={deleteImageFromBuffer}/> */}
                             </Box>
                         </Flex>
                     )}

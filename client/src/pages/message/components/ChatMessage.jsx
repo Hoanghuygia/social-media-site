@@ -12,6 +12,7 @@ import { useSelector } from 'react-redux';
 
 function ChatMessage() {
     let messages = useSelector((state) => state.messages);
+    console.log(messages);
     const flexRef = useRef(null);
 
     useEffect(() => {//đổi use effect thành cái gì đó tính trước render sau á >-<

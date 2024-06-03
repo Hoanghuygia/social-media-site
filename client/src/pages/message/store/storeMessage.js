@@ -4,18 +4,22 @@ const initialState = {
     messages: [
         {
             content: "ABC",
-            user: true
+            imageURL: null,
+            user: true 
         },
         {
             content: "Box Chakra UI/React",
+            imageURL: null,
             user: true
         },
         {
             content: "you'd like to truncate the text after a specific number of lines, pass the noOfLines prop. This will render an ellipsis when the text exceeds the width of the viewport or maxWidth prop.",
+            imageURL: null,
             user: true
         },
         {
             content: "ABC",
+            imageURL: null,
             user: true
         }
     ],

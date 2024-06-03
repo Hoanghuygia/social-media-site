@@ -1,14 +1,13 @@
-import { getDownloadURL, uploadBytesResumable, ref} from "firebase/storage"
-import { storage } from "./firebae";
+import { getDownloadURL, uploadBytesResumable, ref } from "firebase/storage";
+import { storage } from "./firebase"; 
 
 const uploadImage = async (file) => {
     const metadata = {
-        contentType: "image/jpeg",
+        contentType: file.type || "image/jpeg", 
     };
-    const date = new Date();
+    const date = new Date().toISOString();
 
-    const storageRef = ref(storage, `images/ ${date + file.name}`);
-    // const storageRef = ref(storage, file.name);
+    const storageRef = ref(storage, `images/${date}-${file.name}`);
     const uploadTask = uploadBytesResumable(storageRef, file, metadata);
 
     return new Promise((resolve, reject) => {
@@ -22,19 +21,24 @@ const uploadImage = async (file) => {
             (error) => {
                 switch (error.code) {
                     case "storage/unauthorized":
-                        reject("The storage is anaithorized");
+                        reject("User doesn't have permission to access the object");
                         break;
                     case "storage/canceled":
-                        reject("The storage is anaithorized");
+                        reject("User canceled the upload");
                         break;
                     case "storage/unknown":
-                        reject("The storage is anaithorized");
+                        reject("Unknown error occurred, inspect error.serverResponse");
+                        break;
+                    default:
+                        reject("An unknown error occurred");
                         break;
                 }
             },
             () => {
                 getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                     resolve(downloadURL);
+                }).catch((error) => {
+                    reject("Failed to get download URL: " + error.message);
                 });
             }
         );
