@@ -35,7 +35,7 @@ function ChatMessageHeader() {
                     <Heading as="h2" fontSize="md">
                         Swirl Lolipop
                     </Heading>
-                    <Text noOfLines={1}>Bùn quá điiiiiiiiiii</Text>
+                    <Text noOfLines={1}>20cm 20 tieng, su can bang hoan hao</Text>
                 </Box>
                 <Spacer />
                 <Flex
