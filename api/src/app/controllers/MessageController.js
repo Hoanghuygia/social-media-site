@@ -1,12 +1,11 @@
-const MessageModel = require('../models/Message');
+const MessageModel = require("../models/Message");
 
-async function addMessage(req, res){
-    const {userId1, userId2, username, content, imageURL} = req.body;
+async function addMessage(req, res) {
+    const { userId1, userId2, username, content, imageURL } = req.body;
     try {
-
         const filter = { user_id_1: userId1, user_id_2: userId2 };
         const bucket = await MessageModel.findOne(filter);
-        console.log("message")
+        console.log("message");
 
         let message_id;
 
@@ -24,18 +23,56 @@ async function addMessage(req, res){
             username: username,
             content: content,
             imageURL: imageURL,
-            timestamp: timestamp
+            timestamp: timestamp,
         };
 
         const update = { $push: { messages: message } };
         const options = { upsert: true, new: true };
 
-        const result = await MessageModel.findOneAndUpdate(filter, update, options);
+        const result = await MessageModel.findOneAndUpdate(
+            filter,
+            update,
+            options
+        );
         return res.status(200).json(result);
     } catch (error) {
-        console.error('Error adding message:', error);
-        return res.status(500).json({message: error.message})
+        console.error("Error adding message:", error);
+        return res.status(500).json({ message: error.message });
     }
 }
 
-module.exports = { addMessage };
+async function getMessage(req, res) {
+    const { userId1, userId2 } = req.query;
+
+    if (!userId1 || !userId2) {
+        return res
+            .status(400)
+            .json({ message: "userId1 and userId2 are required" });
+    }
+
+    const query = {
+        $or: [
+            { user_id_1: userId1, user_id_2: userId2 },
+            { user_id_1: userId2, user_id_2: userId1 },
+        ],
+    };
+
+    const projection = { messages: 1, _id: 0 };
+
+    try {
+        const messages = await MessageModel.findOne(query, projection);
+
+        if (!messages) {
+            return res.status(404).json({ message: "No messages found" });
+        }
+
+        return res.status(200).json(messages.messages);
+    } catch (error) {
+        console.error("Error get messages: ", error);
+
+        return res.status(500).json({ message: error.message });
+    }
+}
+
+
+module.exports = { addMessage, getMessage };

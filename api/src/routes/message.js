@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { addMessage } = require('../app/controllers/MessageController'); // Ensure this path is correct
+const { addMessage, getMessage } = require('../app/controllers/MessageController'); 
 
-router.post('/', addMessage); // Ensure this matches your intended endpoint
+router.post('/', addMessage); 
+router.get('/', getMessage); 
 
 module.exports = router;

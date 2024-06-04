@@ -2,6 +2,11 @@ const { default: mongoose} = require('mongoose');
 
 const Schema = mongoose.Schema;
 
+/**
+ * làm data mẫu: done
+ * fetch về thử: 
+ * là okkei
+ */
 const Message = new Schema(
     {
         user_id_1 : {type: mongoose.Types.ObjectId, ref: 'User'},
