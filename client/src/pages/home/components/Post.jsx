@@ -5,10 +5,19 @@ import {
     HiOutlineHeart,
     HiOutlineChatBubbleOvalLeftEllipsis,
     HiOutlinePaperAirplane,
+    HiHeart
 } from "react-icons/hi2";
+import {useState } from 'react';
 
 function Post({ data }) {
     const { channel, time, type, content, like, comment, share } = data;
+    const [isLiked, setIsLiked] = useState(false);
+
+    const likeClick = () => {
+        setIsLiked(!isLiked);
+        console.log("change");
+    }
+    const CustomIcon = (isLiked) ? HiHeart : HiOutlineHeart;
 
     return (
         <Box borderRadius="2xl" bg={"white"} mt={"12px"}>
@@ -26,7 +35,8 @@ function Post({ data }) {
                 >
                     <PostInfor
                         infor={like.toLocaleString()}
-                        icon={HiOutlineHeart}
+                        icon={CustomIcon}
+                        onClick={likeClick}
                     />
                     <PostInfor
                         infor={comment.toLocaleString()}

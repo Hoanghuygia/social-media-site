@@ -10,7 +10,7 @@ const data = [
       text: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam
         id dictum neque, id dignissim tellus. In fermentum sagittis
         lorem vehicula blandit`,
-      image: "/img/image_1.png"
+      image: "/img/Star.png"
     },
     like: 100,
     comment: 56,
@@ -52,7 +52,6 @@ function PostZone() {
         <Post key={index} data={postData} /> 
       ))}
       <Spacer/>
-      <Text>Huy dep trai</Text>
     </Flex>
   );
 }

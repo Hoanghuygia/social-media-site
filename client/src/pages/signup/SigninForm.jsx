@@ -50,7 +50,7 @@ function SigninForm(props){
 
                         <div className="flex relative items-center justify-center top-9 -translate-y-1/2 text-5xl">
                             <AiFillInstagram />
-                            <FaFacebook className="ml-11 mr-11" />
+                            <FaFacebook className="ml-11 mr-11 text-[94%]" />
                             <AiFillTwitterCircle />
                         </div>
 
