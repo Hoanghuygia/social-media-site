@@ -12,8 +12,8 @@ const ProfileHeader = () => {
   };
 
   return (
-    <div className="w-full">
-      <div className="bg-white h-72 ">
+    <div className="w-full relative">
+      <div className=" bg-white h-72 ">
         <img
           src={BannerImage}
           alt="Profile Banner"
@@ -28,7 +28,7 @@ const ProfileHeader = () => {
             <TbUserEdit className="h-5 w-5" />
           </button>
         </div>
-        <div className="absolute top-[20%] left-[52%] translate-y-1/2 flex flex-col items-center justify-center">
+        <div className="absolute top-[20%] left-[39%] translate-y-1/2 flex flex-col items-center justify-center">
           <div className="relative w-[175px] h-[175px] rounded-full overflow-hidden border-[6px] border-pastel-pink-100">
             <img
               src={avatar}

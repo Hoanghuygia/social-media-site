@@ -11,6 +11,7 @@ function PostInfor({infor, icon, onClick}) {
             align='center'
             flex="1"
             onClick={onClick}
+            _hover={{ bg: "#fcc5f7" }}
         >
             <Icon boxSize={6} as={icon}/> {infor} 
         </Button>

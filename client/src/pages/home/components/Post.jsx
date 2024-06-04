@@ -9,6 +9,7 @@ import {
 } from "react-icons/hi2";
 import {useState } from 'react';
 
+
 function Post({ data }) {
     const { channel, time, type, content, like, comment, share } = data;
     const [isLiked, setIsLiked] = useState(false);
