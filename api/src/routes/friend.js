@@ -1,7 +1,11 @@
 const express = require('express');
 const router = express.Router();
 
+const auth = require('./../app/controllers/middlewareController');
 const friendController = require('../app/controllers/FriendController');
+
+router.use(auth.verifyToken);
+
 
 /**
  * GET all friend
