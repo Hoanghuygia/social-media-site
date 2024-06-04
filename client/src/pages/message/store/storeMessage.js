@@ -1,28 +1,7 @@
 import { createStore } from "redux";
 
 const initialState = {
-    messages: [
-        {
-            content: "ABC",
-            imageURL: null,
-            user: true 
-        },
-        {
-            content: "Box Chakra UI/React",
-            imageURL: null,
-            user: true
-        },
-        {
-            content: "you'd like to truncate the text after a specific number of lines, pass the noOfLines prop. This will render an ellipsis when the text exceeds the width of the viewport or maxWidth prop.",
-            imageURL: null,
-            user: true
-        },
-        {
-            content: "ABC",
-            imageURL: null,
-            user: true
-        }
-    ],
+    messages: [],
     message: "",
 };
 
@@ -36,8 +15,12 @@ function layoutReducer(state = initialState, action) {
         case "ADD_MESSAGE":
             return{
                 ...state,
-                // messages: [...state.messages, ...action.payload], nếu để vậy là nó sẽ phân rã cái payload ra rồi mới add vào messages
                 messages: [...state.messages, action.payload]
+            }
+        case "ADD_MESSAGES":
+            return{
+                ...state,
+                messages: [...state.messages, ...action.payload],
             }
         default:
             return state;

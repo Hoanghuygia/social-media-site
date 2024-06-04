@@ -19,6 +19,7 @@ import { useDispatch } from 'react-redux';
 import uploadImage from "../../../utils/uploadImage";
 
 function ChatMessageBar() {
+    const currentUsername = 'huy1234';
     const [open, setOpen] = useState(false);
     const [text, setText] = useState("");
     const [image, setImage] = useState({
@@ -57,7 +58,7 @@ function ChatMessageBar() {
         dispatch(addMessage({
             content: text,
             imageURL: imgURL,
-            user: true,
+            username: currentUsername,
         }));
 
         setText("");

@@ -1,48 +1,81 @@
-import {
-    Flex,
-    Spacer,
-} from "@chakra-ui/react";
+import { Flex,Spacer } from "@chakra-ui/react";
 import React, { useRef, useEffect } from 'react';
-import {} from "react-icons/hi";
 import ChatMessageHeader from "./ChatMessageHeader";
 import ChatMessageBar from "./ChatMessageBar";
 import AMessage from "./AMessage";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import axios from "axios";
 
+const ADD_MESSAGES = 'ADD_MESSAGES';
+
+const addMessages = (messages) => ({
+    type: ADD_MESSAGES,
+    payload: messages,
+});
 
 function ChatMessage() {
-    let messages = useSelector((state) => state.messages);
-    console.log(messages);
+    const dispatch = useDispatch();
+    const messages = useSelector((state) => state.messages);
     const flexRef = useRef(null);
+    const fetchedRef = useRef(false);
 
-    useEffect(() => {//đổi use effect thành cái gì đó tính trước render sau á >-<
-        if (flexRef.current) {
-          flexRef.current.scrollTop = flexRef.current.scrollHeight;
+    const fetchData = async () => {
+        console.log("abcxyz");
+        try {
+            const userId1 = "665ebe950989a41d36decf5f";
+            const userId2 = "665ebee30989a41d36decf62";
+            const response = await axios.get('http://localhost:3000/message', {
+                params: {
+                    userId1,
+                    userId2
+                }
+            });
+            console.log("Res data: ", response.data);
+            dispatch(addMessages(response.data)); 
+        } catch (error) {
+            console.error("Error happened when fetching data: ", error);
         }
-      }, [messages]);
+    }
+    
+    useEffect(() => {
+        if (flexRef.current) {
+            flexRef.current.scrollTop = flexRef.current.scrollHeight;
+        }
+    }, [messages]);
+
+    useEffect(() => {
+        if (!fetchedRef.current) {
+            fetchedRef.current = true;
+            fetchData();
+        }
+    }, []);
+
+    
 
     return (
         <Flex flexDir={"column"} w={"100%"} h={"85vh"}>
             <ChatMessageHeader />
             <Spacer />
-            
-            <Flex flexDir={"column"} ml={"20px"} mb={"8px"} overflowX="auto"  ref={flexRef}
-            sx={{
-                "&::-webkit-scrollbar": {
-                    width: "4px",
-                },
-                "&::-webkit-scrollbar-thumb": {
-                    backgroundColor: "gray.300",
-                    borderRadius: "4px",
-                },
-            }}
+            <Flex 
+                flexDir={"column"} 
+                mx={"18px"} 
+                mb={"8px"} 
+                overflowY="auto" 
+                ref={flexRef}
+                sx={{
+                    "&::-webkit-scrollbar": {
+                        width: "4px",
+                    },
+                    "&::-webkit-scrollbar-thumb": {
+                        backgroundColor: "gray.300",
+                        borderRadius: "4px",
+                    },
+                }}
             >
                 {messages.map((message, index) => (
                     <AMessage key={index} message={message}/>
                 ))}
             </Flex>
-            
-
             <ChatMessageBar className='mb-10px' />
         </Flex>
     );

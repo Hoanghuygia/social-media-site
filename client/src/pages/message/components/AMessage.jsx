@@ -1,7 +1,9 @@
-import { Box, Image, Text } from "@chakra-ui/react";
+import { Box, Image } from "@chakra-ui/react";
 
 function AMessage({ message }) {
-    const { content, user, imageURL } = message;
+    let { content, username, imageURL } = message;
+    let user = (username === 'huy1234') ? true : false;
+
     return (
         <Box
             ml={user ? "auto" : "0"}
@@ -30,8 +32,8 @@ function AMessage({ message }) {
                 <Image
                     src={imageURL}
                     alt=""
-                    // boxSize={"575px"}
                     objectFit={"contain"}
+                    py={"4px"}
                 />
             )}
         </Box>
