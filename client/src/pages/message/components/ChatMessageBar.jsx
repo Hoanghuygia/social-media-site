@@ -17,6 +17,7 @@ import { HiOutlineFolderPlus, HiXCircle } from "react-icons/hi2";
 import EmojiPicker from "emoji-picker-react";
 import { useDispatch } from 'react-redux';
 import uploadImage from "../../../utils/uploadImage";
+import axios from 'axios'
 
 function ChatMessageBar() {
     const currentUsername = 'huy1234';
@@ -53,6 +54,20 @@ function ChatMessageBar() {
                 console.error("Image upload failed: ", error);
                 return;
             }
+        }
+
+        const message = {
+            "userId1": "665ebe950989a41d36decf5f",
+            "userId2": "665ebee30989a41d36decf62",
+            "username": currentUsername,
+            "content": text,
+            "imageURL": imgURL
+        }
+        try {
+            await axios.post("http://localhost:3000/message", message);
+            console.log("Successfully saving data");
+        } catch (error) {
+            console.error("Error in saving message in database: ", error);
         }
 
         dispatch(addMessage({
