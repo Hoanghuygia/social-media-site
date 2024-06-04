@@ -1,7 +1,8 @@
 const friendRouter = require('./friend');
-
+const authRouter = require('./auth');
 function route(app) {
     app.use('/friend', friendRouter);
+    app.use('/', authRouter);
 }
 
-module.exports = route; // we do not need to exports = router because this is not a router, only a function
+module.exports = route;
