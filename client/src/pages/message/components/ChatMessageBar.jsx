@@ -64,7 +64,7 @@ function ChatMessageBar() {
             "imageURL": imgURL
         }
         try {
-            await axios.post("http://localhost:3000/message", message);
+            await axios.post("https://sugar-cube.onrender.com/message", message);
             console.log("Successfully saving data");
         } catch (error) {
             console.error("Error in saving message in database: ", error);

@@ -24,7 +24,7 @@ function ChatMessage() {
         try {
             const userId1 = "665ebe950989a41d36decf5f";
             const userId2 = "665ebee30989a41d36decf62";
-            const response = await axios.get('http://localhost:3000/message', {
+            const response = await axios.get('https://sugar-cube.onrender.com/message', {
                 params: {
                     userId1,
                     userId2
