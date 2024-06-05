@@ -2,7 +2,7 @@ import { Box, Image } from "@chakra-ui/react";
 
 function AMessage({ message }) {
     let { content, username, imageURL } = message;
-    let user = (username === 'huy1234') ? true : false;
+    let user = username === "huy1234" ? true : false;
 
     return (
         <Box
@@ -16,6 +16,7 @@ function AMessage({ message }) {
             boxSizing="border-box"
             width="fit-content"
             maxWidth="75%"
+            className="test"
         >
             {!imageURL && (
                 <Box
@@ -32,8 +33,8 @@ function AMessage({ message }) {
                 <Image
                     src={imageURL}
                     alt=""
-                    objectFit={"contain"}
-                    py={"4px"}
+                    objectFit="contain"
+                    maxH="50vh"
                 />
             )}
         </Box>
