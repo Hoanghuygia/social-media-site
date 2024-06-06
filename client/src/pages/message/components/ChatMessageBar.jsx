@@ -57,14 +57,21 @@ function ChatMessageBar() {
         }
 
         const message = {
-            "userId1": "665ebe950989a41d36decf5f",
-            "userId2": "665ebee30989a41d36decf62",
+            "userId1": "666150f9600c0531f376abeb",
+            "userId2": "6660b8bc9c642067fa23582b",
             "username": currentUsername,
             "content": text,
             "imageURL": imgURL
         }
+
+        const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NjBiOGJjOWM2NDIwNjdmYTIzNTgyYiIsImlhdCI6MTcxNzY1NTc4MCwiZXhwIjoxNzE3NzQyMTgwfQ.sWJdoGiz4widPLpJ1N_lCDdVu9HfAboetIN94yGjVVM"
+
         try {
-            await axios.post("https://sugar-cube.onrender.com/message", message);
+            await axios.post("https://sugar-cube.onrender.com/message", message, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                }
+            });
             console.log("Successfully saving data");
         } catch (error) {
             console.error("Error in saving message in database: ", error);

@@ -20,18 +20,25 @@ function ChatMessage() {
     const fetchedRef = useRef(false);
 
     const fetchData = async () => {
-        console.log("abcxyz");
         try {
-            const userId1 = "665ebe950989a41d36decf5f";
-            const userId2 = "665ebee30989a41d36decf62";
+            const userId1 = "666150f9600c0531f376abeb";
+            const userId2 = "6660b8bc9c642067fa23582b";
+            // const accessToken = localStorage.getItem('token');
+            const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NjBiOGJjOWM2NDIwNjdmYTIzNTgyYiIsImlhdCI6MTcxNzY1NTc4MCwiZXhwIjoxNzE3NzQyMTgwfQ.sWJdoGiz4widPLpJ1N_lCDdVu9HfAboetIN94yGjVVM"
+
             const response = await axios.get('https://sugar-cube.onrender.com/message', {
-                params: {
-                    userId1,
-                    userId2
-                }
-            });
+            params: {
+                userId1,
+                userId2
+            },
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        });
+
             console.log("Res data: ", response.data);
             dispatch(addMessages(response.data)); 
+
         } catch (error) {
             console.error("Error happened when fetching data: ", error);
         }
