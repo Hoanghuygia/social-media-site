@@ -30,14 +30,25 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
-    followers: {
-      type: Array,
-      default: [],
-    },
-    followings: {
-      type: Array,
-      default: [],
-    },
+    followers: [
+      {
+        follower_id: {type: mongoose.Types.ObjectId, ref: "User"},
+        followAt: {
+          type: Date,
+          default: Date.now()
+        }
+
+      }
+    ],
+    followings: [
+      {
+        following_id: {type: mongoose.Types.ObjectId, ref: "User"},
+        followAt: {
+          type: Date,
+          default: Date.now()
+        }
+      }
+    ],
     isAdmin: {
       type: Boolean,
       default: false,
@@ -58,6 +69,16 @@ const UserSchema = new mongoose.Schema(
       type: Number,
       enum: [1, 2, 3],
     },
+    socket_id: String,
+    chat_list: [
+      {
+        chat_id : {type: mongoose.Types.ObjectId, ref: 'User'},
+        addAt: {
+          type: Date,
+          default: Date.now()
+        }
+      }
+    ]
   },
   { timestamps: true }
 );
