@@ -7,19 +7,17 @@ import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import {useNavigate} from 'react-router-dom';
 import {useState, useEffect } from 'react';
+import Cookies from 'js-cookie';
 
 
 
+function LoginForm() {
 
-function LoginForm(props) {
-
-    const setUser = props.setUser
     const navigate = useNavigate();
 
     //state to be sent to backend
     const intialValues = { username: "", password: ""};
 
-    const [token, setToken] = useState();
     const [formValues, setFormValues] = useState(intialValues);
     const [isSubmit, setIsSubmit] = useState(false);
     const [passwordShown, setPasswordShowen] = useState(false);
@@ -50,8 +48,9 @@ function LoginForm(props) {
                 if(response.ok){
                     console.log("login successfully");
                     const data = await response.json();
-                    setToken(data.Token);
-                    setUser(true);
+                    Cookies.set('token', (data.Token));
+                    Cookies.set('username', (data.username));
+                    Cookies.set('userId', (data._id));
                     setIsSubmit(true);
                 }
                 else{
@@ -82,7 +81,7 @@ function LoginForm(props) {
     useEffect(() => {
         console.log(formValues);
         if (isSubmit) {
-            return (navigate('/', { state: { token: token } }));
+            return (navigate('/'));
         }
     });
 

@@ -1,12 +1,14 @@
 import { Container, Box, Flex } from "@chakra-ui/react";
 import StoryFrame from "./components/StoryFrame";
 import PostZone from "./components/PostZone";
-import { useLocation } from "react-router-dom";
+import Cookies from 'js-cookie';
 
 function Home() {
-    const {state} = useLocation();
-    const { token } = state;
-    console.log(token);
+
+    const username = Cookies.get('username');
+    console.log(Cookies.get('token'));
+    console.log(username);
+    console.log(Cookies.get('userId'));
     return (
         <Flex bg="bg-color.100" h={"100%"} maxW={"100%"} flexDir={"column"}>
             <Box flex={1} maxW={"100%"} mt={"12px"}>
