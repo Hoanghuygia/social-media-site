@@ -32,12 +32,14 @@ class FriendController {
     addFriend(req, res){
         Friend.create(req.body)
         .then( () =>{
+            console.log("friend")
             return res.status(200).json({message: "success"})
         })
         .catch((error) =>{
             return res.status(500).json({message: error.message})
         })
     }
+    
     getByID(req, res){
         const {id} = req.params;
         Friend.findById(id)

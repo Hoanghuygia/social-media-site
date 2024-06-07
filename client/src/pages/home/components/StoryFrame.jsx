@@ -57,9 +57,9 @@ function StoryFrame() {
             }}
         >
             
-            <Flex flexDir={"column"} alignItems={"center"} ml={"50px"}>
-                <Button bg="transparent"  _hover={{ bg: "transparent" }} ><Icon boxSize={12} as={HiOutlinePlusCircle}/></Button>
-                <Text>HA</Text>
+            <Flex flexDir={"column"} alignItems={"center"} ml={"50px"} height={"100%"} paddingTop={"14px"}>
+                <Button bg="transparent"  _hover={{ bg: "transparent" }} ><Icon boxSize={12} as={HiOutlinePlusCircle} className="hover:shadow-[0px_0px_12px_2px_rgb(158,0,141,0.5),inset_0px_0px_8px_1px_rgb(158,0,141,0.5)] rounded-[110px]" /></Button>
+                <Text className="mt-[12%]">HA</Text>
             </Flex>
 
             {data.map((item, index) => (

@@ -24,7 +24,7 @@ const data = [
       text: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam
         id dictum neque, id dignissim tellus. In fermentum sagittis
         lorem vehicula blandit`,
-      image: "/img/image_1.png"
+      image: "/img/Sugarcube.png"
     },
     like: 89,
     comment: 34,
@@ -47,13 +47,14 @@ const data = [
 
 function PostZone() {
   return (
-    <Flex h={"100%"} w={"50%"} flexDir={"column"} gap={2}>
-      {data.map((postData, index) => ( 
-        <Post key={index} data={postData} /> 
-      ))}
-      <Spacer/>
-      <Text>Huy dep trai</Text>
-    </Flex>
+    <>
+      <Flex h={"100%"} w={"50%"} flexDir={"column"} gap={2}>
+        {data.map((postData, index) => ( 
+          <Post key={index} data={postData} /> 
+        ))}
+        <Spacer/>
+      </Flex>
+    </>
   );
 }
 

@@ -8,7 +8,8 @@ const initialState = {
   mainHeight: 0,
   mainWidth: 0,
   navHeight: 0,
-  navWidth: 0
+  navWidth: 0,
+  currentUser: 'huy1234'
 };
 
 
