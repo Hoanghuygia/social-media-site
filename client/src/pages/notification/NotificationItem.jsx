@@ -5,7 +5,6 @@ import {
     Heading,
     Avatar,
 } from "@chakra-ui/react";
-import { color } from "framer-motion";
 import { useState, useEffect } from 'react';
 
 function NotificationItem({ data }) {

@@ -271,7 +271,7 @@ function ProfileDetail() {
                                 justifyContent="space-between"
                                 alignItems="center"
                             >
-                                <Heading fontSize="xl">Realationship</Heading>
+                                <Heading fontSize="xl">Relationship</Heading>
                                 <Button bg='bg-color.100' _hover={{ bg: 'RGBA(0, 0, 0, 0.08)' }}>
                                     <Icon as={HiDotsHorizontal} />
                                 </Button>
