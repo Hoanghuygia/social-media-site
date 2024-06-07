@@ -19,6 +19,7 @@ function LoginForm(props) {
     //state to be sent to backend
     const intialValues = { username: "", password: ""};
 
+    const [token, setToken] = useState();
     const [formValues, setFormValues] = useState(intialValues);
     const [isSubmit, setIsSubmit] = useState(false);
     const [passwordShown, setPasswordShowen] = useState(false);
@@ -48,6 +49,8 @@ function LoginForm(props) {
         
                 if(response.ok){
                     console.log("login successfully");
+                    const data = await response.json();
+                    setToken(data.Token);
                     setUser(true);
                     setIsSubmit(true);
                 }
@@ -79,7 +82,7 @@ function LoginForm(props) {
     useEffect(() => {
         console.log(formValues);
         if (isSubmit) {
-            return (navigate('/'));
+            return (navigate('/', { state: { token: token } }));
         }
     });
 
