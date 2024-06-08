@@ -5,7 +5,7 @@ const UserSchema = new mongoose.Schema(
   {
     username: {
       type: String,
-      require: true,
+      required: true,
       minLength: 3,
       max: 20,
       unique: true,
@@ -19,8 +19,8 @@ const UserSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: [true, "Please enter an password"],
-      minLength: [8, "Password shoul have more than 8 characters"],
+      required: [true, "Please enter a password"],
+      minLength: [8, "Password should have more than 8 characters"],
     },
     profilePicture: {
       type: String,
@@ -30,24 +30,24 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    status: String,
     followers: [
       {
-        follower_id: {type: mongoose.Types.ObjectId, ref: "User"},
+        follower_id: { type: mongoose.Types.ObjectId, ref: "User" },
         followAt: {
           type: Date,
-          default: Date.now()
-        }
-
-      }
+          default: Date.now(),
+        },
+      },
     ],
     followings: [
       {
-        following_id: {type: mongoose.Types.ObjectId, ref: "User"},
+        following_id: { type: mongoose.Types.ObjectId, ref: "User" },
         followAt: {
           type: Date,
-          default: Date.now()
-        }
-      }
+          default: Date.now(),
+        },
+      },
     ],
     isAdmin: {
       type: Boolean,
@@ -55,32 +55,38 @@ const UserSchema = new mongoose.Schema(
     },
     desc: {
       type: String,
-      max: 50,
+      maxLength: 50,
     },
     city: {
       type: String,
-      max: 50,
+      maxLength: 50,
     },
     from: {
       type: String,
-      max: 50,
+      maxLength: 50,
     },
     relationship: {
       type: Number,
       enum: [1, 2, 3],
     },
+    status: {
+      type: String,
+      default: "Offline"
+    },
     socket_id: String,
-    chat_list: [
-      {
-        chat_id : {type: mongoose.Types.ObjectId, ref: 'User'},
-        addAt: {
-          type: Date,
-          default: Date.now()
-        }
-      }
-    ]
+    chat_list: [{ type: mongoose.Types.ObjectId, ref: 'User' }],
+    firstname: {
+      type: String,
+      maxLength: 50,
+      required: true,
+    },
+    lastname: {
+      type: String,
+      maxLength: 50,
+      required: true,
+    }
   },
-  { timestamps: true }
+  { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
 module.exports = mongoose.model("User", UserSchema);
