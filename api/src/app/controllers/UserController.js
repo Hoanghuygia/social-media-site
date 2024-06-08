@@ -1,31 +1,21 @@
-const User = require('../models/TestUser');
+const User = require("../models/user");
 
-class UserController {
-    showAll(req, res) {
-        User.find()
-            .then((data) => {
-                return res.status(200).json({
-                    msg: 'success',
-                    data,
-                });
-            })
-            .catch((error) => {
-                return res.status(500).json({
-                    msg: error.message,
-                });
-            });
-    }
+async function getUserById(req, res){
+    const {id} = req.params;
 
-    addUser(req, res){
-        User.create(req.body)
-        .then( () =>{
-            console.log("user")
-            return res.status(200).json({message: "success"})
-        })
-        .catch((error) =>{
-            return res.status(500).json({message: error.message})
-        })
+    try{
+        const user = await User.findById(id);
+        
+        if(!user){
+            return res.status(404).json({message: "User not found"})
+        }
+        const { password, __v, ...otherUserData } = user._doc;
+
+        res.status(200).json(otherUserData);
+    }catch(error){
+        console.log('Error when finding user by id' + error);
+        return res.status(500).json({message: error.message});
     }
 }
 
-module.exports = new UserController();
+module.exports = { getUserById };
