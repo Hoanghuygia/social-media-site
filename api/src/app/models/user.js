@@ -49,14 +49,24 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
-    followers: {
-      type: Array,
-      default: [],
-    },
-    followings: {
-      type: Array,
-      default: [],
-    },
+    followers: [
+      {
+        follower_id: { type: mongoose.Types.ObjectId, ref: "User" },
+        followAt: {
+          type: Date,
+          default: Date.now(),
+        },
+      },
+    ],
+    followings: [
+      {
+        following_id: { type: mongoose.Types.ObjectId, ref: "User" },
+        followAt: {
+          type: Date,
+          default: Date.now(),
+        },
+      },
+    ],
     isAdmin: {
       type: Boolean,
       default: false,

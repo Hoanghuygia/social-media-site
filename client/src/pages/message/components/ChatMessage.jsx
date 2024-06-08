@@ -24,7 +24,7 @@ function ChatMessage() {
             const userId1 = "666150f9600c0531f376abeb";
             const userId2 = "6660b8bc9c642067fa23582b";
             // const accessToken = localStorage.getItem('token');
-            const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NjBiOGJjOWM2NDIwNjdmYTIzNTgyYiIsImlhdCI6MTcxNzY1NTc4MCwiZXhwIjoxNzE3NzQyMTgwfQ.sWJdoGiz4widPLpJ1N_lCDdVu9HfAboetIN94yGjVVM"
+            const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NjBiOGJjOWM2NDIwNjdmYTIzNTgyYiIsImlhdCI6MTcxNzc5MDI3NSwiZXhwIjoxNzE3ODc2Njc1fQ.GRhUJ8QAelLHrfsnFn2UTcss5aPj_wmlvntuvAqje3Q"
 
             const response = await axios.get('https://sugar-cube.onrender.com/message', {
             params: {
@@ -56,9 +56,7 @@ function ChatMessage() {
             fetchData();
         }
     }, []);
-
     
-
     return (
         <Flex flexDir={"column"} w={"100%"} h={"85vh"}>
             <ChatMessageHeader />
