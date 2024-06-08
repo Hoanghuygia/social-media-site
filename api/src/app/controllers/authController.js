@@ -5,7 +5,6 @@ const bcrypt = require("bcrypt");
 
 exports.registerPost = async (req, res) => {
     try {
-<<<<<<< HEAD
       const { username, email, password, firstName, lastName, gender, dob } = req.body;
   
       if (!username || !email || !password || !firstName || !lastName || !gender || !dob) {
@@ -34,21 +33,6 @@ exports.registerPost = async (req, res) => {
       res.status(200).json(user);
     } catch (err) {
       res.status(500).json({ message: err.message });
-=======
-        const salt = await bcrypt.genSalt(10);
-        const hashed = await bcrypt.hash(req.body.password, salt);
-
-        const newUser = await new User({
-            username: req.body.username,
-            email: req.body.email,
-            password: hashed,
-            lastname: req.body.lastname,
-            firstname: req.body.firstname
-        });
-
-        const user = await newUser.save();
-        res.status(200).json(user);
->>>>>>> master
     }
   };
 
