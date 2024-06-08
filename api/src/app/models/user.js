@@ -1,14 +1,23 @@
 const mongoose = require("mongoose");
 const { isEmail } = require("validator");
 
+const usernameValidator = (username) => {
+  const regex = /^[a-zA-Z0-9_]+$/;
+  return regex.test(username);
+};
+
 const UserSchema = new mongoose.Schema(
   {
     username: {
       type: String,
-      require: true,
-      minLength: 3,
-      max: 20,
+      required: [true, "Username is required"],
+      minLength: [3, "Username should have at least 3 characters"],
+      maxLength: [20, "Username should have at most 20 characters"],
       unique: true,
+      validate: {
+        validator: usernameValidator,
+        message: "Username can only contain letters, numbers, and underscores",
+      },
     },
     email: {
       type: String,
@@ -17,10 +26,20 @@ const UserSchema = new mongoose.Schema(
       lowercase: true,
       validate: [isEmail, "Please enter a valid email"],
     },
+    firstName: {
+      type: String,
+      required: true,
+      maxLength: 50,
+    },
+    lastName: {
+      type: String,
+      required: true,
+      maxLength: 50,
+    },
     password: {
       type: String,
-      required: [true, "Please enter an password"],
-      minLength: [8, "Password shoul have more than 8 characters"],
+      required: [true, "Please enter a password"],
+      minLength: [8, "Password should have more than 8 characters"],
     },
     profilePicture: {
       type: String,
@@ -57,6 +76,20 @@ const UserSchema = new mongoose.Schema(
     relationship: {
       type: Number,
       enum: [1, 2, 3],
+    },
+    gender: {
+      type: String,
+      enum: ["male", "female", "other"],
+      required: true,
+    },
+    dob: {
+      type: Date,
+      required: true,
+    },
+    bio: {
+      type: String,
+      maxlength: 150,
+      default: "",
     },
   },
   { timestamps: true }
