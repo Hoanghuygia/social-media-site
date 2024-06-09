@@ -1,3 +1,4 @@
+const { default: mongoose} = require('mongoose');
 const MessageModel = require("../models/Message");
 
 async function addMessage(req, res) {
@@ -74,5 +75,27 @@ async function getMessage(req, res) {
     }
 }
 
+async function getRecentChatPairById(req, res) {
+    const { senderID } = req.params;
+    try {
+        const recentChatPair = await MessageModel.findOne({
+            $or: [
+                { user_id_1: new mongoose.Types.ObjectId(senderID) },
+                { user_id_2: new mongoose.Types.ObjectId(senderID) }
+            ]
+        }).sort({ timestamp: -1 }).exec();
 
-module.exports = { addMessage, getMessage };
+        if (recentChatPair) {
+            return res.status(200).json(recentChatPair);
+        } else {
+            return res.status(404).json({ message: "Pair not found" });
+        }
+    } catch (error) {
+        console.error("Error getting the last chat id: " + error);
+        return res.status(500).json({ message: error.message });
+    }
+}
+
+
+
+module.exports = { addMessage, getMessage, getRecentChatPairById };

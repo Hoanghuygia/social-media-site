@@ -2,7 +2,7 @@ import { Box, Image } from "@chakra-ui/react";
 
 function AMessage({ message }) {
     let { content, username, imageURL } = message;
-    let user = username === "huy1234" ? true : false;
+    let user = username === "ghuy1234" ? true : false;
 
     return (
         <Box
