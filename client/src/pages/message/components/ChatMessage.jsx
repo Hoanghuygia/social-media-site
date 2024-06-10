@@ -7,11 +7,23 @@ import { useSelector, useDispatch } from 'react-redux';
 import axios from "axios";
 
 const ADD_MESSAGES = 'ADD_MESSAGES';
+const DELETE_MESSAGES = 'DELETE_MESSAGES';
 
 const addMessages = (messages) => ({
     type: ADD_MESSAGES,
     payload: messages,
 });
+
+const deleteMessages = () =>({
+    type: DELETE_MESSAGES,
+    payload: []
+})
+
+const CHANGE_RECEPIENT = "CHANGE_RECEPIENT";
+const changeRecepient = (recepientID) =>({
+    type: CHANGE_RECEPIENT,
+    payload: recepientID
+})
 
 function ChatMessage() {
     const dispatch = useDispatch();
@@ -19,6 +31,9 @@ function ChatMessage() {
     const flexRef = useRef(null);
     const currentUserId = "666377f35676ff7fa0451749"; 
     const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NjBiOGJjOWM2NDIwNjdmYTIzNTgyYiIsImlhdCI6MTcxNzg3OTA4MSwiZXhwIjoxNzQ5NDM2NjgxfQ.sEU-SFK6Brb8_FsRvQPqJ0AFD7D_tPaNrosx6scQW7g";
+
+    const recepientID = useSelector((state) => state.recepientID);
+
     const [recentIdPersonChatWith, setRecentIdPersonChatWith] = useState('');
     const [isFetching, setIsFetching] = useState(false);
 
@@ -47,8 +62,9 @@ function ChatMessage() {
                     Authorization: `Bearer ${accessToken}`
                 }
             });
-
+            dispatch(deleteMessages());
             dispatch(addMessages(response.data));
+
         } catch (error) {
             console.error("Error fetching messages: ", error);
         }
@@ -56,22 +72,28 @@ function ChatMessage() {
 
     useEffect(() => {
         const fetchData = async () => {
-            try {
-                setIsFetching(true);
-                const recentPersonChatWith = await fetchRecentChatPair();
-                const userId2 = currentUserId === recentPersonChatWith.user_id_2 ? recentPersonChatWith.user_id_1 : recentPersonChatWith.user_id_2;
-                setRecentIdPersonChatWith(userId2);
-            } catch (error) {
-                console.error("Error during initialization: ", error);
-            } finally {
-                setIsFetching(false);
+            if (!recepientID){
+                try {
+                    setIsFetching(true);
+                    const recentPersonChatWith = await fetchRecentChatPair();
+                    const userId2 = currentUserId === recentPersonChatWith.user_id_2 ? recentPersonChatWith.user_id_1 : recentPersonChatWith.user_id_2;
+                    setRecentIdPersonChatWith(userId2);
+                    dispatch(changeRecepient(userId2));
+                } catch (error) {
+                    console.error("Error during initialization: ", error);
+                } finally {
+                    setIsFetching(false);
+                }
+            }
+            else{
+                setRecentIdPersonChatWith(recepientID);
             }
         };
 
         if (!isFetching) {
             fetchData();
         }
-    }, []);
+    }, [recepientID]);
 
     useEffect(() => {
         if (recentIdPersonChatWith) {
@@ -109,7 +131,7 @@ function ChatMessage() {
                     <AMessage key={index} message={message}/>
                 ))}
             </Flex>
-            <ChatMessageBar className='mb-10px' />
+            <ChatMessageBar className='mb-10px' recentIdPersonChatWith={recentIdPersonChatWith}/>
         </Flex>
     );
 }

@@ -3,6 +3,7 @@ import { createStore } from "redux";
 const initialState = {
     messages: [],
     message: "",
+    recepientID: "",
 };
 
 function layoutReducer(state = initialState, action) {
@@ -21,6 +22,16 @@ function layoutReducer(state = initialState, action) {
             return{
                 ...state,
                 messages: [...state.messages, ...action.payload],
+            }
+        case "DELETE_MESSAGES":
+            return{
+                ...state,
+                messages: [],
+            }
+        case "CHANGE_RECEPIENT":
+            return{
+                ...state,
+                recepientID: action.payload,
             }
         default:
             return state;

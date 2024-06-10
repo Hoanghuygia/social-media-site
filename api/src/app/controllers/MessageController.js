@@ -64,7 +64,7 @@ async function getMessage(req, res) {
         const messages = await MessageModel.findOne(query, projection);
 
         if (!messages) {
-            return res.status(404).json({ message: "No messages found" });
+            return res.status(200).json([]);
         }
 
         return res.status(200).json(messages.messages);

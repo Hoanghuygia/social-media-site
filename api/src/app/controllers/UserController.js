@@ -44,10 +44,11 @@ async function getChatList(req, res){
                 : '';
 
             response.push({
+                recepientId: chatUser._id,
                 avatar: chatUser.profilePicture,
                 status: chatUser.status,
                 name: `${chatUser.firstname} ${chatUser.lastname}`,
-                lastMessage: lastMessage
+                lastMessage: lastMessage,
             });
         }
 

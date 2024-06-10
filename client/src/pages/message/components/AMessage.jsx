@@ -31,10 +31,12 @@ function AMessage({ message }) {
             )}
             {imageURL && (
                 <Image
+                    mt={"5px"}
                     src={imageURL}
                     alt=""
                     objectFit="contain"
                     maxH="50vh"
+                    borderRadius="2xl"
                 />
             )}
         </Box>

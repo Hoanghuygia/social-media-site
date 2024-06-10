@@ -14,4 +14,17 @@ const apiRequest = async (url, accessToken) => {
     }
 };
 
-export {apiRequest}
+const apiRequestPost = async (url, accessToken, data) => {
+    try {
+        await axios.post(url, data, {
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        });
+        console.log("Successfully saving data");
+    } catch (error) {
+        console.error("Error in saving data in database: ", error);
+    }
+};
+
+export {apiRequest, apiRequestPost}
