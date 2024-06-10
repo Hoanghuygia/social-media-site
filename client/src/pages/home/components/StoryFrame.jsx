@@ -63,7 +63,7 @@ function StoryFrame() {
             </Flex>
 
             {data.map((item, index) => (
-                <Flex flexDir={"column"} alignItems={"center"}>
+            <Flex key={index} flexDir={"column"} alignItems={"center"}>
                 <Avatar
                     size="lg"
                     name="chat-bubble"

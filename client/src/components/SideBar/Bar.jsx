@@ -52,6 +52,7 @@ const StyledNavLink = styled(NavLink)`
         text-decoration: none;
         color: black;
     }
+    height: 100%
 `;
 
 export default Bar;
