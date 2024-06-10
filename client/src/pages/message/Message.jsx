@@ -1,13 +1,10 @@
-import {
-    Box,
-    Flex,
-} from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import ChatList from "./components/ChatList";
 import ChatMessage from "./components/ChatMessage";
 import storeMessage from "./store/storeMessage";
 import { Provider } from 'react-redux';
 
-function Message() {
+function Message() { 
     return (
         <Provider store={storeMessage}>
             <Flex

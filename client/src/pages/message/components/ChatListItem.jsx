@@ -6,20 +6,33 @@ import {
     Heading,
     Text,
 } from "@chakra-ui/react";
+import { useDispatch } from "react-redux";
 
-function ChatListItem({data}) {
-    const {avatar, status, name, lastMesssage} = data;
+const CHANGE_RECEPIENT = "CHANGE_RECEPIENT";
+const changeRecepient = (recepientID) =>({
+    type: CHANGE_RECEPIENT,
+    payload: recepientID
+})
+
+
+function ChatListItem({ data }) {
+    const dispatch = useDispatch();
+    const { avatar, status, name, lastMessage, recepientId } = data;
+
+    const handleChangeRecipient = (event) =>{
+        dispatch(changeRecepient(recepientId))
+    }
 
     const getBadgeColor = (status) => {
-        switch (status){
+        switch (status) {
             case "Online":
-                return "green.300"
+                return "green.300";
             case "Offline":
-                return "red.300"
+                return "red.300";
             default:
                 throw console.error("Wrong status");
         }
-    }
+    };
 
     return (
         <Box
@@ -28,6 +41,8 @@ function ChatListItem({data}) {
             borderTop="1px"
             borderColor="RGBA(0, 0, 0, 0.16)"
             maxW="100%"
+            _hover={{ bg: 'RGBA(0, 0, 0, 0.08)' }}
+            onClick={handleChangeRecipient}
         >
             <Flex h="100%" alignItems={"center"}>
                 <Avatar src={avatar} ml="10px">
@@ -39,10 +54,10 @@ function ChatListItem({data}) {
                 </Avatar>
                 <Box mx="10px">
                     <Heading as="h2" fontSize="md">
-                        {name}   
+                        {name}
                     </Heading>
                     <Text noOfLines={1}>
-                        {lastMesssage}
+                        {lastMessage ? lastMessage : "..."}
                     </Text>
                 </Box>
             </Flex>
