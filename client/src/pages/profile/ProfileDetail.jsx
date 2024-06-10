@@ -11,7 +11,7 @@ import {
     Button,
 } from "@chakra-ui/react";
 import { useEffect, useReducer, useState } from "react";
-import { HiUserCircle, HiBriefcase, HiDotsHorizontal } from "react-icons/hi";
+import { HiUserCircle, HiCake, HiDotsHorizontal } from "react-icons/hi";
 import { Link as ReactRouterLink } from 'react-router-dom'
 
 function ProfileDetail() {
@@ -32,7 +32,7 @@ function ProfileDetail() {
         phoneNumber: '+84783279012',
         address: 'Thu Duc city, HCM city',
         // introduction: 'Books are portals to different worlds, offering adventures, wisdom, and solace. Each page reveals new horizons, enriching minds and nurturing imaginations, making reading a timeless'
-        introduction: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+        introduction: ''
     }
 
     const SET_FIRST_NAME = 'set_first_name';
@@ -149,7 +149,7 @@ function ProfileDetail() {
                                 fontWeight="semibold"
                                 color="RGBA(0, 0, 0, 0.4)"
                             >
-                                Introduction:
+                                Bios:   
                             </Heading>
                             <Textarea
                                 borderRadius="xl"
@@ -161,7 +161,7 @@ function ProfileDetail() {
                                 px='5px'
                                 value={introduction}
                                     onChange={e =>{
-                                        if(e.target.value.length <= 350){
+                                        if(e.target.value.length <= 150){
                                             dispatch(setIntro(e.target.value))
                                         }
                                     }}
@@ -291,7 +291,7 @@ function ProfileDetail() {
                                 justifyContent="space-between"
                                 alignItems="center"
                             >
-                                <Heading fontSize="xl">Jobs</Heading>
+                                <Heading fontSize="xl">Date of Birth</Heading>
                                 <Button bg='bg-color.100' _hover={{ bg: 'RGBA(0, 0, 0, 0.08)' }}>
                                     <Icon as={HiDotsHorizontal} />
                                 </Button>
@@ -299,10 +299,10 @@ function ProfileDetail() {
                             <Text mt="3px" display='flex'> 
                                 <Icon
                                     boxSize={6}
-                                    mr="5px"
-                                    as={HiBriefcase}
+                                    mr="2%"
+                                    as={HiCake}
                                 />
-                                CTy ABCXYZ 
+                                31-10-2003
                             </Text>
                         </Box>
                     </Flex>

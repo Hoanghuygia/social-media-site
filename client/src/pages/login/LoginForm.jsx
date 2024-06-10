@@ -11,8 +11,9 @@ import Cookies from 'js-cookie';
 
 
 
-function LoginForm() {
+function LoginForm(props) {
 
+    const setUser = props.setUser;
     const navigate = useNavigate();
 
     //state to be sent to backend
@@ -26,7 +27,7 @@ function LoginForm() {
 
     const handleSubmit = async (err) => {
         err.preventDefault();
-        if(!formValues.username && !formValues.password){
+        if(!formValues.username || !formValues.password){
             setErrormessage("Please fill out all information");
         }
         else{
@@ -51,6 +52,7 @@ function LoginForm() {
                     Cookies.set('token', (data.Token));
                     Cookies.set('username', (data.username));
                     Cookies.set('userId', (data._id));
+                    setUser(true);
                     setIsSubmit(true);
                 }
                 else{
