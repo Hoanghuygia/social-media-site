@@ -12,8 +12,14 @@ import { BsBoxArrowInRight } from "react-icons/bs";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import SideBarNav from "./SideBarNav";
+import Cookies from 'js-cookie';
 
 function SideBar() {
+
+    const logout = () => {
+        Cookies.remove('user');
+    };
+
     return (
         <Flex
             pr={"20px"}
@@ -61,7 +67,7 @@ function SideBar() {
 
             <Box display="flex" alignItems="center" gap="2" mb="10px" pl='25px'>
                 <Icon as={BsBoxArrowInRight} />
-                <StyledNavLink to="/login">Log out</StyledNavLink>
+                <StyledNavLink to="/login" onClick={logout}>Log out</StyledNavLink>
             </Box>
         </Flex>
     );

@@ -2,10 +2,13 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { publicRoutes, privateRoutes } from './routes/index.js';
 import { Fragment, useState } from 'react';
 import ProtectedRoutes from './utils/ProtectedRoutes.jsx';
+import Cookies from 'js-cookie';
 
 
 function App() {
 	const [user, setUser] = useState(false);
+
+
 	return (
 		<Router>
 				<Routes>
@@ -17,7 +20,7 @@ function App() {
 							Layout = Fragment;
 						else
 							Layout = route.layout;
-						return <Route key={index} path={route.path} element={<Layout><Page setUser={setUser}/></Layout>}/>
+						return <Route key={index} path={route.path} element={<Layout><Page /></Layout>}/>
 					})}
 					{privateRoutes.map((route, index) =>{
 						const Page = route.component;
@@ -28,7 +31,7 @@ function App() {
 						else
 							Layout = route.layout;
 						return (
-							<Route key={index} element={<ProtectedRoutes name={user} />}>
+							<Route key={index} element={<ProtectedRoutes/>}>
 								<Route key={index} path={route.path} element={<Layout><Page/></Layout>}/>
 							</Route>
 						)

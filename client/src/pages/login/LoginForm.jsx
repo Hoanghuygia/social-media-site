@@ -11,9 +11,8 @@ import Cookies from 'js-cookie';
 
 
 
-function LoginForm(props) {
+function LoginForm() {
 
-    const setUser = props.setUser;
     const navigate = useNavigate();
 
     //state to be sent to backend
@@ -52,7 +51,7 @@ function LoginForm(props) {
                     Cookies.set('token', (data.Token));
                     Cookies.set('username', (data.username));
                     Cookies.set('userId', (data._id));
-                    setUser(true);
+                    Cookies.set('user', 'true');
                     setIsSubmit(true);
                 }
                 else{
@@ -66,7 +65,6 @@ function LoginForm(props) {
         }
     }
     const handleChange = (e) => {
-        console.log(e.target.value);
         const { id, value } = e.target;
         setFormValues({ ...formValues, [id]: value });
     }
@@ -81,7 +79,6 @@ function LoginForm(props) {
     const CustomIcon = (lockShowen) ? MdLockOpen : MdLockOutline;
 
     useEffect(() => {
-        console.log(formValues);
         if (isSubmit) {
             return (navigate('/'));
         }

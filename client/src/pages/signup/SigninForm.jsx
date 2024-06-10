@@ -71,7 +71,6 @@ function SigninForm(props){
     }
 
     useEffect(() => {
-        console.log(formValues);
         if (isSubmit) {
             return (navigate('/login'));
         }
