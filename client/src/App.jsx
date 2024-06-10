@@ -5,7 +5,7 @@ import ProtectedRoutes from './utils/ProtectedRoutes.jsx';
 
 
 function App() {
-	const [user, setUser] = useState(true);
+	const [user, setUser] = useState(false);
 	return (
 		<Router>
 				<Routes>
@@ -28,8 +28,8 @@ function App() {
 						else
 							Layout = route.layout;
 						return (
-							<Route key={index} component={<ProtectedRoutes name={user} />}>
-							<Route key={index} path={route.path} element={<Layout><Page/></Layout>}/>
+							<Route key={index} element={<ProtectedRoutes name={user} />}>
+								<Route key={index} path={route.path} element={<Layout><Page/></Layout>}/>
 							</Route>
 						)
 						// return <Route key={index} path={route.path} element={<ProtectedRoutes name={user}><Layout><Page/></Layout></ProtectedRoutes>}/>
