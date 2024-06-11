@@ -7,12 +7,7 @@ import {
     Text,
 } from "@chakra-ui/react";
 import { useDispatch } from "react-redux";
-
-const CHANGE_RECEPIENT = "CHANGE_RECEPIENT";
-const changeRecepient = (recepientID) =>({
-    type: CHANGE_RECEPIENT,
-    payload: recepientID
-})
+import { changeRecepient } from "../../../stores/messageSlice";
 
 function ChatListItem({ data }) {
     const dispatch = useDispatch();

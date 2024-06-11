@@ -1,12 +1,21 @@
 import io from 'socket.io-client';
 
-let socket
+let socket;
 
-const connectSocket = (user_id) => {
-    socket = io("http://localhost:3000", {
-        query: `user_id=${user_id}`
-    })
+const connectSocket = (userID) => {
+    if (!socket) {
+        socket = io("http://localhost:3000", {
+            query: `userID=${userID}`
+        });
 
-}
+        socket.on('connect', () => {
+            console.log(`Connected with ID: ${socket.id}`);
+        });
 
-export {socket, connectSocket }
+        socket.on('disconnect', () => {
+            console.log('Socket disconnected');
+        });
+    }
+};
+
+export { socket, connectSocket };

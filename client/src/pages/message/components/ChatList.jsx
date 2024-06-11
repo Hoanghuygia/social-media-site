@@ -6,7 +6,9 @@ import Cookies from 'js-cookie';
 import { apiRequest } from "../../../utils/helper";
 
 const currentUserId = Cookies.get('userId');
+console.log("Current: " + currentUserId);
 const accessToken = Cookies.get("token");
+console.log("Current token: " + accessToken);
 
 const fetchChatList = async() =>{
     const url = `http://localhost:3000/user/chatlist/${currentUserId}`;

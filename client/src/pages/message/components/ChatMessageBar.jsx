@@ -7,13 +7,15 @@ import { apiRequestPost } from "../../../utils/helper";
 import Cookies from 'js-cookie';
 import EmojiPickerComponent from "./EmojiPickerComponent";
 import InputMessage from "./InputMessage";
+import { socket, connectSocket } from "../../../socket";
+import { addMessage } from "../../../stores/messageSlice";
 
 const currentUserId = Cookies.get("userId");
 const accessToken = Cookies.get("token");
 const currentUsername = Cookies.get("username");
 
 function ChatMessageBar() {
-    const recepientID = useSelector((state) => state.recepientID);
+    const { recepientID } = useSelector((state) => state.message);
 
     const [open, setOpen] = useState(false);
     const [text, setText] = useState("");
@@ -21,14 +23,8 @@ function ChatMessageBar() {
         file: null,
         url: "",
     });
-    const ADD_MESSAGE = 'ADD_MESSAGE';
 
     const dispatch = useDispatch();
-
-    const addMessage = (message) => ({
-        type: ADD_MESSAGE,
-        payload: message,
-    });
 
     const handleKeyPress = (event) => {
         if (event.key === "Enter") {
@@ -50,21 +46,24 @@ function ChatMessageBar() {
             }
         }
 
-        console.log("Recepeint Id before save message: " + recepientID);
         const message = {
-            "userId1": currentUserId,
+            "userId1": currentUserId,//userId1 default to be current user
             "userId2": recepientID,
             "username": currentUsername,
             "content": text,
             "imageURL": imgURL
         }
-        apiRequestPost("http://localhost:3000/message", accessToken, message)
+        apiRequestPost("http://localhost:3000/message", accessToken, message)//save into the database
 
         dispatch(addMessage({
             content: text,
             imageURL: imgURL,
             username: currentUsername,
-        }));
+        }));//dispatch to load to above 
+
+        if(!socket){
+            console.log("Socket still exist!!");
+        }
 
         setText("");
         setImage({

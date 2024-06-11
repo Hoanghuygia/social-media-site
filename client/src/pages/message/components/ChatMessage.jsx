@@ -4,35 +4,17 @@ import ChatMessageHeader from "./ChatMessageHeader";
 import ChatMessageBar from "./ChatMessageBar";
 import AMessage from "./AMessage";
 import { useSelector, useDispatch } from 'react-redux';
+import { addMessages, deleteMessages, changeRecepient } from "../../../stores/messageSlice";
 import Cookies from 'js-cookie';
 import axios from "axios";
 
 const currentUserId = Cookies.get('userId');
 const accessToken = Cookies.get("token");
 
-const ADD_MESSAGES = 'ADD_MESSAGES';
-const DELETE_MESSAGES = 'DELETE_MESSAGES';
-
-const addMessages = (messages) => ({
-    type: ADD_MESSAGES,
-    payload: messages,
-});
-
-const deleteMessages = () =>({
-    type: DELETE_MESSAGES,
-    payload: []
-})
-
-const CHANGE_RECEPIENT = "CHANGE_RECEPIENT";
-const changeRecepient = (recepientID) =>({
-    type: CHANGE_RECEPIENT,
-    payload: recepientID
-})
 
 function ChatMessage() {
     const dispatch = useDispatch();
-    const messages = useSelector((state) => state.messages);
-    const recepientID = useSelector((state) => state.recepientID);
+    const { messages, recepientID } = useSelector((state) => state.message);
     const flexRef = useRef(null);
 
     const [recentIdPersonChatWith, setRecentIdPersonChatWith] = useState('');

@@ -30,7 +30,6 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
-    status: String,
     thought: String,
     followers: [
       {
@@ -74,7 +73,9 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: "Offline"
     },
-    socket_id: String,
+    socket_id: {
+      type: String,
+    },
     chat_list: [{ type: mongoose.Types.ObjectId, ref: 'User' }],
     firstname: {
       type: String,

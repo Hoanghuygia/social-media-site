@@ -16,11 +16,11 @@ import {
 import { useSelector } from "react-redux";
 import { apiRequest } from "../../../utils/helper";
 import Cookies from "js-cookie";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 
 const accessToken = Cookies.get("token");
 let recepientID;
+
 const fetchUserFromId = async () => {
     if (recepientID) {
         const URL = `http://localhost:3000/user/${recepientID}`;
@@ -29,7 +29,8 @@ const fetchUserFromId = async () => {
 };
 
 function ChatMessageHeader() {
-    recepientID = useSelector((state) => state.recepientID);
+    const messageState = useSelector((state) => state.message);
+    recepientID = messageState.recepientID;
     const [user, setUser] = useState(null);
 
     const fetchData = async () => {

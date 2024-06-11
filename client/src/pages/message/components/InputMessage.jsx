@@ -1,7 +1,7 @@
 import { Box, Flex, Icon, Input, Image } from "@chakra-ui/react";
 import { HiOutlineFolderPlus, HiXCircle } from "react-icons/hi2";
 
-function InputMessage({image, deleteImageFromBuffer, setText,text, handleKeyPress}) {
+function InputMessage({image, deleteImageFromBuffer, setText, text, handleKeyPress}) {
     return (
         <Box
             display="flex"
