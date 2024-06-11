@@ -49,7 +49,6 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
-    thought: String,
     followers: [
       {
         follower_id: { type: mongoose.Types.ObjectId, ref: "User" },
@@ -86,15 +85,6 @@ const UserSchema = new mongoose.Schema(
     },
     gender: {
       type: String,
-      default: "Offline"
-    },
-    socket_id: {
-      type: String,
-    },
-    chat_list: [{ type: mongoose.Types.ObjectId, ref: 'User' }],
-    firstname: {
-      type: String,
-      maxLength: 50,
       enum: ["male", "female", "other"],
       required: true,
     },
@@ -102,10 +92,19 @@ const UserSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
+    thought: String,
+    socket_id: {
+      type: String,
+    },
+    chat_list: [{ type: mongoose.Types.ObjectId, ref: 'User' }],
     bio: {
       type: String,
       maxlength: 150,
       default: "",
+    },
+    status: {
+      type: String,
+      default: "Offline"
     },
   },
   { timestamps: true }
