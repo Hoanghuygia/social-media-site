@@ -46,6 +46,8 @@ async function addPost(req, res) {
       return res.status(500).json({ message: error.message });
     }
   }
+
+//undone
   async function updatePost(req, res) {
   const postId = req.params.postId;
   const updateData = req.body;
@@ -66,78 +68,84 @@ async function addPost(req, res) {
 }
 
 async function deletePost(req, res) {
-  const postId = req.params.postId;
-  try {
-    const deletedPost = await PostModel.findByIdAndDelete(postId);
+    const objectId = req.params.objectId;
+    const postId = req.params.postId;
 
-    if (!deletedPost) {
-      return res.status(404).json({ message: "Post not found" });
+    try {
+        // Find the post by Object_id
+        const post = await PostModel.findOneAndUpdate(
+            { 'Object_id': objectId, 'posts._id': postId },
+            { $pull: { 'posts': { _id: postId } } },
+            { new: true }
+        );
+
+        if (!post) {
+            return res.status(404).json({ message: "Post not found" });
+        }
+
+        res.status(200).json({ message: "Post deleted successfully", deletedPost: post });
+    } catch (error) {
+        console.error("Error deleting the post: ", error);
+        res.status(500).json({ message: "Error deleting the post" });
     }
-
-    res.status(200).json({ message: "Post deleted successfully", deletedPost });
-  } catch (error) {
-    console.error("Error deleting the post: ", error);
-    res.status(500).json({ message: "Error deleting the post" });
-  }
 }
 
 async function getAllPostsByUser(req, res) {
-  const userId = req.params.userId;
-  try {
-    // Find the user's posts
-    const userPosts = await PostModel.findOne({ username: userId }).populate(
-      "username"
-    );
-
-    if (!userPosts) {
-      return res
-        .status(404)
-        .json({ message: "User not found or no posts available" });
-    }
-
-    res.json(userPosts.posts);
-  } catch (error) {
-    console.error("Error fetching posts:", error);
-    res.status(500).json({ message: "Internal server error" });
-  }
-}
-async function getFollowingPosts(req, res) {
-  const userId = req.params.userId;
-  try {
-    const user = await UserModel.findById(userId).populate(
-      "followings.following_id"
-    );
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    const followingIds = user.followings.map(
-      (following) => following.following_id._id
-    );
-
-    // Find posts of followed users with privacy level 'public' or 'friend'
-    const posts = await PostModel.find({
-      username: { $in: followingIds },
-      "posts.privacyLevel": { $in: ["public", "friend"] },
-    }).populate("username");
-
-    // Extract the posts array from each user's document
-    const allPosts = [];
-    posts.forEach((userPosts) => {
-      userPosts.posts.forEach((post) => {
-        if (post.privacyLevel === "public" || post.privacyLevel === "friend") {
-          allPosts.push(post);
+    const Object_id = req.params.Object_id;
+    console.log(Object_id);
+    try {
+        const posts = await PostModel.find({ Object_id }).populate({
+            path: 'Object_id',
+            select: 'username' // specify the fields you want to include
+        });
+        console.log(posts);
+  
+        if (!posts.length) {
+            return res.status(404).json({ message: "User not found or no posts available" });
         }
-      });
-    });
-
-    res.json(allPosts);
-  } catch (error) {
-    console.error("Error fetching posts:", error);
-    res.status(500).json({ message: "Internal server error" });
-  }
+  
+        res.json(posts);
+    } catch (error) {
+        console.error("Error fetching posts:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
 }
+
+
+  
+async function getFollowingPosts(req, res) {
+    const userId = req.params.objectId;
+    try {
+        // Find the user by userId
+        const user = await UserModel.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // Extract the followingIds from the user's followings
+        const followingIds = user.followings.map(following => following.following_id);
+
+        // Find the posts of the users the current user is following
+        const posts = await PostModel.find({
+            "Object_id": { $in: followingIds }, 
+            "posts.privacyLevel": { $in: ["public", "following"] }
+        }).populate("Object_id");
+        
+    console.log(posts)
+
+        // Flatten the posts array to include all posts
+        const allPosts = posts.reduce((acc, cur) => {
+            acc.push(...cur.posts);
+            return acc;
+        }, []);
+
+        res.json(allPosts);
+    } catch (error) {
+        console.error("Error fetching posts:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+}
+
 
 async function getRandomPublicPostsWithPictures() {
   try {

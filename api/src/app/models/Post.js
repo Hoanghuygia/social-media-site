@@ -14,7 +14,7 @@ const PostSchema = new Schema(
                 like: Number,
                 privacyLevel: {
                     type: String,
-                    enum: ['public', 'private', 'friend'],
+                    enum: ['public', 'private', 'following'],
                 },
                 comment: Number,
                 share: Number,

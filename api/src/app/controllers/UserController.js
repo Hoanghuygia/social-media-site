@@ -81,8 +81,16 @@ class UserController {
         try {
           const user = await User.findOne({ username: req.params.username });
           const following = await User.findById(req.body.following_id);
+      
           if (!user || !following) {
             return res.status(404).json({ message: 'User or following not found' });
+          }
+      
+          // Check if the following_id already exists in user's followings list
+          const alreadyFollowing = user.followings.some(following => following.following_id.equals(req.body.following_id));
+      
+          if (alreadyFollowing) {
+            return res.status(400).json({ message: 'Already following this user' });
           }
       
           // Add following_id to user's followings list
