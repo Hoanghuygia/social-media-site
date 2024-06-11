@@ -1,7 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const { addPost } = require('../app/controllers/PostController'); 
+const postController = require('../app/controllers/PostController');
 
-router.post('/', addPost); 
+
+
+router.get('/:userId', postController.getAllPostsByUser);
+router.post('/', postController.addPost); 
+router.get('followings/:userId', postController.getFollowingPosts);
+
 
 module.exports = router;

@@ -10,7 +10,8 @@ router.put('/:username', userController.updateUser);
 
 router.get('/:username/followers', userController.getFollowers);
 router.get('/:username/followings', userController.getFollowings);
-router.post('/:username/followers', userController.addFollower);
+
+
 router.delete('/:username/followers', userController.removeFollower);
 router.post('/:username/followings', userController.addFollowing);
 router.delete('/:username/followings', userController.removeFollowing);
