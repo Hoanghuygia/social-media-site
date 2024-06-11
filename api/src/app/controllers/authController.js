@@ -5,30 +5,42 @@ const bcrypt = require("bcrypt");
 
 exports.registerPost = async (req, res) => {
     try {
-        const salt = await bcrypt.genSalt(10);
-        const hashed = await bcrypt.hash(req.body.password, salt);
-
-        const newUser = await new User({
-            username: req.body.username,
-            email: req.body.email,
-            password: hashed,
-            lastname: req.body.lastname,
-            firstname: req.body.firstname
-        });
-
-        const user = await newUser.save();
-        res.status(200).json(user);
+      const { username, email, password, firstName, lastName, gender, dob } = req.body;
+  
+      if (!username || !email || !password || !firstName || !lastName || !gender || !dob) {
+        return res.status(400).json({ message: "All fields are required" });
+      }
+  
+      const validGenders = ["male", "female", "other"];
+      if (!validGenders.includes(gender)) {
+        return res.status(400).json({ message: "Invalid gender" });
+      }
+  
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(password, salt);
+  
+      const newUser = new User({
+        username,
+        email,
+        password: hashedPassword,
+        firstName,
+        lastName,
+        gender,
+        dob,
+      });
+  
+      const user = await newUser.save();
+      res.status(200).json(user);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
     }
-    catch (err) {
-        res.status(500).json(err);
-    }
-};
+  };
 
 exports.loginPost = async (req, res) => {
     try {
-        const user = await User.findOne({ username: req.body.username });
+        const user = await User.findOne({ email: req.body.email });
         if (!user) {
-            res.status(404).json("Wrong Username!");
+            res.status(404).json("Wrong Email!");
         }
         const validPassword = await bcrypt.compare(
             req.body.password,

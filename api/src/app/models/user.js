@@ -1,14 +1,23 @@
 const mongoose = require("mongoose");
 const { isEmail } = require("validator");
 
+const usernameValidator = (username) => {
+  const regex = /^[a-zA-Z0-9_]+$/;
+  return regex.test(username);
+};
+
 const UserSchema = new mongoose.Schema(
   {
     username: {
       type: String,
-      required: true,
-      minLength: 3,
-      max: 20,
+      required: [true, "Username is required"],
+      minLength: [3, "Username should have at least 3 characters"],
+      maxLength: [20, "Username should have at most 20 characters"],
       unique: true,
+      validate: {
+        validator: usernameValidator,
+        message: "Username can only contain letters, numbers, and underscores",
+      },
     },
     email: {
       type: String,
@@ -16,6 +25,16 @@ const UserSchema = new mongoose.Schema(
       unique: true,
       lowercase: true,
       validate: [isEmail, "Please enter a valid email"],
+    },
+    firstName: {
+      type: String,
+      required: true,
+      maxLength: 50,
+    },
+    lastName: {
+      type: String,
+      required: true,
+      maxLength: 50,
     },
     password: {
       type: String,
@@ -55,21 +74,17 @@ const UserSchema = new mongoose.Schema(
     },
     desc: {
       type: String,
-      maxLength: 50,
+      max: 50,
     },
     city: {
       type: String,
-      maxLength: 50,
-    },
-    from: {
-      type: String,
-      maxLength: 50,
+      max: 50,
     },
     relationship: {
       type: Number,
       enum: [1, 2, 3],
     },
-    status: {
+    gender: {
       type: String,
       default: "Offline"
     },
@@ -80,15 +95,20 @@ const UserSchema = new mongoose.Schema(
     firstname: {
       type: String,
       maxLength: 50,
+      enum: ["male", "female", "other"],
       required: true,
     },
-    lastname: {
-      type: String,
-      maxLength: 50,
+    dob: {
+      type: Date,
       required: true,
-    }
+    },
+    bio: {
+      type: String,
+      maxlength: 150,
+      default: "",
+    },
   },
-  { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
+  { timestamps: true }
 );
 
 module.exports = mongoose.model("User", UserSchema);
