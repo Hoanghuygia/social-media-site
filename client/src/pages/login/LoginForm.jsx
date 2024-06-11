@@ -66,7 +66,6 @@ function LoginForm(props) {
         }
     }
     const handleChange = (e) => {
-        console.log(e.target.value);
         const { id, value } = e.target;
         setFormValues({ ...formValues, [id]: value });
     }
@@ -81,7 +80,6 @@ function LoginForm(props) {
     const CustomIcon = (lockShowen) ? MdLockOpen : MdLockOutline;
 
     useEffect(() => {
-        console.log(formValues);
         if (isSubmit) {
             return (navigate('/'));
         }

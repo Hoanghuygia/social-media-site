@@ -4,14 +4,17 @@ import { HiOutlineCamera, HiOutlineMicrophone, HiOutlinePhotograph, } from "reac
 import { useDispatch, useSelector } from 'react-redux';
 import uploadImage from "../../../utils/uploadImage";
 import { apiRequestPost } from "../../../utils/helper";
+import Cookies from 'js-cookie';
 import EmojiPickerComponent from "./EmojiPickerComponent";
 import InputMessage from "./InputMessage";
 
+const currentUserId = Cookies.get("userId");
+const accessToken = Cookies.get("token");
+const currentUsername = Cookies.get("username");
+
 function ChatMessageBar() {
     const recepientID = useSelector((state) => state.recepientID);
-    const currentUsername = 'ghuy1234';
-    const currentUserId = '666377f35676ff7fa0451749';
-    const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NjBiOGJjOWM2NDIwNjdmYTIzNTgyYiIsImlhdCI6MTcxNzg3OTA4MSwiZXhwIjoxNzQ5NDM2NjgxfQ.sEU-SFK6Brb8_FsRvQPqJ0AFD7D_tPaNrosx6scQW7g"
+
     const [open, setOpen] = useState(false);
     const [text, setText] = useState("");
     const [image, setImage] = useState({
@@ -47,6 +50,7 @@ function ChatMessageBar() {
             }
         }
 
+        console.log("Recepeint Id before save message: " + recepientID);
         const message = {
             "userId1": currentUserId,
             "userId2": recepientID,

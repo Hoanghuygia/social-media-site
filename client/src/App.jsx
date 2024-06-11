@@ -5,7 +5,7 @@ import ProtectedRoutes from './utils/ProtectedRoutes.jsx';
 
 
 function App() {
-	const [user, setUser] = useState(false);
+	const [user, setUser] = useState(true);
 	return (
 		<Router>
 				<Routes>

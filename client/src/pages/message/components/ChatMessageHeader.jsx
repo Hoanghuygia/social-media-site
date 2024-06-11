@@ -13,8 +13,38 @@ import {
     HiOutlineVideoCamera,
     HiDotsHorizontal,
 } from "react-icons/hi";
+import { useSelector } from "react-redux";
+import { apiRequest } from "../../../utils/helper";
+import Cookies from "js-cookie";
+import { useState } from "react";
+import { useEffect } from "react";
+
+const accessToken = Cookies.get("token");
+let recepientID;
+const fetchUserFromId = async () => {
+    if (recepientID) {
+        const URL = `http://localhost:3000/user/${recepientID}`;
+        return await apiRequest(URL, accessToken);
+    }
+};
 
 function ChatMessageHeader() {
+    recepientID = useSelector((state) => state.recepientID);
+    const [user, setUser] = useState(null);
+
+    const fetchData = async () => {
+        try {
+            const userData = await fetchUserFromId();
+            setUser(userData);
+        } catch (error) {
+            console.error("Error happened when fetching data: ", error);
+        }
+    };
+
+    useEffect(() => {
+        fetchData()
+    }, [recepientID]);
+
     return (
         <Box
             minH="12%"
@@ -27,15 +57,18 @@ function ChatMessageHeader() {
                 <Avatar src={"/img/avatar.png"} ml="16px">
                     <AvatarBadge
                         boxSize=".75em"
-                        bg="green.500"
+                        // bg="green.500"
+                        bg={user && user.status === "Online" ? "green.500" : "red.300"}
                         borderWidth="2px"
                     />
                 </Avatar>
                 <Box mx="16px">
                     <Heading as="h2" fontSize="md">
-                        Swirl Lolipop
+                    {user && `${user.firstname} ${user.lastname}`}
                     </Heading>
-                    <Text noOfLines={1}>20cm 20 tieng, su can bang hoan hao</Text>
+                    <Text noOfLines={1}>
+                        {user && `${user.thought}`}
+                    </Text>
                 </Box>
                 <Spacer />
                 <Flex

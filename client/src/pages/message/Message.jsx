@@ -3,11 +3,8 @@ import ChatList from "./components/ChatList";
 import ChatMessage from "./components/ChatMessage";
 import storeMessage from "./store/storeMessage";
 import { Provider } from 'react-redux';
-import Cookies from 'js-cookie';
-
 
 function Message() {
-    console.log(Cookies.get('token'));
     return (
         <Provider store={storeMessage}>
             <Flex

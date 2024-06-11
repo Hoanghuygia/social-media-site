@@ -14,7 +14,6 @@ const changeRecepient = (recepientID) =>({
     payload: recepientID
 })
 
-
 function ChatListItem({ data }) {
     const dispatch = useDispatch();
     const { avatar, status, name, lastMessage, recepientId } = data;

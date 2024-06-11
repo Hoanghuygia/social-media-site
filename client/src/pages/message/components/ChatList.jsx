@@ -2,10 +2,11 @@ import { Box, Flex } from "@chakra-ui/react";
 import SearchBar from "../../../components/SearchBar";
 import ChatListItem from "./ChatListItem";
 import React, { useRef, useEffect, useState } from 'react';
+import Cookies from 'js-cookie';
 import { apiRequest } from "../../../utils/helper";
 
-const currentUserId = "666377f35676ff7fa0451749";
-const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NjBiOGJjOWM2NDIwNjdmYTIzNTgyYiIsImlhdCI6MTcxNzg3NzYwNywiZXhwIjoxNzQ5NDM1MjA3fQ.o9OhXghkzT1IVuOMTGPRaj8VQ7Jx3qpVyriogqK1p_s";
+const currentUserId = Cookies.get('userId');
+const accessToken = Cookies.get("token");
 
 const fetchChatList = async() =>{
     const url = `http://localhost:3000/user/chatlist/${currentUserId}`;
@@ -19,7 +20,7 @@ function ChatList() {
     const fetchData = async () => {
         try {
             const userData = await fetchChatList();
-            console.log("User data: " + JSON.stringify(userData));
+            // console.log("User data: " + JSON.stringify(userData));
             setData(userData);
         } catch (error) {
             console.error("Error happened when fetching data: ", error);
