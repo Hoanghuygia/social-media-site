@@ -92,10 +92,19 @@ const UserSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
+    thought: String,
+    socket_id: {
+      type: String,
+    },
+    chat_list: [{ type: mongoose.Types.ObjectId, ref: 'User' }],
     bio: {
       type: String,
       maxlength: 150,
       default: "",
+    },
+    status: {
+      type: String,
+      default: "Offline"
     },
   },
   { timestamps: true }

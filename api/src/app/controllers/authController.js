@@ -55,7 +55,7 @@ exports.loginPost = async (req, res) => {
                     id: user._id,
                 },
                 process.env.JWT_ACCESS_KEY,
-                { expiresIn: "24h" }
+                { expiresIn: "1y" }
             );
             const {profilePicture, coverPicture, followers, followings,...others} = user._doc;
             res.status(200).json({...others, Token });

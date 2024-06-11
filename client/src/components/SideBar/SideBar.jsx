@@ -71,7 +71,7 @@ const StyledNavLink = styled(NavLink)`
     text-emphasis: none;
     text-decoration: none;
     color: black;
-    display: flex; /* Sử dụng flexbox */
+    display: flex; 
     align-items: center;
     &:hover {
         text-emphasis: none;

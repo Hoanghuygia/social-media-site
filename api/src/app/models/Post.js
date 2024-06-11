@@ -12,10 +12,7 @@ const PostSchema = new Schema(
                 imageURL: String,
                 tags: String,
                 like: Number,
-                privacyLevel: {
-                    type: String,
-                    enum: ['public', 'private', 'following'],
-                },
+                privacyLevel: String,
                 comment: Number,
                 share: Number,
                 mediaURL: String,

@@ -1,40 +1,30 @@
-import {
-    Flex,
-    Box,
-    Icon,
-    Input,
-    Button,
-    Image,
-} from "@chakra-ui/react";
+import {Flex, Box, Icon, Button,} from "@chakra-ui/react";
 import React, { useRef, useEffect, useState } from "react";
-import {
-    HiOutlineCamera,
-    HiOutlineMicrophone,
-    HiOutlinePhotograph,
-    HiOutlineEmojiHappy,
-} from "react-icons/hi";
-import { HiOutlineFolderPlus, HiXCircle } from "react-icons/hi2";
-import EmojiPicker from "emoji-picker-react";
-import { useDispatch } from 'react-redux';
+import { HiOutlineCamera, HiOutlineMicrophone, HiOutlinePhotograph, } from "react-icons/hi";
+import { useDispatch, useSelector } from 'react-redux';
 import uploadImage from "../../../utils/uploadImage";
-import axios from 'axios'
+import { apiRequestPost } from "../../../utils/helper";
+import Cookies from 'js-cookie';
+import EmojiPickerComponent from "./EmojiPickerComponent";
+import InputMessage from "./InputMessage";
+import { socket, connectSocket } from "../../../socket";
+import { addMessage } from "../../../stores/messageSlice";
+
+const currentUserId = Cookies.get("userId");
+const accessToken = Cookies.get("token");
+const currentUsername = Cookies.get("username");
 
 function ChatMessageBar() {
-    const currentUsername = 'huy1234';
+    const { recepientID } = useSelector((state) => state.message);
+
     const [open, setOpen] = useState(false);
     const [text, setText] = useState("");
     const [image, setImage] = useState({
         file: null,
         url: "",
     });
-    const ADD_MESSAGE = 'ADD_MESSAGE';
 
     const dispatch = useDispatch();
-
-    const addMessage = (message) => ({
-        type: ADD_MESSAGE,
-        payload: message,
-    });
 
     const handleKeyPress = (event) => {
         if (event.key === "Enter") {
@@ -57,31 +47,23 @@ function ChatMessageBar() {
         }
 
         const message = {
-            "userId1": "666150f9600c0531f376abeb",
-            "userId2": "6660b8bc9c642067fa23582b",
+            "userId1": currentUserId,//userId1 default to be current user
+            "userId2": recepientID,
             "username": currentUsername,
             "content": text,
             "imageURL": imgURL
         }
-
-        const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NjBiOGJjOWM2NDIwNjdmYTIzNTgyYiIsImlhdCI6MTcxNzY1NTc4MCwiZXhwIjoxNzE3NzQyMTgwfQ.sWJdoGiz4widPLpJ1N_lCDdVu9HfAboetIN94yGjVVM"
-
-        try {
-            await axios.post("https://sugar-cube.onrender.com/message", message, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                }
-            });
-            console.log("Successfully saving data");
-        } catch (error) {
-            console.error("Error in saving message in database: ", error);
-        }
+        apiRequestPost("http://localhost:3000/message", accessToken, message)//save into the database
 
         dispatch(addMessage({
             content: text,
             imageURL: imgURL,
             username: currentUsername,
-        }));
+        }));//dispatch to load to above 
+
+        if(!socket){
+            console.log("Socket still exist!!");
+        }
 
         setText("");
         setImage({
@@ -99,15 +81,6 @@ function ChatMessageBar() {
         if (sendImage.current) {
             sendImage.current.click();
         }
-    };
-
-    const handleEmojiPickerClick = (event) => {
-        event.stopPropagation();
-    };
-
-    const handleEmojiIconClick = (event) => {
-        event.stopPropagation();
-        setOpen((prev) => !prev);
     };
 
     const handleImageChange = (event) => {
@@ -164,83 +137,12 @@ function ChatMessageBar() {
                     <Icon as={HiOutlineCamera} cursor="pointer" />
                     <Icon as={HiOutlineMicrophone} cursor="pointer" />
                 </Flex>
-                <Box
-                    display="flex"
-                    alignItems="flex-end"
-                    h={image.file ? "80px" : "auto"}
-                    bg="RGBA(0, 0, 0, 0.08)"
-                    borderRadius="xl"
-                    px="10px"
-                    flex="1"
-                    flexDir={"column"}
-                >
-                    {image.file && (
-                        <Flex w={"100%"} mt={"10px"}>
-                            <Box
-                                boxSize={"35px"}
-                                display={"flex"}
-                                alignItems={"center"}
-                                justifyContent={"center"}
-                            >
-                                <Icon as={HiOutlineFolderPlus} />
-                            </Box>
-                            <Box position="relative">
-                                <Image
-                                    objectFit="cover"
-                                    boxSize="35px"
-                                    src={image.url}
-                                />
-                                <Icon
-                                    position="absolute"
-                                    top="0"
-                                    right="0"
-                                    transform="translate(25%, -25%)"
-                                    as={HiXCircle}
-                                    boxSize="6"
-                                    color="RGBA(0, 0, 0, 0.6)"
-                                    _hover={{
-                                        color: "RGBA(0, 0, 0, 0.4)"
-                                    }}
-                                    onClick={deleteImageFromBuffer}
-                                />
-                            </Box>
-                        </Flex>
-                    )}
-                    <Input
-                        value={text}
-                        variant="unstyled"
-                        placeholder="Type a message"
-                        py="4px"
-                        mt="5px"
-                        onChange={(e) => {
-                            setText(e.target.value);
-                        }}
-                        onKeyPress={handleKeyPress}
-                    />
-                </Box>
-                <Box position="relative">
-                    <Icon
-                        _hover={{ bg: "RGBA(0, 0, 0, 0.08)" }}
-                        fontSize="2xl"
-                        as={HiOutlineEmojiHappy}
-                        onClick={handleEmojiIconClick}
-                        cursor="pointer"
-                    />
-                    {open && (
-                        <Box
-                            position="absolute"
-                            bottom="50px"
-                            right="0"
-                            zIndex="10"
-                            bg="white"
-                            boxShadow="md"
-                            borderRadius="md"
-                            onClick={handleEmojiPickerClick}
-                        >
-                            <EmojiPicker onEmojiClick={handleEmoji} />
-                        </Box>
-                    )}
-                </Box>
+                <InputMessage image={image} deleteImageFromBuffer={deleteImageFromBuffer} setText={setText} text={text} handleKeyPress={handleKeyPress}/>
+                <EmojiPickerComponent
+                    onEmojiClick={handleEmoji}
+                    open={open}
+                    setOpen={setOpen}
+                />
 
                 <Button mr={"5px"} onClick={handleSendMessage}>Send</Button>
             </Flex>

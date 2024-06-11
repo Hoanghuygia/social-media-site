@@ -1,8 +1,11 @@
 import { Box, Image } from "@chakra-ui/react";
+import Cookies from 'js-cookie';
+
+const currentUsername = Cookies.get("username");
 
 function AMessage({ message }) {
     let { content, username, imageURL } = message;
-    let user = username === "huy1234" ? true : false;
+    let user = username === currentUsername ? true : false;
 
     return (
         <Box
@@ -31,10 +34,12 @@ function AMessage({ message }) {
             )}
             {imageURL && (
                 <Image
+                    mt={"5px"}
                     src={imageURL}
                     alt=""
                     objectFit="contain"
                     maxH="50vh"
+                    borderRadius="2xl"
                 />
             )}
         </Box>
