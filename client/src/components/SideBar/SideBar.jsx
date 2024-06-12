@@ -17,7 +17,9 @@ import Cookies from 'js-cookie';
 function SideBar() {
 
     const logout = () => {
-        Cookies.remove('user');
+        Object.keys(Cookies.get()).forEach(function(cookieName) {
+            Cookies.remove(cookieName);
+        });
     };
 
     return (

@@ -10,9 +10,9 @@ import {
     Textarea,
     Button,
 } from "@chakra-ui/react";
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useState } from "react";
 import { HiUserCircle, HiCake, HiDotsHorizontal } from "react-icons/hi";
-import { Link as ReactRouterLink } from 'react-router-dom'
+import { Link as ReactRouterLink } from 'react-router-dom';
 
 function ProfileDetail() {
     const [sidebarHeight, setSidebarHeight] = useState(0);
@@ -24,106 +24,12 @@ function ProfileDetail() {
         setSidebarHeight(sidebarHeight);
     }, []);
 
-    
-    const initState = {
-        firstName: 'Swirl',
-        lastName: 'Lolipop',
-        email: 'dhaowinaowinodoana@gmail.com',
-        phoneNumber: '+84783279012',
-        address: 'Thu Duc city, HCM city',
-        // introduction: 'Books are portals to different worlds, offering adventures, wisdom, and solace. Each page reveals new horizons, enriching minds and nurturing imaginations, making reading a timeless'
-        introduction: ''
-    }
-
-    const SET_FIRST_NAME = 'set_first_name';
-    const SET_LAST_NAME = 'set_last_name';
-    const SET_EMAIL = 'set_email';
-    const SET_PHONE_NUMBER = 'set_phone_number';
-    const SET_ADDRESS = 'set_address';
-    const SET_INTRO = 'set_introduction';
-
-    const setFirstName = payload =>{
-        return{
-            type: SET_FIRST_NAME,
-            payload
-        }
-    }
-
-    const setLasttName = payload =>{
-        return{
-            type: SET_LAST_NAME,
-            payload
-        }
-    }
-
-    const setEmail = payload =>{
-        return{
-            type: SET_EMAIL,
-            payload
-        }
-    }
-
-    const setPhoneNumber = payload =>{
-        return{
-            type: SET_PHONE_NUMBER,
-            payload
-        }
-    }
-
-    const setAddress = payload =>{
-        return{
-            type: SET_ADDRESS,
-            payload
-        }
-    }
-
-    const setIntro = payload =>{
-        return{
-            type: SET_INTRO,
-            payload
-        }
-    }
-
-    const reducer = (state, action) =>{
-        switch(action.type){
-            case SET_FIRST_NAME:
-                return{
-                    ...state,
-                    firstName: [action.payload]
-                }
-            case SET_EMAIL:
-                return{
-                    ...state,
-                    email: [action.payload]
-                }
-            case SET_LAST_NAME:
-                return{
-                    ...state,
-                    lastName: [action.payload]
-                }
-            case SET_PHONE_NUMBER:
-                return{
-                    ...state,
-                    phoneNumber: [action.payload]
-                }
-            case SET_ADDRESS:
-                return{
-                    ...state,
-                    address: [action.payload]
-                }
-            case SET_INTRO:
-                return{
-                    ...state,
-                    introduction: [action.payload]
-                }
-            default:
-                throw new Error("Invalid action");
-        }
-    }
-
-    const [state, dispatch] = useReducer(reducer, initState);
-
-    const {firstName, lastName, email, phoneNumber, address, introduction} = state;
+    const [firstName, setFirstName] = useState('Swirl');
+    const [lastName, setLastName] = useState('Lolipop');
+    const [email, setEmail] = useState('dhaowinaowinodoana@gmail.com');
+    const [phoneNumber, setPhoneNumber] = useState('+84783279012');
+    const [address, setAddress] = useState('Thu Duc city, HCM city');
+    const [introduction, setIntroduction] = useState('');
 
     return (
         <Center bg="bg-color.100" h={`${sidebarHeight}px`}>
@@ -138,7 +44,7 @@ function ProfileDetail() {
                             />
                         </Center>
                         <Heading as="h2" fontSize="2xl">
-                            Swilrl Lollipop
+                            Swirl Lollipop
                         </Heading>
                         <Text>Lorem ipsum dolor sit</Text>
 
@@ -155,16 +61,16 @@ function ProfileDetail() {
                                 borderRadius="xl"
                                 bg="RGBA(0, 0, 0, 0.08)"
                                 minHeight="200px"
-                                resize='None'
+                                resize='none'
                                 variant='unstyled'
                                 overflow="hidden"
                                 px='5px'
                                 value={introduction}
-                                    onChange={e =>{
-                                        if(e.target.value.length <= 150){
-                                            dispatch(setIntro(e.target.value))
-                                        }
-                                    }}
+                                onChange={e => {
+                                    if(e.target.value.length <= 150){
+                                        setIntroduction(e.target.value);
+                                    }
+                                }}
                             />
                         </Box>
                     </Flex>
@@ -182,23 +88,12 @@ function ProfileDetail() {
                                     placeholder=""
                                     borderRadius="xl"
                                     value={firstName}
-                                    onChange={e =>{
-                                        dispatch(setFirstName(e.target.value))
-                                    }}
+                                    onChange={e => setFirstName(e.target.value)}
                                     bg="RGBA(0, 0, 0, 0.08)"
                                 />
                             </Box>
                             <Box w="50%">
                                 <Heading fontSize="xl">First Name</Heading>
-                                {/* <Box
-                                    py="4px"
-                                    mt="5px"
-                                    pl="10px"
-                                    borderRadius="xl"
-                                    bg="RGBA(0, 0, 0, 0.08)"
-                                >
-                                    Lollipop
-                                </Box> */}
                                 <Input
                                     py="4px"
                                     mt="5px"
@@ -207,9 +102,7 @@ function ProfileDetail() {
                                     placeholder=""
                                     borderRadius="xl"
                                     value={lastName}
-                                    onChange={e =>{
-                                        dispatch(setLasttName(e.target.value))
-                                    }}
+                                    onChange={e => setLastName(e.target.value)}
                                     bg="RGBA(0, 0, 0, 0.08)"
                                 />
                             </Box>
@@ -225,9 +118,7 @@ function ProfileDetail() {
                                 placeholder=""
                                 borderRadius="xl"
                                 value={email}
-                                onChange={e =>{
-                                    dispatch(setEmail(e.target.value))
-                                }}
+                                onChange={e => setEmail(e.target.value)}
                                 bg="RGBA(0, 0, 0, 0.08)"
                             />
                         </Box>
@@ -242,9 +133,7 @@ function ProfileDetail() {
                                 placeholder=""
                                 borderRadius="xl"
                                 value={phoneNumber}
-                                onChange={e =>{
-                                    dispatch(setPhoneNumber(e.target.value))
-                                }}
+                                onChange={e => setPhoneNumber(e.target.value)}
                                 bg="RGBA(0, 0, 0, 0.08)"
                             />
                         </Box>
@@ -259,9 +148,7 @@ function ProfileDetail() {
                                 placeholder=""
                                 borderRadius="xl"
                                 value={address}
-                                onChange={e =>{
-                                    dispatch(setAddress(e.target.value))
-                                }}
+                                onChange={e => setAddress(e.target.value)}
                                 bg="RGBA(0, 0, 0, 0.08)"
                             />
                         </Box>
@@ -276,7 +163,7 @@ function ProfileDetail() {
                                     <Icon as={HiDotsHorizontal} />
                                 </Button>
                             </Flex>
-                            <Text mt="3px" display='flex' >
+                            <Text mt="3px" display='flex'>
                                 <Icon 
                                     boxSize={6} 
                                     as={HiUserCircle}
@@ -308,9 +195,7 @@ function ProfileDetail() {
                     </Flex>
                 </Box>
                 <Box flex={0.1} className="rightCol">
-                    <Box
-                        
-                    >
+                    <Box>
                         <Box
                             as={ReactRouterLink}
                             to="/profile"
@@ -324,7 +209,7 @@ function ProfileDetail() {
                                 borderRadius: "100%",
                                 width: "100%"
                             }}
-                            >
+                        >
                             <Text fontSize="2xl">X</Text>
                         </Box>
                     </Box>

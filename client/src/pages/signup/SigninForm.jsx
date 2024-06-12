@@ -41,12 +41,12 @@ function SigninForm(props){
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        firstname: formValues.firstname,
-                        lastname : formValues.lastname,
+                        firstName: formValues.firstname,
+                        lastName : formValues.lastname,
                         username: formValues.username,
                         email: formValues.email,
                         password: formValues.password,
-                        dob: formValues.day+"-"+formValues.month+"-"+formValues.year,
+                        dob: formValues.year+"-"+formValues.month+"-"+formValues.day,
                         gender: formValues.gender,
                     })
                 });

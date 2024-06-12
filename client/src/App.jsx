@@ -1,13 +1,9 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { publicRoutes, privateRoutes } from './routes/index.js';
-import { Fragment, useState } from 'react';
+import { Fragment } from 'react';
 import ProtectedRoutes from './utils/ProtectedRoutes.jsx';
-import Cookies from 'js-cookie';
-
 
 function App() {
-	const [user, setUser] = useState(false);
-
 
 	return (
 		<Router>

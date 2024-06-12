@@ -19,7 +19,7 @@ function Header() {
                 pt="10px"
             ></Image>
             <Heading as="h1" color="text-color.200">
-                sugarcube
+                sugarCube
             </Heading>
             <Spacer />
 

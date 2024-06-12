@@ -16,7 +16,7 @@ function LoginForm() {
     const navigate = useNavigate();
 
     //state to be sent to backend
-    const intialValues = { username: "", password: ""};
+    const intialValues = { email: "", password: ""};
 
     const [formValues, setFormValues] = useState(intialValues);
     const [isSubmit, setIsSubmit] = useState(false);
@@ -26,7 +26,7 @@ function LoginForm() {
 
     const handleSubmit = async (err) => {
         err.preventDefault();
-        if(!formValues.username || !formValues.password){
+        if(!formValues.email || !formValues.password){
             setErrormessage("Please fill out all information");
         }
         else{
@@ -39,7 +39,7 @@ function LoginForm() {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        username: formValues.username,
+                        email: formValues.email,
                         password: formValues.password
                     })
                 });
@@ -90,7 +90,7 @@ function LoginForm() {
             <div className="flex absolute right-32 top-20 pt-4 w-1/3 h-4/5 rounded-3xl p-0 shadow-2xl font-inter bg-[#fef9f8]">
                 <form action="" className="w-full h-full pt-20" onSubmit={handleSubmit}>
                     <div className="relative w-11/12 h-1/12 ml-auto mr-auto mb-5">
-                        <input type="text" id="username" placeholder="Username" className="placeholder:font-bold placeholder:text-slate-400 
+                        <input type="text" id="email" placeholder="Email" className="placeholder:font-bold placeholder:text-slate-400 
                             w-full h-full bg-white border-none outline-none rounded-full pt-5 pl-7 pr-5 pb-5 shadow-inner shadow-gray-400"
                             onChange={handleChange} />
                         <FaRegUser className="absolute right-4 top-1/2 -translate-y-1/2 text-[1.8rem] text-[#959595]"/>

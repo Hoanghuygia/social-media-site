@@ -14,7 +14,8 @@ const Message = new Schema(
                 imageURL: String,
                 timestamp: { type: Date, default: Date.now }
             }
-        ]
+        ],
+        timestamp: {type: Date, default: Date.now}
     }
 )
 

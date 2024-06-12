@@ -1,10 +1,10 @@
-const {default: mongoose} = require('mongoose');
+const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-const Post = new Schema(
+const PostSchema = new Schema(
     {
-        username: {type: mongoose.Types.ObjectId, ref: 'Post'},
+        Object_id: [{ type: mongoose.Types.ObjectId, ref: 'User' }],
         posts: [
             {
                 post_id: Number,
@@ -12,17 +12,18 @@ const Post = new Schema(
                 imageURL: String,
                 tags: String,
                 like: Number,
-                type: {
+                privacyLevel: {
                     type: String,
                     enum: ['public', 'private', 'friend'],
                 },
                 comment: Number,
                 share: Number,
-                timestamp: {type: Date, default: Date.now}
+                mediaURL: String,
+                timestamp: { type: Date, default: Date.now }
             }
         ]
     }
-)
+);
 
-const PostModel = mongoose.model("Post", Post);
+const PostModel = mongoose.model("Post", PostSchema);
 module.exports = PostModel;
