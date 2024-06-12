@@ -1,13 +1,17 @@
-import {Flex, Box, Icon, Button,} from "@chakra-ui/react";
+import { Flex, Box, Icon, Button } from "@chakra-ui/react";
 import React, { useRef, useEffect, useState } from "react";
-import { HiOutlineCamera, HiOutlineMicrophone, HiOutlinePhotograph, } from "react-icons/hi";
-import { useDispatch, useSelector } from 'react-redux';
+import {
+    HiOutlineCamera,
+    HiOutlineMicrophone,
+    HiOutlinePhotograph,
+} from "react-icons/hi";
+import { useDispatch, useSelector } from "react-redux";
 import uploadImage from "../../../utils/uploadImage";
 import { apiRequestPost } from "../../../utils/helper";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 import EmojiPickerComponent from "./EmojiPickerComponent";
 import InputMessage from "./InputMessage";
-import { addMessage } from "../../../stores/messageSlice";
+import { addMessage, changeLastMessage } from "../../../stores/messageSlice";
 
 const currentUserId = Cookies.get("userId");
 const accessToken = Cookies.get("token");
@@ -47,22 +51,30 @@ function ChatMessageBar() {
         }
 
         const message = {
-            "userId1": currentUserId,
-            "userId2": recepientID,
-            "username": currentUsername,
-            "content": text,
-            "imageURL": imgURL
-        }
-        apiRequestPost("http://localhost:3000/message", accessToken, message)
-
-        dispatch(addMessage({
+            userId1: currentUserId,
+            userId2: recepientID,
+            username: currentUsername,
             content: text,
             imageURL: imgURL,
-            username: currentUsername,
-        }));
+        };
+        apiRequestPost("http://localhost:3000/message", accessToken, message);
 
-        if(socket){
-            socket.emit('send-message', message);
+        dispatch(
+            changeLastMessage({
+                content: text,
+                recepientID: recepientID,
+            })
+        );
+        dispatch(
+            addMessage({
+                content: text,
+                imageURL: imgURL,
+                username: currentUsername,
+            })
+        );
+
+        if (socket) {
+            socket.emit("send-message", message);
         }
 
         setText("");
@@ -87,7 +99,7 @@ function ChatMessageBar() {
         if (event.target.files[0]) {
             setImage({
                 file: event.target.files[0],
-                url: URL.createObjectURL(event.target.files[0])
+                url: URL.createObjectURL(event.target.files[0]),
             });
             event.target.value = null;
         }
@@ -115,16 +127,24 @@ function ChatMessageBar() {
         if (socket) {
             socket.on("new-message", (data) => {
                 if (data) {
-                    dispatch(addMessage({
-                        content: data.content,
-                        imageURL: data.imageURL,
-                        username: data.username,
-                    }));
+                    dispatch(
+                        changeLastMessage({
+                            content: data.content,
+                            recepientID: data.recepientID,
+                        })
+                    );
+                    dispatch(
+                        addMessage({
+                            content: data.content,
+                            imageURL: data.imageURL,
+                            username: data.username,
+                        })
+                    );
                 } else {
                     console.warn("Received empty message data.");
                 }
             });
-    
+
             socket.on("verify-sent", (message) => {
                 // console.log("Sent message verification: ", message);
                 //I active music later
@@ -136,7 +156,7 @@ function ChatMessageBar() {
             };
         }
     }, []);
-    
+
     const sendImage = useRef();
 
     return (
@@ -163,14 +183,22 @@ function ChatMessageBar() {
                     <Icon as={HiOutlineCamera} cursor="pointer" />
                     <Icon as={HiOutlineMicrophone} cursor="pointer" />
                 </Flex>
-                <InputMessage image={image} deleteImageFromBuffer={deleteImageFromBuffer} setText={setText} text={text} handleKeyPress={handleKeyPress}/>
+                <InputMessage
+                    image={image}
+                    deleteImageFromBuffer={deleteImageFromBuffer}
+                    setText={setText}
+                    text={text}
+                    handleKeyPress={handleKeyPress}
+                />
                 <EmojiPickerComponent
                     onEmojiClick={handleEmoji}
                     open={open}
                     setOpen={setOpen}
                 />
 
-                <Button mr={"5px"} onClick={handleSendMessage}>Send</Button>
+                <Button mr={"5px"} onClick={handleSendMessage}>
+                    Send
+                </Button>
             </Flex>
         </Box>
     );

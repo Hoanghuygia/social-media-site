@@ -32,6 +32,7 @@ async function onConnected(io, socket) {
             content: message.content,
             imageURL: message.imageURL,
             username: senderUsername.username,
+            recepientID: recepientID
         };
 
         const toSocketObject = await User.findById(recepientID)
