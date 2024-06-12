@@ -15,6 +15,11 @@ function LoginForm(props) {
 
     const setUser = props.setUser;
     const navigate = useNavigate();
+    // console.log("Existed cookies: " + JSON.stringify(Cookies.get()));// mình nên clear khi nó mới run lai luôn chứ không phải ở đây
+    // Object.keys(Cookies.get()).forEach(function(cookieName) {
+    //     Cookies.remove(cookieName);
+    //     });
+    // console.log("Existed cookies after delete: " + JSON.stringify(Cookies.get()));
 
     //state to be sent to backend
     const intialValues = { username: "", password: ""};
@@ -33,7 +38,7 @@ function LoginForm(props) {
         else{
             try{
                 
-                const response = await fetch('https://sugar-cube.onrender.com/login', {
+                const response = await fetch('http://localhost:3000/login', {
                     method: 'post',
                     headers: {
                         Accept: 'application/json',
@@ -44,10 +49,8 @@ function LoginForm(props) {
                         password: formValues.password
                     })
                 });
-                console.log(response);
         
                 if(response.ok){
-                    console.log("login successfully");
                     const data = await response.json();
                     Cookies.set('token', (data.Token));
                     Cookies.set('username', (data.username));
