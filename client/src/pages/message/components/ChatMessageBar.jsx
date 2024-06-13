@@ -12,6 +12,8 @@ import Cookies from "js-cookie";
 import EmojiPickerComponent from "./EmojiPickerComponent";
 import InputMessage from "./InputMessage";
 import { addMessage, changeLastMessage } from "../../../stores/messageSlice";
+import { setImageScreenShot } from "../../../stores/windowSlice";
+import { useNavigate } from "react-router-dom";
 
 const currentUserId = Cookies.get("userId");
 const accessToken = Cookies.get("token");
@@ -20,6 +22,10 @@ const currentUsername = Cookies.get("username");
 function ChatMessageBar() {
     const { recepientID } = useSelector((state) => state.message);
     const socket = useSelector((state) => state.window.socket);
+    const screenshotImage = useSelector((state) => state.window.image);
+
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const [open, setOpen] = useState(false);
     const [text, setText] = useState("");
@@ -27,8 +33,6 @@ function ChatMessageBar() {
         file: null,
         url: "",
     });
-
-    const dispatch = useDispatch();
 
     const handleKeyPress = (event) => {
         if (event.key === "Enter") {
@@ -57,31 +61,39 @@ function ChatMessageBar() {
             content: text,
             imageURL: imgURL,
         };
-        apiRequestPost("http://localhost:3000/message", accessToken, message);
 
-        dispatch(
-            changeLastMessage({
-                content: text,
-                recepientID: recepientID,
-            })
-        );
-        dispatch(
-            addMessage({
-                content: text,
-                imageURL: imgURL,
-                username: currentUsername,
-            })
-        );
+        try {
+            await apiRequestPost("http://localhost:3000/message", accessToken, message);
 
-        if (socket) {
-            socket.emit("send-message", message);
+            dispatch(
+                changeLastMessage({
+                    content: text,
+                    recepientID: recepientID,
+                })
+            );
+            dispatch(
+                addMessage({
+                    content: text,
+                    imageURL: imgURL,
+                    username: currentUsername,
+                })
+            );
+
+            if (socket) {
+                socket.emit("send-message", message);
+            }
+
+            const audio = new Audio("sound/sent_message.mp3");
+            audio.play();
+
+            setText("");
+            setImage({
+                file: null,
+                url: "",
+            });
+        } catch (error) {
+            console.error("Failed to send message: ", error);
         }
-
-        setText("");
-        setImage({
-            file: null,
-            url: "",
-        });
     };
 
     const handleEmoji = (e) => {
@@ -95,8 +107,12 @@ function ChatMessageBar() {
         }
     };
 
+    const handleTakeScreenShot = () => {
+        navigate("/webcam");
+    };
+
     const handleImageChange = (event) => {
-        if (event.target.files[0]) {
+        if (event.target.files && event.target.files[0]) {
             setImage({
                 file: event.target.files[0],
                 url: URL.createObjectURL(event.target.files[0]),
@@ -111,6 +127,18 @@ function ChatMessageBar() {
             url: "",
         });
     };
+
+    useEffect(() => {
+        if (screenshotImage && screenshotImage.url !== image.url) {
+            setImage(screenshotImage);
+            dispatch(
+                setImageScreenShot({
+                    file: null,
+                    url: "",
+                })
+            );
+        }
+    }, []);
 
     useEffect(() => {
         function handleClickOutside() {
@@ -146,8 +174,7 @@ function ChatMessageBar() {
             });
 
             socket.on("verify-sent", (message) => {
-                // console.log("Sent message verification: ", message);
-                //I active music later
+                // Handle message sent verification
             });
 
             return () => {
@@ -180,7 +207,11 @@ function ChatMessageBar() {
                         onClick={handleSendImage}
                         cursor="pointer"
                     />
-                    <Icon as={HiOutlineCamera} cursor="pointer" />
+                    <Icon
+                        as={HiOutlineCamera}
+                        onClick={handleTakeScreenShot}
+                        cursor="pointer"
+                    />
                     <Icon as={HiOutlineMicrophone} cursor="pointer" />
                 </Flex>
                 <InputMessage

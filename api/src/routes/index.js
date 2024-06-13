@@ -4,6 +4,7 @@ const commentRouter = require('./comment');
 const postRouter = require('./post');
 const userRouter = require('./user');
 const authRouter = require('./auth');
+const cameraRouter = require('./camera');
 
 
 function route(app) {
@@ -13,6 +14,7 @@ function route(app) {
     app.use('/post', postRouter);
     app.use('/user', userRouter);
     app.use('/', authRouter);
+    app.use('/camera', cameraRouter);
 }
 
 module.exports = route;
