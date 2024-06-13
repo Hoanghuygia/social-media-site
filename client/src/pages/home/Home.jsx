@@ -4,9 +4,12 @@ import PostZone from "./components/PostZone";
 import Cookies from "js-cookie";
 import { useEffect } from "react";
 import { socket, connectSocket } from "../../socket";
+import { setSocket, } from "../../stores/windowSlice";
+import { useDispatch, } from 'react-redux';
 
 
 function Home() {
+    const dispatch = useDispatch();
 
     const currentUserID = Cookies.get("token");
     console.log(currentUserID);
@@ -15,19 +18,8 @@ function Home() {
         if (!socket) {
             connectSocket(currentUserID);
         }
-
-        if (socket) {
-
-            socket.on('total-connected', (data) => {
-                console.log("Data socket: " + data);
-            });
-
-            return () => {
-                if (socket) {
-                    socket.off('total-connected');
-                }
-            };
-        }
+        
+        dispatch(setSocket(socket));
     }, []);
 
     return (

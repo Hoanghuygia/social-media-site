@@ -14,7 +14,7 @@ const accessToken = Cookies.get("token");
 
 function ChatMessage() {
     const dispatch = useDispatch();
-    const { messages, recepientID } = useSelector((state) => state.message);
+    const { messages, recepientID } = useSelector((state) => state.message);//mình đoán là cái useSelector giúp kích hoạt re-render như cái useState
     const flexRef = useRef(null);
 
     const [recentIdPersonChatWith, setRecentIdPersonChatWith] = useState('');
@@ -69,26 +69,27 @@ function ChatMessage() {
                 }
             }
             else{
-                setRecentIdPersonChatWith(recepientID);
+                setRecentIdPersonChatWith(recepientID);//nên đổi thành setRecepientID thì đúng hơn
+                //minhf thật sự không biết laf cái logic nào khiến nó đẩy tin nhắn lên, và tất cả những gì mình viết đều là trùng hợp
             }
         };
 
         if (!isFetching) {
             fetchData();
         }
-    }, [recepientID]);
+    }, [recepientID, accessToken]);
 
     useEffect(() => {
         if (recentIdPersonChatWith) {
             fetchMessages(currentUserId, recentIdPersonChatWith);
         }
-    }, [recentIdPersonChatWith]);
+    }, [recentIdPersonChatWith, accessToken]);
 
     useEffect(() => {
         if (flexRef.current) {
             flexRef.current.scrollTop = flexRef.current.scrollHeight;
         }
-    }, [messages]);
+    }, [messages, accessToken]);
 
     return (
         <Flex flexDir={"column"} w={"100%"} h={"85vh"}>

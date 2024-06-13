@@ -6,16 +6,27 @@ import {
     Heading,
     Text,
 } from "@chakra-ui/react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { changeRecepient } from "../../../stores/messageSlice";
+import Cookies from "js-cookie";
 
 function ChatListItem({ data }) {
     const dispatch = useDispatch();
-    const { avatar, status, name, lastMessage, recepientId } = data;
+    const currentUserID = Cookies.get("userId");
+    let {
+        avatar,
+        status,
+        name,
+        lastMessage: initialLastMessage,
+        recepientId,
+    } = data;
+    let { content: lastMessageChat, recepientID } = useSelector(
+        (state) => state.message.lastMessageChat
+    );
 
-    const handleChangeRecipient = (event) =>{
-        dispatch(changeRecepient(recepientId))
-    }
+    const handleChangeRecipient = (event) => {
+        dispatch(changeRecepient(recepientId));
+    };
 
     const getBadgeColor = (status) => {
         switch (status) {
@@ -24,9 +35,16 @@ function ChatListItem({ data }) {
             case "Offline":
                 return "red.300";
             default:
-                throw console.error("Wrong status");
+                throw new Error("Wrong status");
         }
     };
+
+    let lastMessage = "";
+    if (recepientID === recepientId || recepientID === currentUserID) {
+        lastMessage = lastMessageChat || initialLastMessage;
+    } else {
+        lastMessage = initialLastMessage;
+    }
 
     return (
         <Box
@@ -35,7 +53,7 @@ function ChatListItem({ data }) {
             borderTop="1px"
             borderColor="RGBA(0, 0, 0, 0.16)"
             maxW="100%"
-            _hover={{ bg: 'RGBA(0, 0, 0, 0.08)' }}
+            _hover={{ bg: "RGBA(0, 0, 0, 0.08)" }}
             onClick={handleChangeRecipient}
         >
             <Flex h="100%" alignItems={"center"}>
@@ -50,9 +68,7 @@ function ChatListItem({ data }) {
                     <Heading as="h2" fontSize="md">
                         {name}
                     </Heading>
-                    <Text noOfLines={1}>
-                        {lastMessage ? lastMessage : "..."}
-                    </Text>
+                    <Text noOfLines={1}>{lastMessage || "..."}</Text>
                 </Box>
             </Flex>
         </Box>

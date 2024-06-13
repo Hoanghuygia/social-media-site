@@ -8,10 +8,6 @@ const connectSocket = (userID) => {
             query: `userID=${userID}`
         });
 
-        socket.on('connect', () => {
-            console.log(`Connected with ID: ${socket.id}`);
-        });
-
         socket.on('disconnect', () => {
             console.log('Socket disconnected');
         });
