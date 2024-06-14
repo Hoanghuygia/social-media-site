@@ -44,7 +44,7 @@ function ChatMessageHeader() {
 
     useEffect(() => {
         fetchData()
-    }, [recepientID]);
+    }, [recepientID, accessToken]);
 
     return (
         <Box

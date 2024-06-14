@@ -33,7 +33,7 @@
     "redux-thunk": "^3.1.0",
     "socket.io-client": "^4.7.5",
     "styled-components": "^6.1.11",
-    "vercel": "^32.3.0"
+    "vercel": "^32.0.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",

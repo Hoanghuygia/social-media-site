@@ -4,9 +4,15 @@ const MessageModel = require("../models/Message");
 async function addMessage(req, res) {
     const { userId1, userId2, username, content, imageURL } = req.body;
     try {
-        const filter = { user_id_1: userId1, user_id_2: userId2 };
+        const filter = {
+            $or: [
+                { user_id_1: userId1, user_id_2: userId2 },
+                { user_id_1: userId2, user_id_2: userId1 }
+            ]
+        };
+
         const bucket = await MessageModel.findOne(filter);
-        console.log("message");
+        // console.log("message");
 
         let message_id;
 

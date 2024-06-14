@@ -1,8 +1,7 @@
-import { useLocation } from "react-router-dom";
 import LoginForm from "./LoginForm";
 
-function Login(props) {
-    const setUser = props.setUser;
+function Login() {
+
     const style = {
         backgroundColor: "rgb(254, 249, 248)",
     };
@@ -13,7 +12,7 @@ function Login(props) {
                 className="min-w-screen min-h-screen w-auto	h-auto "
                 style={style}
             >
-                <LoginForm setUser={setUser} />
+                <LoginForm />
                 <img
                     src="/img/Logo.png"
                     alt="Picture of creature"

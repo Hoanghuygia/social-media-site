@@ -1,9 +1,11 @@
 import { Outlet, Navigate } from "react-router-dom";
+import Cookies from 'js-cookie';
 
 
-const ProtectedRoutes = (props) =>{
-    const user = props.name;
-    return user ? <Outlet/> : <Navigate to="/login" />
+
+const ProtectedRoutes = () =>{
+    const user = Cookies.get('user');
+    return (user=="true") ? <Outlet/> : <Navigate to="/login" />
 }
 
 export default ProtectedRoutes;
