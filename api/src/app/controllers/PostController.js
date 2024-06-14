@@ -1,5 +1,7 @@
 const PostModel = require("../models/Post");
 const UserModel = require("../models/user");
+const { shuffle } = require('lodash'); 
+
 
 async function addPost(req, res) {
     const { Object_id, posts } = req.body;
@@ -62,24 +64,38 @@ async function addPost(req, res) {
 
 
 //undone
-  async function updatePost(req, res) {
-  const postId = req.params.postId;
-  const updateData = req.body;
-  try {
-    const updatedPost = await PostModel.findByIdAndUpdate(postId, updateData, {
-      new: true,
-    });
+async function updatePost(req, res) {
+    const objectId = req.params.objectId;
+    const postId = req.params.postId;
+    const updateData = req.body; // This should contain the fields to be updated
 
-    if (!updatedPost) {
-      return res.status(404).json({ message: "Post not found" });
+    try {
+        // Find the post by Object_id and postId
+        const updatedPost = await PostModel.findOneAndUpdate(
+            { 'Object_id': objectId, 'posts._id': postId },
+            {
+                $set: {
+                    'posts.$.content': updateData.content,
+                    'posts.$.privacyLevel': updateData.privacyLevel,
+                    'posts.$.imageURL': updateData.imageURL,
+                    'posts.$.mediaURL': updateData.mediaURL,
+                }
+            },
+            { new: true }
+        );
+
+        if (!updatedPost) {
+            return res.status(404).json({ message: "Post not found" });
+        }
+
+        res.status(200).json({ message: "Post updated successfully", updatedPost });
+    } catch (error) {
+        console.error("Error updating the post: ", error);
+        res.status(500).json({ message: "Error updating the post" });
     }
-
-    res.status(200).json({ message: "Post updated successfully", updatedPost });
-  } catch (error) {
-    console.error("Error updating the post: ", error);
-    res.status(500).json({ message: "Error updating the post" });
-  }
 }
+
+
 
 async function deletePost(req, res) {
     const objectId = req.params.objectId;
@@ -136,12 +152,11 @@ async function getFollowingPosts(req, res) {
         }
 
         const followingIds = user.followings.map(following => following.following_id);
-        console.table(followingIds)
 
         const posts = await PostModel.find({
             "Object_id": { $in: followingIds },
         }).populate("Object_id");
-        posts.forEach(post => console.table(post._doc));
+
         const allPosts = posts.reduce((acc, cur) => {
             if (cur.posts && cur.posts.length > 0) {
                 cur.posts.forEach(post => {
@@ -153,41 +168,61 @@ async function getFollowingPosts(req, res) {
             return acc;
         }, []);
 
-        res.json(allPosts);
+        const shuffledPosts = shuffle(allPosts);
+
+        res.json(shuffledPosts);
     } catch (error) {
         console.error("Error fetching posts:", error);
         res.status(500).json({ message: "Internal server error" });
     }
 }
 
-async function getPostsByImageURL(req, res) {
+async function getPostsWithImageURL(req, res) {
+    try {
+        const result = await PostModel.aggregate([
+            { $unwind: '$posts' },
+            { $match: { 'posts.imageURL': { $exists: true, $ne: null } } },
+            { $group: { _id: null, posts: { $push: '$posts' } } }, // Group without _id
+            { $project: { _id: 0, posts: 1 } } // Project to exclude _id and include only 'posts'
+        ]);
 
+        console.log("Result from aggregation:", result);
+
+        if (result.length === 0 || !result[0].posts.length) {
+            return res.status(404).json({ message: 'No posts found with imageURL' });
+        }
+
+        const shuffledPosts = shuffle(result[0].posts);
+        res.json(shuffledPosts); 
+    } catch (error) {
+        console.error("Error fetching posts with imageURL:", error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
 }
 
   
 
-async function getRandomPublicPostsWithMedia() {
-  try {
-    const posts = await PostModel.aggregate([
-      {
-        $match: {
-          privacyLevel: "public",
-          media: { $exists: true, $ne: "" },
-        },
-      },
-      {
-        $addFields: {
-          randomOrder: { $rand: {} },
-        },
-      },
-      { $sort: { randomOrder: 1 } },
-    ]);
+async function getPostsWithMediaURL(req, res) {
+    try {
+        const result = await PostModel.aggregate([
+            { $unwind: '$posts' },
+            { $match: { 'posts.mediaURL': { $exists: true, $ne: null } } },
+            { $group: { _id: null, posts: { $push: '$posts' } } }, // Group without _id
+            { $project: { _id: 0, posts: 1 } } // Project to exclude _id and include only 'posts'
+        ]);
 
-    return posts;
-  } catch (error) {
-    console.error("Error getting random public media posts: ", error);
-    throw error;
-  }
+        console.log("Result from aggregation:", result);
+
+        if (result.length === 0 || !result[0].posts.length) {
+            return res.status(404).json({ message: 'No posts found with imageURL' });
+        }
+
+        const shuffledPosts = shuffle(result[0].posts);
+        res.json(shuffledPosts); 
+    } catch (error) {
+        console.error("Error fetching posts with mediaURL:", error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
 }
 
 module.exports = {
@@ -196,6 +231,6 @@ module.exports = {
   deletePost,
   getAllPostsByUser,
   getFollowingPosts,
-  getRandomPublicPostsWithMedia,
-  getPostsByImageURL,
+  getPostsWithImageURL,
+  getPostsWithMediaURL
 };
