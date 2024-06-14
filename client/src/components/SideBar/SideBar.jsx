@@ -19,20 +19,24 @@ function SideBar() {
     const logout = () => {
         Object.keys(Cookies.get()).forEach(function(cookieName) {
             Cookies.remove(cookieName);
+            
         });
+
+        localStorage.clear();
     };
+
+
 
     return (
         <Flex
-            pr={"20px"}
             flexDir="column"
             h="100%"
             // boxShadow="4px 0px 16px rgba(239, 202, 204, 1)"
             border="1px solid RGBA(0, 0, 0, 0.16)"
             // boxShadow="0px -10px 28px rgba(239, 202, 204, 1), 0px 10px 28px rgba(239, 202, 204, 1)"
-            gap={4}
+            gap={5}
         >
-            <Flex flexDir="column" mt="24px" textAlign="center" gap={3}>
+            <Flex flexDir="column" mt="50px" textAlign="center" gap={3}>
                 <Center>
                     <Avatar size="xl" name="profile" src={"/img/avatar.png"} />
                 </Center>

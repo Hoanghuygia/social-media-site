@@ -23,13 +23,13 @@ function Bar({ icon, barName, route }) {
                 borderTopLeftRadius={isActive ? "2xl" : "none"}
                 borderBottomLeftRadius={isActive ? "2xl" : "none"}
                 borderTopWidth={isActive ? "3px" : "none"}
-                background={isActive ? "bg-color.300" : "none"}
+                borderColor={isActive? "#efcbce": "none"}
+                background={isActive ? "linear-gradient(to right, #fce2e3, #ebe1ed)" : "none"}
                 _hover={{
                     borderTopLeftRadius: "2xl",
                     borderBottomLeftRadius: "2xl",
                     borderTopWidth: "3px",
-                    borderColor: "#efcbce",
-                    background: "linear-gradient(to right, #fce2e3, #ebe1ed)",
+                    background: "bg-color.300",
                 }}
                 transition="background-color 0.3s"
             >
