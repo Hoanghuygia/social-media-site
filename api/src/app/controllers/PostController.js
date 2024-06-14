@@ -12,10 +12,9 @@ async function addPost(req, res) {
         const username = user.username;
 
         for (const post of posts) {
-            const { content, imageURL, privacyLevel } = post;
+            const { content, imageURL, mediaURL, privacyLevel } = post;
 
-            // Check if privacyLevel is valid
-            if (!['public', 'following', 'private'].includes(privacyLevel)) {
+            if (!['Public', 'Following', 'Private'].includes(privacyLevel)) {
                 return res.status(400).json({ message: 'Invalid privacyLevel value' });
             }
 
@@ -38,6 +37,7 @@ async function addPost(req, res) {
                 username: username,
                 content: content,
                 imageURL: imageURL,
+                mediaURL: mediaURL,
                 privacyLevel: privacyLevel,
                 like: 0,
                 comment: 0,
@@ -130,29 +130,26 @@ async function getAllPostsByUser(req, res) {
 async function getFollowingPosts(req, res) {
     const userId = req.params.objectId;
     try {
-        // Find the user by userId
         const user = await UserModel.findById(userId);
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
 
-        // Extract the followingIds from the user's followings
         const followingIds = user.followings.map(following => following.following_id);
+        console.table(followingIds)
 
-        // Find posts where the Object_id is in the followingIds array and privacyLevel is "public" or "following"
         const posts = await PostModel.find({
             "Object_id": { $in: followingIds },
         }).populate("Object_id");
-
-        // Flatten the posts array to include all posts
+        posts.forEach(post => console.table(post._doc));
         const allPosts = posts.reduce((acc, cur) => {
             if (cur.posts && cur.posts.length > 0) {
                 cur.posts.forEach(post => {
-                    if (post.privacyLevel === 'public' || post.privacyLevel === 'following') {
+                    if (post.privacyLevel === 'Public' || post.privacyLevel === 'Following') {
                         acc.push(post);
                     }
                 });
-            }
+            }        
             return acc;
         }, []);
 
@@ -163,35 +160,11 @@ async function getFollowingPosts(req, res) {
     }
 }
 
+async function getPostsByImageURL(req, res) {
 
-
-async function getRandomPublicPostsWithPictures() {
-  try {
-    const posts = await PostModel.aggregate([
-      {
-        $match: {
-          privacyLevel: "public",
-          pictures: { $exists: true, $not: { $size: 0 } },
-        },
-      },
-      {
-        $addFields: {
-          randomOrder: { $rand: {} },
-        },
-      },
-
-      { $sort: { randomOrder: 1 } },
-    ]);
-
-    return posts;
-  } catch (error) {
-    console.error(
-      "Error getting random posts with pictures and public privacy level: ",
-      error
-    );
-    throw error;
-  }
 }
+
+  
 
 async function getRandomPublicPostsWithMedia() {
   try {
@@ -224,5 +197,5 @@ module.exports = {
   getAllPostsByUser,
   getFollowingPosts,
   getRandomPublicPostsWithMedia,
-  getRandomPublicPostsWithPictures,
+  getPostsByImageURL,
 };

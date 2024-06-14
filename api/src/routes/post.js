@@ -8,6 +8,7 @@ router.get('/:Object_id', postController.getAllPostsByUser);
 router.post('/', postController.addPost); 
 router.get('/followings/:objectId', postController.getFollowingPosts);
 router.delete('/:objectId/:postId', postController.deletePost);
+router.get('/images', postController.getPostsByImageURL);
 
 
 
