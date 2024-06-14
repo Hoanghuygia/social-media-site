@@ -4,10 +4,11 @@ import { FaRegCirclePlay, FaHeart, FaRegCommentDots, FaRegShareFromSquare } from
 export default function Video({ channel, description, url, likes, comment, shares }) {
     const [isVideoPlaying, setIsVideoPlaying] = useState(false);
     const [showFullDescription, setShowFullDescription] = useState(false);
-    const [isLiked, setIsLiked] = useState(false); // New state to track whether the video is liked
-    const vidRef = useRef();
+    const [isLiked, setIsLiked] = useState(false);
+    const [isInView, setIsInView] = useState(false); // State to track if video is in view
+    const vidRef = useRef(null);
 
-    const onVideoClick = () => {
+    const handleVideoClick = () => {
         if (isVideoPlaying) {
             vidRef.current.pause();
             setIsVideoPlaying(false);
@@ -18,39 +19,55 @@ export default function Video({ channel, description, url, likes, comment, share
     };
 
     const handleSeeMoreClick = (e) => {
-        e.stopPropagation(); // Prevent the click from propagating to the video click handler
+        e.stopPropagation();
         setShowFullDescription(!showFullDescription);
     };
 
-    // Function to handle liking the video
     const handleLikeClick = () => {
         setIsLiked(!isLiked);
     };
 
     useEffect(() => {
-        const scroll = document.getElementById("video-container");
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        setIsInView(true);
+                        setIsVideoPlaying(true);
+                        vidRef.current.play();
 
-        if (scroll) {
-            const handleScroll = () => {
-                if (vidRef.current) {
-                    vidRef.current.pause();
-                    setIsVideoPlaying(false);
-                }
-            };
+                    } else {
+                        setIsInView(false);
+                    }
+                });
+            },
+            { threshold: 0.75 } // Adjust threshold as needed
+        );
 
-            scroll.addEventListener("scroll", handleScroll);
-
-            return () => {
-                scroll.removeEventListener("scroll", handleScroll);
-            };
+        if (vidRef.current) {
+            observer.observe(vidRef.current);
         }
+
+        return () => {
+            if (vidRef.current) {
+                observer.unobserve(vidRef.current);
+            }
+        };
     }, []);
 
-    const isDescriptionLong = description.length > 100; // Define a length to determine if the description is long
+    useEffect(() => {
+        // Pause video if it goes out of view
+        if (!isInView && isVideoPlaying) {
+            vidRef.current.pause();
+            setIsVideoPlaying(false);
+        }
+    }, [isInView]);
+
+    const isDescriptionLong = description.length > 100;
 
     return (
         <div className="relative flex">
-            <div className="relative" onClick={onVideoClick}>
+            <div className="relative" onClick={handleVideoClick}>
                 {!isVideoPlaying && (
                     <div className="absolute inset-0 flex justify-center items-center text-white z-10">
                         <FaRegCirclePlay size={70} />
@@ -87,10 +104,9 @@ export default function Video({ channel, description, url, likes, comment, share
                 </div>
             </div>
 
-            <div className="flex flex-col justify-end items-end p-5 gap-7 text-white text-lg font-bold font-khumb-sans">
+            <div className="flex flex-col justify-end items-end p-5 gap-7 text-pastel-pink-300 text-lg font-bold font-khumb-sans">
                 <div className="flex flex-col items-center">
-                    {/* Use FaHeart for the filled heart when liked */}
-                    <FaHeart size={32} className={isLiked ? 'fill-red-500 text-white' : ''} onClick={handleLikeClick} />
+                    <FaHeart size={32} className={isLiked ? 'fill-red-500' : ''} onClick={handleLikeClick} />
                     <span>{likes}</span>
                 </div>
                 <div className="flex flex-col items-center">
