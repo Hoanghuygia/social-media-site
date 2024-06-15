@@ -5,7 +5,8 @@ function SearchModal({ filteredUsers }) {
     const navigate = useNavigate();
 
     const handleUserClick = (username) => {
-        navigate(`/user/${username}`);
+        navigate(`/profile/${username}`);
+        window.location.reload();
     };
 
     return (

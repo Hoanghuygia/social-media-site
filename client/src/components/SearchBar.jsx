@@ -14,7 +14,7 @@ function SearchBar({ className }) {
         const fetchUsers = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await axios.get('http://localhost:3000/user/userlist', {
+                const response = await axios.get('https://sugar-cube.onrender.com/user/userlist', {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
