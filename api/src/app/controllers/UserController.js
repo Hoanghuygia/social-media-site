@@ -55,32 +55,29 @@ class UserController {
     };
 
     getFollowers = async (req, res) => {
+        console.log(req.params.username);
         try {
-          const user = await User.findOne({ username: req.params.username });
-          const following = await User.findById(req.body.following_id);
+          const user = await User.findOne({ username: req.params.username }).populate("followings.following_id", "username");;
       
-          if (!user || !following) {
-            return res.status(404).json({ message: 'User or following not found' });
+          if (!user) {
+            return res.status(404).json({ message: 'User not found' });
           }
       
-          const alreadyFollowing = user.followings.some(following => following.following_id.equals(req.body.following_id));
+          res.status(200).json(user.followers );
+        } catch (err) {
+          res.status(500).json({ message: err.message });
+        }
+      };
       
-          if (alreadyFollowing) {
-            return res.status(400).json({ message: 'Already following this user' });
-          }
-      
-          user.followings.push({ following_id: req.body.following_id });
-      
-          following.followers.push({ follower_id: user._id });
-      
-          await user.save();
-          await following.save();
-      
-          res.status(200).json({ message: 'Following added successfully' });
+      getUsersList = async (req, res) => {
+        try {
+            const users = await User.find({}, 'username firstName lastName profilePicture');
+            res.status(200).json(users);
         } catch (err) {
             res.status(500).json({ message: err.message });
         }
     };
+
 
     getFollowings = async (req, res) => {
         try {

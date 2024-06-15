@@ -8,7 +8,6 @@ import {
 import SearchBar from "./SearchBar";
 
 function Header() {
-
     return (
         <Flex as="nav" p="7px" alignItems="center" h={"100%"}>
             <Image
