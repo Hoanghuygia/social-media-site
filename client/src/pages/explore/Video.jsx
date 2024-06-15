@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { FaRegCirclePlay, FaHeart, FaRegCommentDots, FaRegShareFromSquare } from "react-icons/fa6";
 
-export default function Video({ channel, description, url, likes, comment, shares }) {
+const Video = ({ url, channel, description, likes, comment, shares }) => {
     const [isVideoPlaying, setIsVideoPlaying] = useState(false);
     const [showFullDescription, setShowFullDescription] = useState(false);
     const [isLiked, setIsLiked] = useState(false);
@@ -63,7 +63,7 @@ export default function Video({ channel, description, url, likes, comment, share
         }
     }, [isInView]);
 
-    const isDescriptionLong = description.length > 100;
+    const isDescriptionLong = description && description.length > 100;
 
     return (
         <div className="relative flex">
@@ -74,50 +74,66 @@ export default function Video({ channel, description, url, likes, comment, share
                     </div>
                 )}
 
-                <video
-                    className="w-full h-screen rounded-xl"
-                    ref={vidRef}
-                    src={url}
-                    loop
-                />
+                {url && (
+                    <video
+                        className="w-full h-screen rounded-xl"
+                        ref={vidRef}
+                        src={url}
+                        loop
+                    />
+                )}
 
-                <div className="absolute rounded-xl bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black to-transparent text-white">
-                    <div className="video-text mb-2">
-                        <h3 className="text-lg font-inter font-semibold">
-                            {channel}
-                            <button className="ml-2 px-2 py-1 border border-white rounded font-inter font-medium text-xs text-white" onClick={(e) => e.stopPropagation()}>
-                                Follow
-                            </button>
-                        </h3>
-                    </div>
-
-                    <div className="video-text mb-2">
-                        <p className="text-lg font-inter text-sm">
-                            {showFullDescription || !isDescriptionLong ? description : `${description.substring(0, 100)}...`}
-                            {isDescriptionLong && (
-                                <button className="ml-2 text-white font-bold font-inter" onClick={handleSeeMoreClick}>
-                                    {showFullDescription ? 'See less' : 'See more'}
+                {channel && (
+                    <div className="absolute rounded-xl bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black to-transparent text-white">
+                        <div className="video-text mb-2">
+                            <h3 className="text-lg font-inter font-semibold">
+                                {channel}
+                                <button className="ml-2 px-2 py-1 border border-white rounded font-inter font-medium text-xs text-white" onClick={(e) => e.stopPropagation()}>
+                                    Follow
                                 </button>
-                            )}
-                        </p>
+                            </h3>
+                        </div>
+
+                        {description && (
+                            <div className="video-text mb-2">
+                                <p className="text-lg font-inter text-sm">
+                                    {showFullDescription || !isDescriptionLong ? description : `${description.substring(0, 100)}...`}
+                                    {isDescriptionLong && (
+                                        <button className="ml-2 text-white font-bold font-inter" onClick={handleSeeMoreClick}>
+                                            {showFullDescription ? 'See less' : 'See more'}
+                                        </button>
+                                    )}
+                                </p>
+                            </div>
+                        )}
                     </div>
-                </div>
+                )}
             </div>
 
-            <div className="flex flex-col justify-end items-end p-5 gap-7 text-pastel-pink-300 text-lg font-bold font-khumb-sans">
-                <div className="flex flex-col items-center">
-                    <FaHeart size={32} className={isLiked ? 'fill-red-500' : ''} onClick={handleLikeClick} />
-                    <span>{likes}</span>
+            {(likes || comment || shares) && (
+                <div className="flex flex-col justify-end items-end p-5 gap-7 text-pastel-pink-300 text-lg font-bold font-khumb-sans">
+                    {likes && (
+                        <div className="flex flex-col items-center">
+                            <FaHeart size={32} className={isLiked ? 'fill-red-500' : ''} onClick={handleLikeClick} />
+                            <span>{likes}</span>
+                        </div>
+                    )}
+                    {comment && (
+                        <div className="flex flex-col items-center">
+                            <FaRegCommentDots size={32} />
+                            <span>{comment}</span>
+                        </div>
+                    )}
+                    {shares && (
+                        <div className="flex flex-col items-center">
+                            <FaRegShareFromSquare size={32} />
+                            <span>{shares}</span>
+                        </div>
+                    )}
                 </div>
-                <div className="flex flex-col items-center">
-                    <FaRegCommentDots size={32} />
-                    <span>{comment}</span>
-                </div>
-                <div className="flex flex-col items-center">
-                    <FaRegShareFromSquare size={32} />
-                    <span>{shares}</span>
-                </div>
-            </div>
+            )}
         </div>
     );
-}
+};
+
+export default Video;

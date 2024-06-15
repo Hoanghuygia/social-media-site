@@ -4,8 +4,9 @@ const Schema = mongoose.Schema;
 
 const PostSchema = new Schema(
     {
-        Object_id: [{ type: mongoose.Types.ObjectId, ref: 'User' }],
-        posts: [
+            Object_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+
+                  posts: [
             {
                 post_id: Number,
                 content: String,

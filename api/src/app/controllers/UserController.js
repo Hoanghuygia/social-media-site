@@ -1,18 +1,29 @@
 const User = require("../models/user");
+const mongoose = require("mongoose");
 const Message = require('../models/Message');
 
 class UserController {
     getUser = async (req, res) => {
         try {
-            const user = await User.findOne({ username: req.params.username });
-            if (!user) {
-                return res.status(404).json({ message: "User not found" });
-            }
-            res.status(200).json(user);
+          let user;
+    
+          if (mongoose.Types.ObjectId.isValid(req.params.username)) {
+            user = await User.findById(req.params.username);
+          } else {
+            user = await User.findOne({ username: req.params.username });
+          }
+    
+          if (!user) {
+            return res.status(404).json({ message: "User not found" });
+          }
+    
+          res.status(200).json(user);
         } catch (err) {
-            res.status(500).json({ message: err.message });
+          console.error(err); // Log the actual error for debugging
+          res.status(500).json({ message: err.message });
         }
-    };
+      };
+    
 
     updateUser = async (req, res) => {
         try {

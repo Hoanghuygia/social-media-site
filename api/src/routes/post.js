@@ -10,7 +10,7 @@ router.get('/medias', postController.getPostsWithMediaURL);
 
 router.post('/', postController.addPost); 
 
-router.get('/:Object_id', postController.getAllPostsByUser);
+router.get('/:userId', postController.getAllPostsByUser);
 router.get('/followings/:objectId', postController.getFollowingPosts);
 
 router.delete('/:objectId/:postId', postController.deletePost);
