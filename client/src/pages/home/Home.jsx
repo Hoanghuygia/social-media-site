@@ -7,11 +7,11 @@ import { socket, connectSocket } from "../../socket";
 import { setSocket, } from "../../stores/windowSlice";
 import { useDispatch, } from 'react-redux';
 
+const currentUserID = Cookies.get("userId");
 
 function Home() {
     const dispatch = useDispatch();
 
-    const currentUserID = Cookies.get("token");
     console.log(currentUserID);
 
     useEffect(() => {

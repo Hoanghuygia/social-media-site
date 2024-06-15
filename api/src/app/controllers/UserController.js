@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const Message = require('../models/Message');
 
 class UserController {
     getUser = async (req, res) => {
@@ -195,12 +196,13 @@ class UserController {
     };
 
     getChaList = async (req, res) => {
+        console.log("huy dep trai");
         try {
             const { userId } = req.params;
 
             const user = await User.findById(userId).populate(
                 "chat_list",
-                "firstname lastname profilePicture status"
+                "firstName lastName profilePicture status"
             );
 
             if (!user) {
@@ -230,7 +232,7 @@ class UserController {
                     recepientId: chatUser._id,
                     avatar: chatUser.profilePicture,
                     status: chatUser.status,
-                    name: `${chatUser.firstname} ${chatUser.lastname}`,
+                    name: `${chatUser.firstName} ${chatUser.lastName}`,
                     lastMessage: lastMessage,
                 });
             }

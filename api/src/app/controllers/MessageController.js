@@ -1,47 +1,58 @@
-const { default: mongoose} = require('mongoose');
+const { default: mongoose } = require("mongoose");
 const MessageModel = require("../models/Message");
 
 async function addMessage(req, res) {
     const { userId1, userId2, username, content, imageURL } = req.body;
+
     try {
         const filter = {
             $or: [
                 { user_id_1: userId1, user_id_2: userId2 },
-                { user_id_1: userId2, user_id_2: userId1 }
-            ]
+                { user_id_1: userId2, user_id_2: userId1 },
+            ],
         };
 
         const bucket = await MessageModel.findOne(filter);
-        // console.log("message");
-
-        let message_id;
-
-        if (bucket) {
-            message_id = bucket.messages.length + 1;
-        } else {
-            message_id = 1;
-        }
-
+        
         const timestamp = new Date();
         timestamp.setHours(timestamp.getHours() + 7);
 
-        const message = {
-            message_id: message_id,
-            username: username,
-            content: content,
-            imageURL: imageURL,
-            timestamp: timestamp,
-        };
+        let message;
+        
+        if (bucket) {
+            message = {
+                message_id: bucket.messages.length + 1,
+                username,
+                content,
+                imageURL,
+                timestamp,
+            };
 
-        const update = { $push: { messages: message } };
-        const options = { upsert: true, new: true };
+            const update = { $push: { messages: message }, timestamp };
+            const result = await MessageModel.findOneAndUpdate(filter, update, { new: true });
 
-        const result = await MessageModel.findOneAndUpdate(
-            filter,
-            update,
-            options
-        );
-        return res.status(200).json(result);
+            return res.status(200).json(result);
+
+        } else {
+            message = {
+                message_id: 1,
+                username,
+                content,
+                imageURL,
+                timestamp,
+            };
+
+            const newBucket = new MessageModel({
+                user_id_1: userId1,
+                user_id_2: userId2,
+                messages: [message],
+                timestamp,
+            });
+
+            const result = await newBucket.save();
+
+            return res.status(200).json(result);
+        }
     } catch (error) {
         console.error("Error adding message:", error);
         return res.status(500).json({ message: error.message });
@@ -87,9 +98,11 @@ async function getRecentChatPairById(req, res) {
         const recentChatPair = await MessageModel.findOne({
             $or: [
                 { user_id_1: new mongoose.Types.ObjectId(senderID) },
-                { user_id_2: new mongoose.Types.ObjectId(senderID) }
-            ]
-        }).sort({ timestamp: -1 }).exec();
+                { user_id_2: new mongoose.Types.ObjectId(senderID) },
+            ],
+        })
+            .sort({ timestamp: -1 })
+            .exec();
 
         if (recentChatPair) {
             return res.status(200).json(recentChatPair);
@@ -98,10 +111,13 @@ async function getRecentChatPairById(req, res) {
         }
     } catch (error) {
         console.error("Error getting the last chat id: " + error);
+
+        if (!res.headersSent) {
+            return res.status(500).json({ message: error.message });
+        }
+        
         return res.status(500).json({ message: error.message });
     }
 }
-
-
 
 module.exports = { addMessage, getMessage, getRecentChatPairById };

@@ -28,10 +28,12 @@ function ChatList() {
     };
 
     useEffect(() => {
-        if (!fetchedRef.current) {
-            fetchedRef.current = true;
-            fetchData();
-        }
+        if(currentUserId){
+            if (!fetchedRef.current) {
+                fetchedRef.current = true;
+                fetchData();
+            }
+        }    
     }, [accessToken]);
 
     return (
