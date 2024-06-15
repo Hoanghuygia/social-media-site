@@ -21,7 +21,7 @@ const PageLayout = ({ children }) => {
                     area={"header"}
                     ml={"15px"}
                     zIndex={3}
-                    overflow="hidden"
+                    overflow="show"
                 >
                     <Header />
                 </GridItem>

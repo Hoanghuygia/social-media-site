@@ -4,7 +4,7 @@ import PostZone from "./components/PostZone";
 import Cookies from "js-cookie";
 import { useEffect } from "react";
 import { socket, connectSocket } from "../../socket";
-import { setSocket, } from "../../stores/windowSlice";
+import { setSocket, setCurrentPage } from "../../stores/windowSlice";
 import { useDispatch, } from 'react-redux';
 
 
@@ -12,7 +12,12 @@ function Home() {
     const currentUserID = Cookies.get("userId");
     const dispatch = useDispatch();
 
+
     console.log(currentUserID);
+
+    useEffect(() => {
+        dispatch(setCurrentPage("Home"));
+    }, []);
 
     useEffect(() => {
         if (!socket) {

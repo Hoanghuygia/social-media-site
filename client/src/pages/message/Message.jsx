@@ -1,8 +1,18 @@
 import { Box, Flex } from "@chakra-ui/react";
 import ChatList from "./components/ChatList";
 import ChatMessage from "./components/ChatMessage";
+import { setCurrentPage } from "../../stores/windowSlice";
+import { useDispatch, } from 'react-redux';
+import { useEffect } from "react";
 
 function Message() {
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(setCurrentPage("Message"));
+    }, []);
+
     return (
         <Flex
             flexDir="row"
