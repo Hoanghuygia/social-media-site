@@ -2,11 +2,13 @@ import { useState, useRef, useEffect } from "react";
 import avatar from "./../../../public/img/avatar.png";
 import { PiVideoBold } from "react-icons/pi";
 import { FaRegImage } from "react-icons/fa";
+import uploadImage from "../../utils/uploadImage"; // Import the uploadImage utility function
 
-const StatusModal = ({ isOpen, onClose, onSubmit }) => {
+const StatusModal = ({ isOpen, onClose }) => {
   const [status, setStatus] = useState("");
   const [image, setImage] = useState(null);
   const [video, setVideo] = useState(null);
+  const [privacyLevel, setPrivacyLevel] = useState("Public"); // State for privacy level
   const textareaRef = useRef(null);
 
   const handleStatusChange = (e) => {
@@ -16,15 +18,19 @@ const StatusModal = ({ isOpen, onClose, onSubmit }) => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setImage(URL.createObjectURL(file));
+      setImage({ file, preview: URL.createObjectURL(file) });
     }
   };
 
   const handleVideoChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setVideo(URL.createObjectURL(file));
+      setVideo({ file, preview: URL.createObjectURL(file) });
     }
+  };
+
+  const handlePrivacyLevelChange = (e) => {
+    setPrivacyLevel(e.target.value);
   };
 
   const adjustTextareaHeight = () => {
@@ -41,9 +47,69 @@ const StatusModal = ({ isOpen, onClose, onSubmit }) => {
     }
   }, [status]);
 
-  const handleSubmit = (e) => {
+  const postStatus = async (statusData) => {
+    const userId = localStorage.getItem('userId'); // Fetch userId from localStorage
+    if (!userId) {
+      console.error('User ID not found in localStorage');
+      return;
+    }
+
+    let mediaURL = null;
+
+    if (statusData.image) {
+      try {
+        mediaURL = await uploadImage(statusData.image.file);
+      } catch (error) {
+        console.error("Image upload failed: ", error);
+        return;
+      }
+    }
+
+    if (statusData.video) {
+      try {
+        mediaURL = await uploadImage(statusData.video.file);
+      } catch (error) {
+        console.error("Video upload failed: ", error);
+        return;
+      }
+    }
+
+    const data = {
+      Object_id: userId,
+      posts: [
+        {
+          content: statusData.status,
+          mediaURL: mediaURL || '',
+          privacyLevel: statusData.privacyLevel,
+        }
+      ]
+    };
+
+    try {
+      const token = localStorage.token;
+      const response = await fetch('http://localhost:3000/post/', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json', // Ensure Content-Type is set to application/json
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to post status');
+      }
+
+      const result = await response.json();
+      console.log('Post successful:', result);
+    } catch (error) {
+      console.error('Error posting status:', error);
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSubmit({ status, image, video });
+    await postStatus({ status, image, video, privacyLevel }); // Include privacy level in the status data
     setStatus("");
     setImage(null);
     setVideo(null);
@@ -81,10 +147,21 @@ const StatusModal = ({ isOpen, onClose, onSubmit }) => {
               className="w-full h-full object-cover"
             />
           </div>
-          <div className="flex flex-col">
-            <p className="font-inter tracking-wider font-medium text-sm text-gray-600">
-              Swirl Lollipop
-            </p>
+          <div className="flex flex-col gap-2">
+            <div className="flex flex-row gap-4">
+              <p className="font-inter tracking-wider font-medium text-xl mt-1 text-gray-600">
+                {localStorage.name}
+              </p>
+              <select
+                value={privacyLevel}
+                onChange={handlePrivacyLevelChange}
+                className="bg-gray-200 text-gray-600 rounded-md p-1"
+              >
+                <option value="Public">Public</option>
+                <option value="Private">Private</option>
+                <option value="Following">Following</option>
+              </select>
+            </div>
             <div className="h-0.5 bg-gray-300 w-full"></div>
           </div>
         </div>
@@ -101,7 +178,7 @@ const StatusModal = ({ isOpen, onClose, onSubmit }) => {
           />
           {image && (
             <div className="relative mt-4">
-              <img src={image} alt="preview" className="w-full h-auto rounded-md" />
+              <img src={image.preview} alt="preview" className="w-full h-auto rounded-md" />
               <button
                 type="button"
                 className="absolute top-0 right-0 bg-transparent text-black rounded-full p-1 text-xl"
@@ -113,7 +190,7 @@ const StatusModal = ({ isOpen, onClose, onSubmit }) => {
           )}
           {video && (
             <div className="relative mt-4">
-              <video src={video} controls className="w-full h-auto rounded-md" />
+              <video src={video.preview} controls className="w-full h-auto rounded-md" />
               <button
                 type="button"
                 className="absolute top-0 right-0 bg-transparent text-white rounded-full p-1 text-xl"
