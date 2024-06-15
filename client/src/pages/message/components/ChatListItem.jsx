@@ -8,23 +8,38 @@ import {
 } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { changeRecepient } from "../../../stores/messageSlice";
+import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 
 function ChatListItem({ data }) {
     const dispatch = useDispatch();
     const currentUserID = Cookies.get("userId");
-    let {
+    const [selecting, setSelecting] = useState(false);
+
+    const {
         avatar,
         status,
         name,
         lastMessage: initialLastMessage,
-        recepientId,
+        recepientId, // cái cần phải so sánh
     } = data;
-    let { content: lastMessageChat, recepientID } = useSelector(
+
+    const { content: lastMessageChat, recepientID } = useSelector(
         (state) => state.message.lastMessageChat
     );
+    const recepientSlicer = useSelector((state) => state.message.recepientID);
+    console.log("RecepientID: ", recepientSlicer);
+    console.log("RecepientId: ", recepientId);
 
-    const handleChangeRecipient = (event) => {
+    useEffect(() => {
+        if (recepientId === recepientSlicer) {
+            setSelecting(true);
+        } else {
+            setSelecting(false);
+        }
+    }, [recepientSlicer]);
+
+    const handleChangeRecipient = () => {
         dispatch(changeRecepient(recepientId));
     };
 
@@ -39,17 +54,16 @@ function ChatListItem({ data }) {
         }
     };
 
-    let lastMessage = "";
-    if (recepientID === recepientId || recepientID === currentUserID) {
-        lastMessage = lastMessageChat || initialLastMessage;
-    } else {
-        lastMessage = initialLastMessage;
-    }
+    const lastMessage = (recepientID === recepientId || recepientID === currentUserID)
+        ? lastMessageChat || initialLastMessage
+        : initialLastMessage;
+
+    console.log("RecepientIDout: ", recepientID);
 
     return (
         <Box
             minH="12%"
-            bg="transparent"
+            bg={selecting ? "RGBA(0, 0, 0, 0.25)" : "transparent"}
             borderTop="1px"
             borderColor="RGBA(0, 0, 0, 0.16)"
             maxW="100%"

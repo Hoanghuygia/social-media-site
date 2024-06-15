@@ -196,7 +196,6 @@ class UserController {
     };
 
     getChaList = async (req, res) => {
-        console.log("huy dep trai");
         try {
             const { userId } = req.params;
 
