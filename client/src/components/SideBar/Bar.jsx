@@ -11,6 +11,7 @@ function Bar({ icon, barName, route }) {
         <Flex>
             <Box h="36px" bg="bg-color.100" w="30%"></Box>
             <Box
+                className=" font-khumb-sans tracking-wide font-medium gap-4 "
                 w="70%"
                 h="36px"
                 sx={{
@@ -23,13 +24,13 @@ function Bar({ icon, barName, route }) {
                 borderTopLeftRadius={isActive ? "2xl" : "none"}
                 borderBottomLeftRadius={isActive ? "2xl" : "none"}
                 borderTopWidth={isActive ? "3px" : "none"}
-                background={isActive ? "bg-color.300" : "none"}
+                borderColor={isActive? "#efcbce": "none"}
+                background={isActive ? "linear-gradient(to right, #fce2e3, #ebe1ed)" : "none"}
                 _hover={{
                     borderTopLeftRadius: "2xl",
                     borderBottomLeftRadius: "2xl",
                     borderTopWidth: "3px",
-                    borderColor: "#efcbce",
-                    background: "linear-gradient(to right, #fce2e3, #ebe1ed)",
+                    background: "bg-color.300",
                 }}
                 transition="background-color 0.3s"
             >

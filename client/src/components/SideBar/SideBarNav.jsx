@@ -4,7 +4,7 @@ import Bar from "./Bar";
 
 function SideBarNav() {
     return (
-        <Flex flexDir="column" gap={3} mt="10px">
+        <Flex flexDir="column" gap={3} mt="20px">
             <Bar icon={HiOutlineHome} barName={"Home"} route={"/"}/>
             <Bar icon={HiOutlineChatBubbleOvalLeftEllipsis } barName={"Message"} route={"/message"}/>
             <Bar icon={HiOutlineGlobeAlt} barName={"Explore"} route={"/explore/reels"}/>

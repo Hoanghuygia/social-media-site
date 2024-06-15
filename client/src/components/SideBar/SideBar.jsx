@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import {
     Avatar,
     Center,
@@ -15,50 +16,86 @@ import SideBarNav from "./SideBarNav";
 import Cookies from 'js-cookie';
 
 function SideBar() {
+    const [userData, setUserData] = useState(null);
 
     const logout = () => {
-        Object.keys(Cookies.get()).forEach(function(cookieName) {
+        Object.keys(Cookies.get()).forEach(function (cookieName) {
             Cookies.remove(cookieName);
         });
+        localStorage.clear();
     };
+
+    const fetchUserData = async () => {
+        const username = localStorage.username
+        console.log(username)
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch(`https://sugar-cube.onrender.com/user/${username}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}` // Example of adding an authorization header
+                }
+            });
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error("There was a problem with the fetch operation:", error);
+        }
+    };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const username = localStorage.getItem('username');
+            if (username) {
+                const data = await fetchUserData(username);
+                setUserData(data);
+                // Save necessary data to localStorage if needed
+                localStorage.setItem('name', `${data.firstName} ${data.lastName}`);
+            }
+        };
+        fetchData();
+    }, []);
+
+    if (!userData) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <Flex
-            pr={"20px"}
             flexDir="column"
             h="100%"
-            // boxShadow="4px 0px 16px rgba(239, 202, 204, 1)"
             border="1px solid RGBA(0, 0, 0, 0.16)"
-            // boxShadow="0px -10px 28px rgba(239, 202, 204, 1), 0px 10px 28px rgba(239, 202, 204, 1)"
-            gap={4}
+            gap={5}
         >
-            <Flex flexDir="column" mt="24px" textAlign="center" gap={3}>
+            <Flex flexDir="column" mt="70px" textAlign="center" gap={3}>
                 <Center>
-                    <Avatar size="xl" name="profile" src={"/img/avatar.png"} />
+                    <Avatar size="2xl" name="profile" src={userData.profilePicture || "/img/avatar.png"} />
                 </Center>
-                <Heading as="h2" fontSize="2xl">
-                    Swilrl Lollipop
-                </Heading>
-                <Text>Lorem ipsum dolor sit</Text>
+                <p className="h3 font-khumb-sans tracking-wider pt-3 font-bold text-3xl">
+                    {userData.firstName} {userData.lastName}
+                </p>
+                <Text className='flex justify-between px-6'>{userData.desc}</Text>
             </Flex>
 
-            <Flex pt="24px" justifyContent="space-around" gap="24px">
-                <Box>
+            <Flex pt="24px" justifyContent="space-around" gap="20px">
+                <Box className='flex flex-col items-center justify-center font-inter'>
                     <Heading fontSize="xl">60</Heading>
                     <Text fontSize="xs" color="RGBA(0, 0, 0, 0.48)">
                         Posts
                     </Text>
                 </Box>
-                <Box>
-                    <Heading fontSize="xl">1,870</Heading>
+                <Box className='flex flex-col items-center justify-center font-inter'>
+                    <Heading fontSize="xl">{userData.followers.length}</Heading>
                     <Text fontSize="xs" color="RGBA(0, 0, 0, 0.48)">
                         Followers
                     </Text>
                 </Box>
-                <Box>
-                    <Heading fontSize="xl">633</Heading>
+                <Box className='flex flex-col items-center justify-center font-inter'>
+                    <Heading fontSize="xl">{userData.followings.length}</Heading>
                     <Text fontSize="xs" color="RGBA(0, 0, 0, 0.48)">
-                        Following
+                   Followings
                     </Text>
                 </Box>
             </Flex>

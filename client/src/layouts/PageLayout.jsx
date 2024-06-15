@@ -9,8 +9,8 @@ const PageLayout = ({ children }) => {
         <Flex>
             <Grid
                 templateAreas={`"nav header" "nav main"`}
-                gridTemplateRows={"15% auto"}
-                gridTemplateColumns={"25% auto"}
+                gridTemplateRows={"13% auto"}
+                gridTemplateColumns={"23% auto"}
                 w="100vw"
                 h={"100vh"}
                 overflowY={"auto"}
