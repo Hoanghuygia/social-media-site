@@ -57,6 +57,7 @@ function LoginForm() {
                     Cookies.set('user', 'true');
                     localStorage.setItem('token', data.Token);
                     localStorage.setItem('username', data.username);
+                    localStorage.setItem('name', data.firstName + " " + data.lastName);
                     localStorage.setItem('userId', data._id);
                     localStorage.setItem('user', 'true');
                     setIsSubmit(true);

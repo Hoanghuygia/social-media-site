@@ -11,6 +11,7 @@ function Bar({ icon, barName, route }) {
         <Flex>
             <Box h="36px" bg="bg-color.100" w="30%"></Box>
             <Box
+                className=" font-khumb-sans tracking-wide font-medium gap-4 "
                 w="70%"
                 h="36px"
                 sx={{
