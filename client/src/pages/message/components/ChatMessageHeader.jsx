@@ -18,10 +18,7 @@ import { apiRequest } from "../../../utils/helper";
 import Cookies from "js-cookie";
 import { useState, useEffect } from "react";
 
-const accessToken = Cookies.get("token");
-let recepientID;
-
-const fetchUserFromId = async () => {
+const fetchUserFromId = async (recepientID, accessToken) => {
     if (recepientID) {
         const URL = `http://localhost:3000/user/id/${recepientID}`;
         return await apiRequest(URL, accessToken);
@@ -29,13 +26,16 @@ const fetchUserFromId = async () => {
 };
 
 function ChatMessageHeader() {
+    const accessToken = Cookies.get("token");
+    let recepientID;
+
     const messageState = useSelector((state) => state.message);
     recepientID = messageState.recepientID;
     const [user, setUser] = useState(null);
 
     const fetchData = async () => {
         try {
-            const userData = await fetchUserFromId();
+            const userData = await fetchUserFromId(recepientID, accessToken);
             setUser(userData);
         } catch (error) {
             console.error("Error happened when fetching data: ", error);
@@ -43,7 +43,7 @@ function ChatMessageHeader() {
     };
 
     useEffect(() => {
-        fetchData()
+        fetchData();
     }, [recepientID]);
 
     return (
@@ -58,17 +58,19 @@ function ChatMessageHeader() {
                 <Avatar src={"/img/avatar.png"} ml="16px">
                     <AvatarBadge
                         boxSize=".75em"
-                        bg={user && user.status === "Online" ? "green.500" : "red.300"}
+                        bg={
+                            user && user.status === "Online"
+                                ? "green.500"
+                                : "red.300"
+                        }
                         borderWidth="2px"
                     />
                 </Avatar>
                 <Box mx="16px">
                     <Heading as="h2" fontSize="md">
-                    {user && `${user.firstName} ${user.lastName}`}
+                        {user && `${user.firstName} ${user.lastName}`}
                     </Heading>
-                    <Text noOfLines={1}>
-                        {user && `${user.thought}`}
-                    </Text>
+                    <Text noOfLines={1}>{user && `${user.thought}`}</Text>
                 </Box>
                 <Spacer />
                 <Flex

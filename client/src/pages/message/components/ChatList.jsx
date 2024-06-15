@@ -5,21 +5,21 @@ import React, { useRef, useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import { apiRequest } from "../../../utils/helper";
 
-const currentUserId = Cookies.get('userId');
-const accessToken = Cookies.get("token");
-
-const fetchChatList = async() =>{
+const fetchChatList = async(currentUserId, accessToken) =>{
     const url = `http://localhost:3000/user/chatlist/${currentUserId}`;
     return await apiRequest(url, accessToken)
 }
 
 function ChatList() {
+    const currentUserId = Cookies.get('userId');
+    const accessToken = Cookies.get("token");
+    
     const [data, setData] = useState([]);
     const fetchedRef = useRef(false);
 
     const fetchData = async () => {
         try {
-            const userData = await fetchChatList();
+            const userData = await fetchChatList(currentUserId, accessToken);
             // console.log("User data: " + JSON.stringify(userData));
             setData(userData);
         } catch (error) {

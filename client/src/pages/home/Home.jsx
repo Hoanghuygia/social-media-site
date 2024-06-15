@@ -7,9 +7,9 @@ import { socket, connectSocket } from "../../socket";
 import { setSocket, } from "../../stores/windowSlice";
 import { useDispatch, } from 'react-redux';
 
-const currentUserID = Cookies.get("userId");
 
 function Home() {
+    const currentUserID = Cookies.get("userId");
     const dispatch = useDispatch();
 
     console.log(currentUserID);

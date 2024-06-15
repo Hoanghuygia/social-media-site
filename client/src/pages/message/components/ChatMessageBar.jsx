@@ -15,11 +15,11 @@ import { addMessage, changeLastMessage } from "../../../stores/messageSlice";
 import { setImageScreenShot } from "../../../stores/windowSlice";
 import { useNavigate } from "react-router-dom";
 
-const currentUserId = Cookies.get("userId");
-const accessToken = Cookies.get("token");
-const currentUsername = Cookies.get("username");
-
 function ChatMessageBar() {
+    const currentUserId = Cookies.get("userId");
+    const accessToken = Cookies.get("token");
+    const currentUsername = Cookies.get("username");
+
     const { recepientID } = useSelector((state) => state.message);
     const socket = useSelector((state) => state.window.socket);
     const screenshotImage = useSelector((state) => state.window.image);
@@ -65,7 +65,11 @@ function ChatMessageBar() {
         };
 
         try {
-            await apiRequestPost("http://localhost:3000/message", accessToken, message);
+            await apiRequestPost(
+                "http://localhost:3000/message",
+                accessToken,
+                message
+            );
 
             dispatch(
                 changeLastMessage({

@@ -8,11 +8,11 @@ import { addMessages, deleteMessages, changeRecepient } from "../../../stores/me
 import Cookies from 'js-cookie';
 import axios from "axios";
 
-const currentUserId = Cookies.get('userId');
-const accessToken = Cookies.get("token");
-
 
 function ChatMessage() {
+    const currentUserId = Cookies.get('userId');
+    const accessToken = Cookies.get("token");
+
     const dispatch = useDispatch();
     const { messages, recepientID } = useSelector((state) => state.message);//mình đoán là cái useSelector giúp kích hoạt re-render như cái useState
     const flexRef = useRef(null);
