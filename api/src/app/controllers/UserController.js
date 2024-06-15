@@ -1,5 +1,6 @@
+const mongoose = require('mongoose');
 const User = require("../models/user");
-const Message = require('../models/Message');
+const Message = require("../models/Message");
 
 class UserController {
     getUser = async (req, res) => {
@@ -57,27 +58,31 @@ class UserController {
     getFollowers = async (req, res) => {
         console.log(req.params.username);
         try {
-          const user = await User.findOne({ username: req.params.username }).populate("followings.following_id", "username");;
-      
-          if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-          }
-      
-          res.status(200).json(user.followers );
-        } catch (err) {
-          res.status(500).json({ message: err.message });
-        }
-      };
-      
-      getUsersList = async (req, res) => {
-        try {
-            const users = await User.find({}, 'username firstName lastName profilePicture');
-            res.status(200).json(users);
+            const user = await User.findOne({
+                username: req.params.username,
+            }).populate("followings.following_id", "username");
+
+            if (!user) {
+                return res.status(404).json({ message: "User not found" });
+            }
+
+            res.status(200).json(user.followers);
         } catch (err) {
             res.status(500).json({ message: err.message });
         }
     };
 
+    getUsersList = async (req, res) => {
+        try {
+            const users = await User.find(
+                {},
+                "username firstName lastName profilePicture"
+            );
+            res.status(200).json(users);
+        } catch (err) {
+            res.status(500).json({ message: err.message });
+        }
+    };
 
     getFollowings = async (req, res) => {
         try {
@@ -193,7 +198,6 @@ class UserController {
     };
 
     getChaList = async (req, res) => {
-        console.log("huy dep trai");
         try {
             const { userId } = req.params;
 
@@ -237,6 +241,31 @@ class UserController {
             res.json(response);
         } catch (error) {
             console.error("Error fetching chat list:", error);
+            res.status(500).json({ message: "Server Error" });
+        }
+    };
+
+    addToChatlist = async (req, res) => {
+        const { currentUserID, addUserID } = req.body;
+        console.log("hehehehe");
+        try {
+            // Validate ObjectId
+            if (!mongoose.Types.ObjectId.isValid(currentUserID) || !mongoose.Types.ObjectId.isValid(addUserID)) {
+                return res.status(400).json({ message: "Invalid User ID" });
+            }
+    
+            const filter = { _id: currentUserID };
+            const update = { $addToSet: { chat_list: addUserID } }; // Use $addToSet to prevent duplicates
+    
+            const result = await User.findOneAndUpdate(filter, update, { new: true });
+    
+            if (!result) {
+                return res.status(404).json({ message: "User not found" });
+            }
+    
+            return res.status(200).json(result);
+        } catch (error) {
+            console.error("Error when adding user to chat list:", error);
             res.status(500).json({ message: "Server Error" });
         }
     };

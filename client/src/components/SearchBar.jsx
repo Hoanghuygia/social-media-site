@@ -1,24 +1,28 @@
 import React, { useState, useEffect, useRef } from "react";
 import { SearchIcon } from "@chakra-ui/icons";
-import axios from 'axios';
-import SearchModal from './SearchModal';
+import axios from "axios";
+import SearchModal from "./SearchModal";
 
 function SearchBar({ className }) {
     const inputRef = useRef(null);
+    const searchBarRef = useRef(null);
     const [users, setUsers] = useState([]);
     const [filteredUsers, setFilteredUsers] = useState([]);
-    const [query, setQuery] = useState('');
+    const [query, setQuery] = useState("");
 
     useEffect(() => {
         // Fetch the user list from the API
         const fetchUsers = async () => {
             try {
-                const token = localStorage.getItem('token');
-                const response = await axios.get('http://localhost:3000/user/userlist', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
+                const token = localStorage.getItem("token");
+                const response = await axios.get(
+                    "http://localhost:3000/user/userlist",
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
                     }
-                });
+                );
                 setUsers(response.data);
             } catch (error) {
                 console.error("Error fetching user list:", error);
@@ -30,10 +34,13 @@ function SearchBar({ className }) {
     const handleSearch = (event) => {
         const query = event.target.value.toLowerCase();
         setQuery(query);
-        const filtered = users.filter(user =>
-            (user.username && user.username.toLowerCase().includes(query)) ||
-            (user.firstName && user.firstName.toLowerCase().includes(query)) ||
-            (user.lastName && user.lastName.toLowerCase().includes(query))
+        const filtered = users.filter(
+            (user) =>
+                (user.username &&
+                    user.username.toLowerCase().includes(query)) ||
+                (user.firstName &&
+                    user.firstName.toLowerCase().includes(query)) ||
+                (user.lastName && user.lastName.toLowerCase().includes(query))
         );
         setFilteredUsers(filtered);
     };
@@ -42,8 +49,27 @@ function SearchBar({ className }) {
         inputRef.current.focus();
     };
 
+    const handleClickOutside = (event) => {
+        if (
+            searchBarRef.current &&
+            !searchBarRef.current.contains(event.target)
+        ) {
+            setQuery("");
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
     return (
-        <div className={`relative bg-pink-100 rounded-2xl ${className}`}>
+        <div
+            ref={searchBarRef}
+            className={`relative bg-pink-100 rounded-2xl ${className}`}
+        >
             <SearchIcon onClick={focusInput} ml="10px" />
             <input
                 ref={inputRef}
@@ -56,7 +82,10 @@ function SearchBar({ className }) {
             />
             {query && (
                 <div className="absolute w-full z-10 bg-white shadow-lg rounded-lg">
-                    <SearchModal filteredUsers={filteredUsers} />
+                    <SearchModal
+                        filteredUsers={filteredUsers}
+                        setQuery={setQuery}
+                    />
                 </div>
             )}
         </div>

@@ -20,5 +20,6 @@ router.delete('/:username/followings', userController.removeFollowing);
 
 router.get('/id/:id', userController.getUserById);
 router.get('/chatlist/:userId', userController.getChaList);
+router.post('/chatlist', userController.addToChatlist);
 
 module.exports = router;
