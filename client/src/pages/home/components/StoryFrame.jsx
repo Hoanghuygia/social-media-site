@@ -1,6 +1,5 @@
-import { Avatar, Box, Flex, Text, Icon, Button } from "@chakra-ui/react";
+import { Avatar, Flex, Text, Icon, Button } from "@chakra-ui/react";
 import { HiOutlinePlusCircle } from "react-icons/hi2";
-import { useSelector } from "react-redux";
 
 let data = [
     {
@@ -29,17 +28,11 @@ let data = [
     },
 ]
 
-
 function StoryFrame() {
-    const { mainWidth } = useSelector((state) => ({
-        mainWidth: state.mainWidth,
-    }));
-
     return (
         <Flex
             flexDir="row"
             h={"100%"}
-            width={`${mainWidth}px`}
             overflowX="scroll"
             alignItems={"center"}
             gap={8}
