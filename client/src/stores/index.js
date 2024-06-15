@@ -1,4 +1,3 @@
-// store.js
 import { configureStore } from '@reduxjs/toolkit';
 import messageReducer from './messageSlice';
 import windowReducer from './windowSlice';
@@ -10,8 +9,8 @@ const store = configureStore({
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({
     serializableCheck: {
-      ignoredActions: ['window/setSocket'],
-      ignoredPaths: ['window.socket'],
+      ignoredActions: ['window/setSocket', 'window/setImage'],
+      ignoredPaths: ['window.socket', 'window.image.file'], 
     },
   }),
 });

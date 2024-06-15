@@ -22,11 +22,10 @@ async function onConnected(io, socket) {
         } catch (e) {
             console.log(e);
         }
-    }
 
-    socket.on("send-message", async (message) => {
-        const senderID = message.userId1;
-        const recepientID = message.userId2;
+        socket.on("send-message", async (message) => {
+            const senderID = message.userId1;
+            const recepientID = message.userId2;
 
         const senderUsername = await User.findById(senderID)
             .select("username")
@@ -39,19 +38,19 @@ async function onConnected(io, socket) {
             recepientID: recepientID,
         };
 
-        const toSocketObject = await User.findById(recepientID)
-            .select("socket_id")
-            .lean();
-        const toSocketID = toSocketObject ? toSocketObject.socket_id : null;
+            const toSocketObject = await User.findById(recepientID)
+                .select("socket_id")
+                .lean();
+            const toSocketID = toSocketObject ? toSocketObject.socket_id : null;
 
-        const fromSocketObject = await User.findById(senderID)
-            .select("socket_id")
-            .lean();
-        const fromSocketID = fromSocketObject
-            ? fromSocketObject.socket_id
-            : null;
+            const fromSocketObject = await User.findById(senderID)
+                .select("socket_id")
+                .lean();
+            const fromSocketID = fromSocketObject
+                ? fromSocketObject.socket_id
+                : null;
 
-        io.to(toSocketID).emit("new-message", packageMessage);
+            io.to(toSocketID).emit("new-message", packageMessage);
 
         io.to(fromSocketID).emit("verify-sent", {
             message: "Sent message succesfully",
@@ -62,4 +61,6 @@ async function onConnected(io, socket) {
         console.log("Socket disconnected", socket.id);
     });
 }
+module.exports = { onConnected };
+
 module.exports = { onConnected };
