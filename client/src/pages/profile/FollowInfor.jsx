@@ -1,115 +1,68 @@
-import { useState, useRef, useEffect } from "react";
-import avatar from "./../../../public/img/avatar.png";
-import { PiVideoBold } from "react-icons/pi";
-import { FaRegImage } from "react-icons/fa";
+import { useState, useEffect } from "react";
+import Cookies from 'js-cookie';
 
-const data1 = [
-    {
-        ava: "/img/avatar.png",
-        name: "stupid",
-        descri: "being stupid is a talent you know"
-    },
-    {
-        ava: "/img/avatar.png",
-        name: "stupid",
-        descri: "being stupid is a talent you know"
-    },
-    {
-        ava: "/img/avatar.png",
-        name: "stupid",
-        descri: "being stupid is a talent you know"
-    },
-    {
-        ava: "/img/avatar.png",
-        name: "stupid",
-        descri: "being stupid is a talent you know"
-    },
-    {
-        ava: "/img/avatar.png",
-        name: "stupid",
-        descri: "being stupid is a talent you know"
-    },
-    {
-        ava: "/img/avatar.png",
-        name: "stupid",
-        descri: "being stupid is a talent you know"
-    },
-    {
-        ava: "/img/avatar.png",
-        name: "stupid",
-        descri: "being stupid is a talent you know"
-    },
-    {
-        ava: "/img/avatar.png",
-        name: "stupid",
-        descri: "being stupid is a talent you know"
-    },
-    {
-        ava: "/img/avatar.png",
-        name: "stupid",
-        descri: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptas labore, vitae exercitationem debitis corrupti, quaerat sunt ducimus natus ea quo qui, illo sint nostrum neque. Hic, odio eum! Illo, totam!"
-    },
-    {
-        ava: "/img/avatar.png",
-        name: "stupid",
-        descri: "being stupid is a talent you know"
-    },
-];
 
-const data2 = [
-    {
-        ava: "/img/Sugarcube.png",
-        name: "stupid",
-        descri: "being stupid is a talent you know"
-    },
-    {
-        ava: "/img/Sugarcube.png",
-        name: "stupid",
-        descri: "being stupid is a talent you know"
-    },
-    {
-        ava: "/img/Sugarcube.png",
-        name: "stupid",
-        descri: "being stupid is a talent you know"
-    },
-    {
-        ava: "/img/Sugarcube.png",
-        name: "stupid",
-        descri: "being stupid is a talent you know"
-    },
-    {
-        ava: "/img/Sugarcube.png",
-        name: "stupid",
-        descri: "being stupid is a talent you know"
-    },
-    {
-        ava: "/img/Sugarcube.png",
-        name: "stupid",
-        descri: "being stupid is a talent you know"
-    },
-    {
-        ava: "/img/Sugarcube.png",
-        name: "stupid",
-        descri: "being stupid is a talent you know"
-    },
-    {
-        ava: "/img/Sugarcube.png",
-        name: "stupid",
-        descri: "being stupid is a talent you know"
-    },
-    {
-        ava: "/img/Sugarcube.png",
-        name: "stupid",
-        descri: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptas labore, vitae exercitationem debitis corrupti, quaerat sunt ducimus natus ea quo qui, illo sint nostrum neque. Hic, odio eum! Illo, totam!"
-    },
-    {
-        ava: "/img/Sugarcube.png",
-        name: "stupid",
-        descri: "being stupid is a talent you know"
-    },
-];
+const fetchFollowingsData = async () => {
+    const username = Cookies.get("username");
+    console.log(username)
+    try {
+        const token = Cookies.get("token");
+        const response = await fetch(`https://sugar-cube.onrender.com/user/${username}/followings`, {
+            headers: {
+                'Authorization': `Bearer ${token}` // Example of adding an authorization header
+            }
+        });
+        if (!response.ok) {
+            throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("There was a problem with the fetch operation:", error);
+    }
+};
+
+const fetchFollowersData = async () => {
+    const username = Cookies.get("username");
+    console.log(username)
+    try {
+        const token = Cookies.get("token");
+        const response = await fetch(`https://sugar-cube.onrender.com/user/${username}/followers`, {
+            headers: {
+                'Authorization': `Bearer ${token}` // Example of adding an authorization header
+            }
+        });
+        if (!response.ok) {
+            throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("There was a problem with the fetch operation:", error);
+    }
+};
+
 
 const FollowInfor = ({ isFollowers, isFollowings, handleClose }) => {
+
+    const [dataFollowings, setDataFollowings] = useState(null);
+    const [dataFollowers, setDataFollowers] = useState(null);
+    useEffect(() => {
+
+        const fetchDataFollowings = async () => {
+            const data = await fetchFollowingsData();
+            console.log(data);
+            setDataFollowings(data);
+        };
+        const fetchDataFollowers = async () => {
+            const data = await fetchFollowersData();
+            console.log(data);
+            setDataFollowers(data);
+        };
+        fetchDataFollowings();
+        fetchDataFollowers();
+
+    }, []);
 
     if (!isFollowers && !isFollowings) return null;
 
@@ -128,30 +81,26 @@ const FollowInfor = ({ isFollowers, isFollowings, handleClose }) => {
                 <div className="h-0.5 bg-gray-300 w-full" />
                 </div>
                 <div className="h-[93%] w-full overflow-auto overscroll-auto">
-                    {data1.map((data, index) => ( 
-                        <div className="flex justify-start items-center gap-3 pt-3 px-5 h-[13%]">
-                        <div className="relative w-[50px] h-[50px] rounded-full overflow-hidden">
-                            <img
-                            src={data.ava}
-                            alt="avatar"
-                            className="w-full h-full object-cover"
-                            />
-                        </div>
-                        <div className="flex flex-col h-full w-[60%] overflow-hidden">
-                            <p className="font-inter tracking-wider font-medium text-lg">
-                            {data.name}
-                            </p>
-                            <p className="font-inter tracking-wider font-medium text-sm text-gray-600">
-                            {data.descri}
-                            </p>
-                        </div>
+                    {dataFollowers.map((data, index) => ( 
+                        <div key={index} className="flex justify-start items-center gap-3 pt-3 px-5 h-[13%]">
+                            <div className="relative w-[50px] h-[50px] rounded-full overflow-hidden">
+                                <img
+                                src="/img/avatar.png"
+                                alt="avatar"
+                                className="w-full h-full object-cover"
+                                />
+                            </div>
+                            <div className="flex flex-col h-full w-[60%] overflow-hidden justify-center">
+                                <p className="font-inter tracking-wider font-medium text-xl">
+                                {data.follower_id}
+                                </p>
+                            </div>
                         </div>
                     ))}
                 </div>
             </div>
             </div>
         );
-
 
     if(isFollowings)
         return (
@@ -168,29 +117,27 @@ const FollowInfor = ({ isFollowers, isFollowings, handleClose }) => {
                 <div className="h-0.5 bg-gray-300 w-full" />
                 </div>
                 <div className="h-[93%] w-full overflow-auto overscroll-auto">
-                    {data2.map((data, index) => ( 
-                        <div className="flex justify-start items-center gap-3 pt-3 px-5 h-[13%]">
-                        <div className="relative w-[50px] h-[50px] rounded-full overflow-hidden">
-                            <img
-                            src={data.ava}
-                            alt="avatar"
-                            className="w-full h-full object-cover"
-                            />
-                        </div>
-                        <div className="flex flex-col h-full w-[60%] overflow-hidden">
-                            <p className="font-inter tracking-wider font-medium text-lg">
-                            {data.name}
-                            </p>
-                            <p className="font-inter tracking-wider font-medium text-sm text-gray-600">
-                            {data.descri}
-                            </p>
-                        </div>
+                    {dataFollowings.map((data, index) => ( 
+                        <div key={index} className="flex justify-start items-center gap-3 pt-3 px-5 h-[13%]">
+                            <div className="relative w-[50px] h-[50px] rounded-full overflow-hidden">
+                                <img
+                                src="/img/avatar.png"
+                                alt="avatar"
+                                className="w-full h-full object-cover"
+                                />
+                            </div>
+                            <div className="flex flex-col h-full w-[60%] overflow-hidden justify-center">
+                                <p className="font-inter tracking-wider font-medium text-xl">
+                                {data.following_id.username}
+                                </p>
+                            </div>
                         </div>
                     ))}
                 </div>
             </div>
             </div>
         );
+
 };
 
 export default FollowInfor;

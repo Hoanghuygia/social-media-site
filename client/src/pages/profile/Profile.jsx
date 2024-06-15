@@ -6,7 +6,7 @@ function Profile() {
       <div className="">
         <ProfileHeader />
       </div>
-      <div className=" py-44 ">
+      <div className=" pt-48 ">
         <StatusBar />
       </div>
     </div>
