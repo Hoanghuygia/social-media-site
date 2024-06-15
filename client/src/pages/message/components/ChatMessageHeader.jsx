@@ -23,7 +23,7 @@ let recepientID;
 
 const fetchUserFromId = async () => {
     if (recepientID) {
-        const URL = `http://localhost:3000/user/${recepientID}`;
+        const URL = `http://localhost:3000/user/id/${recepientID}`;
         return await apiRequest(URL, accessToken);
     }
 };
@@ -44,7 +44,7 @@ function ChatMessageHeader() {
 
     useEffect(() => {
         fetchData()
-    }, [recepientID, accessToken]);
+    }, [recepientID]);
 
     return (
         <Box
@@ -58,14 +58,13 @@ function ChatMessageHeader() {
                 <Avatar src={"/img/avatar.png"} ml="16px">
                     <AvatarBadge
                         boxSize=".75em"
-                        // bg="green.500"
                         bg={user && user.status === "Online" ? "green.500" : "red.300"}
                         borderWidth="2px"
                     />
                 </Avatar>
                 <Box mx="16px">
                     <Heading as="h2" fontSize="md">
-                    {user && `${user.firstname} ${user.lastname}`}
+                    {user && `${user.firstName} ${user.lastName}`}
                     </Heading>
                     <Text noOfLines={1}>
                         {user && `${user.thought}`}

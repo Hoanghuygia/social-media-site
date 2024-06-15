@@ -50,6 +50,8 @@ function ChatMessageBar() {
             }
         }
 
+        console.log("CurrentUserID: ", currentUserId);
+        console.log("RecepientID: ", recepientID);
         const message = {
             userId1: currentUserId,
             userId2: recepientID,

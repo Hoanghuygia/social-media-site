@@ -70,7 +70,6 @@ function ChatMessage() {
             }
             else{
                 setRecentIdPersonChatWith(recepientID);//nên đổi thành setRecepientID thì đúng hơn
-                //minhf thật sự không biết laf cái logic nào khiến nó đẩy tin nhắn lên, và tất cả những gì mình viết đều là trùng hợp
             }
         };
 

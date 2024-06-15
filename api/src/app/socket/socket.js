@@ -3,11 +3,13 @@ const User = require("../models/user");
 async function onConnected(io, socket) {
     const { userID } = socket.handshake.query;
 
-    if (!userID || typeof userID !== "string" || userID.length !== 24) {
-        throw new Error("Invalid ID format");
-    }
+    // console.log("UserID", userID);
 
-    if (userID != null) {
+    if (!userID || typeof userID !== "string" || userID.length !== 24) {
+        console.log("Invalid ID format");
+        return
+    }
+    else{
         try {
             await User.findByIdAndUpdate(
                 userID,
@@ -26,13 +28,15 @@ async function onConnected(io, socket) {
         const senderID = message.userId1;
         const recepientID = message.userId2;
 
-        const senderUsername = await User.findById(senderID).select('username').lean();
-        
+        const senderUsername = await User.findById(senderID)
+            .select("username")
+            .lean();
+
         const packageMessage = {
             content: message.content,
             imageURL: message.imageURL,
             username: senderUsername.username,
-            recepientID: recepientID
+            recepientID: recepientID,
         };
 
         const toSocketObject = await User.findById(recepientID)
@@ -50,12 +54,12 @@ async function onConnected(io, socket) {
         io.to(toSocketID).emit("new-message", packageMessage);
 
         io.to(fromSocketID).emit("verify-sent", {
-            message: 'Sent message succesfully'
-        })
+            message: "Sent message succesfully",
+        });
     });
 
     socket.on("disconnect", () => {
         console.log("Socket disconnected", socket.id);
     });
 }
-module.exports = {onConnected};
+module.exports = { onConnected };
