@@ -1,33 +1,61 @@
 import { FaHeart, FaRegCommentDots } from "react-icons/fa6";
+import  { useEffect, useState } from "react";
 
 import SubNav from "./SubNav";
-import Img1 from "./../../assets/img/trendImg1.jpg";
-import Img2 from "./../../assets/img/trendImg2.jpg";
 
 const ExploreTrending = () => {
-  let data = [
-    { id: 1, imgSrc: Img2, likes: "200", shares: "399" },
-    { id: 2, imgSrc: Img1, likes: "200", shares: "399" },
-    { id: 3, imgSrc: Img2, likes: "200", shares: "399" },
-    { id: 4, imgSrc: Img1, likes: "200", shares: "399" },
-    { id: 5, imgSrc: Img1, likes: "200", shares: "399" },
-    { id: 6, imgSrc: Img1, likes: "200", shares: "399" },
-    { id: 7, imgSrc: Img1, likes: "200", shares: "399" },
-    { id: 8, imgSrc: Img2, likes: "200", shares: "399" },
-    { id: 9, imgSrc: Img1, likes: "200", shares: "399" },
-    { id: 10, imgSrc: Img1, likes: "200", shares: "399" },
-    { id: 11, imgSrc: Img2, likes: "200", shares: "399" },
-    { id: 12, imgSrc: Img1, likes: "200", shares: "399" },
-    { id: 13, imgSrc: Img1, likes: "200", shares: "399" },
-    { id: 14, imgSrc: Img1, likes: "200", shares: "399" },
-    { id: 15, imgSrc: Img1, likes: "200", shares: "399" },
-    // More data will come from the database later
-  ];
+  const [data, setData] = useState([]);
 
+  const isVideo = (url) => {
+    const videoExtensions = ['mp4', 'webm', 'ogg'];
+    const imageExtensions = ['png', 'jpg', 'jpeg', 'gif'];
+
+    const decodedUrl = decodeURIComponent(url);
+
+    const match = decodedUrl.match(/\.([^.?#/\\]+)(?:[?#]|$)/);
+
+    if (!match) return false; // No file extension found
+
+    const extension = match[1].toLowerCase();
+    if (videoExtensions.includes(extension)) {
+      return true;
+    }
+
+    if (imageExtensions.includes(extension)) {
+      return false; // Skip images
+    }
+    return false;
+  };
+
+  useEffect(() => {
+    const token = localStorage.token;
+    fetch("http://localhost:3000/post/", {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }})
+      .then((response) => response.json())
+      .then((data) => {
+        // Parse the fetched data to match the required format
+        const parsedData = data.map((item) => ({
+          id: item.post._id,
+          channel: item.username,
+          description: item.post.content,
+          url: item.post.mediaURL,
+          likes: item.post.like,
+          comment: item.post.comment,
+          shares: item.post.share,
+        }));
+        setData(parsedData);
+      })
+      .catch((error) => console.error("Error fetching data:", error));
+  }, []);
+
+  // Filter out video data
+  const filteredData = data.filter(item => !isVideo(item.url));
   // Group data into chunks of 5
   const groupedData = [];
-  for (let i = 0; i < data.length; i += 5) {
-    groupedData.push(data.slice(i, i + 5));
+  for (let i = 0; i < filteredData.length; i += 5) {
+    groupedData.push(filteredData.slice(i, i + 5));
   }
 
   return (
@@ -50,7 +78,7 @@ const ExploreTrending = () => {
                 }`}
               >
                 <img
-                  src={item.imgSrc}
+                  src={item.url}
                   alt={`Image ${item.id}`}
                   className="w-full h-full object-cover"
                 />

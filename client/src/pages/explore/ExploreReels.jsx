@@ -1,30 +1,51 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import SubNav from './SubNav';
 import Video from './Video';
-import reel from './../../assets/img/Reels.mp4';
 
-let data = [
-  {
-    channel: 'Ban HeeSoo',
-    description: 'Lorem ipsum dolor sit amet consectetur. At sapien sem.',
-    url: reel,
-    likes: '32',
-    comment: '2',
-    shares: '23',
-  },
-  {
-    channel: 'Ban HeeSoo',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    url: reel,
-    likes: '32',
-    comment: '2',
-    shares: '23',
-  },
-  // Add more video objects here
-];
+const isVideo = (url) => {
+  const videoExtensions = ['mp4', 'webm', 'ogg'];
+  const imageExtensions = ['png', 'jpg', 'jpeg', 'gif'];
+
+  const decodedUrl = decodeURIComponent(url);
+
+  const match = decodedUrl.match(/\.([^.?#/\\]+)(?:[?#]|$)/);
+
+  if (!match) return false; // No file extension found
+
+  const extension = match[1].toLowerCase();
+  if (videoExtensions.includes(extension)) {
+    return true;
+  }
+
+  if (imageExtensions.includes(extension)) {
+    return false; // Skip images
+  }
+  return false;
+};
 
 function ExploreReels() {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const token = localStorage.token;
+      try {
+        const response = await fetch('http://localhost:3000/post/', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+      });
+        const result = await response.json();
+        const videoPosts = result.filter(video => isVideo(video.post.mediaURL));
+        setData(videoPosts);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+
+    fetchData();
+  }, []);
+
   return (
     <div className="min-h-screen overflow-hidden">
       <SubNav />
@@ -32,12 +53,12 @@ function ExploreReels() {
         {data.map((video, index) => (
           <Video
             key={index}
-            channel={video.channel}
-            description={video.description}
-            url={video.url}
-            likes={video.likes}
-            comment={video.comment}
-            shares={video.shares}
+            channel={video.username}
+            description={video.post.content}
+            url={video.post.mediaURL}
+            likes={video.post.like}
+            comment={video.post.comment}
+            shares={video.post.share}
           />
         ))}
       </div>
