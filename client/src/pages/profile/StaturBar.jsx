@@ -5,7 +5,6 @@ import { FaRegImage } from "react-icons/fa";
 
 import StatusModal from "./StatusModal";
 
-
 export default function StatusBar() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [statuses, setStatuses] = useState([]);

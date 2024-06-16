@@ -121,61 +121,89 @@ async function deletePost(req, res) {
 }
 
 async function getAllPostsByUser(req, res) {
-    const Object_id = req.params.Object_id;
-    console.log(Object_id);
+    const userId = req.params.userId; // Assuming userId is passed as a parameter in the request
+    console.log(userId)
     try {
-        const posts = await PostModel.find({ Object_id }).populate({
-            path: 'Object_id',
-            select: 'username' // specify the fields you want to include
+        // Fetch posts for the specific userId and populate the Object_id field
+        const posts = await PostModel.find({ Object_id: userId }).populate('Object_id');
+
+        // Initialize an array to store all posts
+        const allPosts = [];
+
+        // Iterate through fetched posts and construct the desired format
+        posts.forEach(post => {
+            if (post.Object_id && post.posts && post.posts.length > 0) {
+                post.posts.forEach(p => {
+                    allPosts.push({
+                        userId: userId,
+                        post: {
+                            post_id: p.post_id,
+                            content: p.content,
+                            imageURL: p.imageURL,
+                            tags: p.tags,
+                            like: p.like,
+                            privacyLevel: p.privacyLevel,
+                            comment: p.comment,
+                            share: p.share,
+                            mediaURL: p.mediaURL,
+                            timestamp: p.timestamp,
+                            _id: p._id
+                        }
+                    });
+                });
+            }
         });
-        console.log(posts);
-  
-        if (!posts.length) {
-            return res.status(404).json({ message: "User not found or no posts available" });
-        }
-  
-        res.json(posts);
+
+        // Sorting posts by timestamp in descending order (newest to oldest)
+        allPosts.sort((a, b) => new Date(b.post.timestamp) - new Date(a.post.timestamp));
+
+        res.json(allPosts);
     } catch (error) {
         console.error("Error fetching posts:", error);
         res.status(500).json({ message: "Internal server error" });
     }
-}
-
-
+};
   
-async function getFollowingPosts(req, res) {
+const getFollowingPosts = async (req, res) => {
     const userId = req.params.objectId;
     try {
-        const user = await UserModel.findById(userId);
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
+      const user = await UserModel.findById(userId);
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+  
+      const followingIds = user.followings.map(following => following.following_id);
+  
+      const posts = await PostModel.find({
+        Object_id: { $in: followingIds },
+      }).populate("Object_id");
+  
+      const allPosts = posts.reduce((acc, cur) => {
+        if (cur.Object_id && cur.posts && cur.posts.length > 0) {
+          cur.posts.forEach(post => {
+            if (post.privacyLevel === 'Public' || post.privacyLevel === 'Following') {
+              const userId = cur.Object_id && cur.Object_id._id ? cur.Object_id._id.toString() : null;
+              acc.push({
+                userId: userId,
+                post: post
+              });
+            }
+          });
         }
-
-        const followingIds = user.followings.map(following => following.following_id);
-
-        const posts = await PostModel.find({
-            "Object_id": { $in: followingIds },
-        }).populate("Object_id");
-
-        const allPosts = posts.reduce((acc, cur) => {
-            if (cur.posts && cur.posts.length > 0) {
-                cur.posts.forEach(post => {
-                    if (post.privacyLevel === 'Public' || post.privacyLevel === 'Following') {
-                        acc.push(post);
-                    }
-                });
-            }        
-            return acc;
-        }, []);
-
-        const shuffledPosts = shuffle(allPosts);
-
-        res.json(shuffledPosts);
+        return acc;
+      }, []);
+  
+      const shuffledPosts = shuffle(allPosts);
+  
+      res.json(shuffledPosts);
     } catch (error) {
-        console.error("Error fetching posts:", error);
-        res.status(500).json({ message: "Internal server error" });
+      console.error("Error fetching posts:", error);
+      res.status(500).json({ message: "Internal server error" });
     }
-}
+  };
+  
+  
+  
 
 async function getPostsWithImageURL(req, res) {
     try {
