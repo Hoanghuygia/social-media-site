@@ -1,9 +1,10 @@
 import { Box, Image } from "@chakra-ui/react";
 import Cookies from 'js-cookie';
 
-const currentUsername = Cookies.get("username");
 
 function AMessage({ message }) {
+    const currentUsername = Cookies.get("username");
+    
     let { content, username, imageURL } = message;
     let user = username === currentUsername ? true : false;
 

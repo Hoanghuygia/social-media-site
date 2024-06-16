@@ -14,7 +14,7 @@ function ChatMessage() {
     const accessToken = Cookies.get("token");
 
     const dispatch = useDispatch();
-    const { messages, recepientID } = useSelector((state) => state.message);//mình đoán là cái useSelector giúp kích hoạt re-render như cái useState
+    const { messages, recepientID } = useSelector((state) => state.message);
     const flexRef = useRef(null);
 
     const [recentIdPersonChatWith, setRecentIdPersonChatWith] = useState('');
@@ -69,26 +69,26 @@ function ChatMessage() {
                 }
             }
             else{
-                setRecentIdPersonChatWith(recepientID);//nên đổi thành setRecepientID thì đúng hơn
+                setRecentIdPersonChatWith(recepientID);
             }
         };
 
         if (!isFetching) {
             fetchData();
         }
-    }, [recepientID, accessToken]);
+    }, [recepientID]);
 
     useEffect(() => {
         if (recentIdPersonChatWith) {
             fetchMessages(currentUserId, recentIdPersonChatWith);
         }
-    }, [recentIdPersonChatWith, accessToken]);
+    }, [recentIdPersonChatWith]);
 
     useEffect(() => {
         if (flexRef.current) {
             flexRef.current.scrollTop = flexRef.current.scrollHeight;
         }
-    }, [messages, accessToken]);
+    }, [messages]);
 
     return (
         <Flex flexDir={"column"} w={"100%"} h={"85vh"}>

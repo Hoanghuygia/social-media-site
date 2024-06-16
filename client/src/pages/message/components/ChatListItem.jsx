@@ -16,20 +16,21 @@ function ChatListItem({ data }) {
     const currentUserID = Cookies.get("userId");
     const [selecting, setSelecting] = useState(false);
 
-    const {
+    let {
         avatar,
         status,
         name,
         lastMessage: initialLastMessage,
-        recepientId, // cái cần phải so sánh
+        recepientId, 
     } = data;
 
-    const { content: lastMessageChat, recepientID } = useSelector(
+    let { content: lastMessageChat, recepientID } = useSelector(
         (state) => state.message.lastMessageChat
     );
+
     const recepientSlicer = useSelector((state) => state.message.recepientID);
-    console.log("RecepientID: ", recepientSlicer);
-    console.log("RecepientId: ", recepientId);
+    // console.log("RecepientID: ", recepientSlicer);
+    // console.log("RecepientId: ", recepientId);
 
     useEffect(() => {
         if (recepientId === recepientSlicer) {
@@ -54,11 +55,19 @@ function ChatListItem({ data }) {
         }
     };
 
-    const lastMessage = (recepientID === recepientId || recepientID === currentUserID)
-        ? lastMessageChat || initialLastMessage
-        : initialLastMessage;
+    // const lastMessage = (recepientID === recepientId || recepientID === currentUserID)
+    //     ? lastMessageChat || initialLastMessage
+    //     : initialLastMessage;
 
-    console.log("RecepientIDout: ", recepientID);
+    let lastMessage = "";
+    if (recepientID === recepientId) {
+        lastMessage = lastMessageChat;
+    } else {
+        lastMessage = initialLastMessage;
+    }
+
+
+    // console.log("RecepientIDout: ", recepientID);
 
     return (
         <Box

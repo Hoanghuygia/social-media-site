@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const UserController = require('../controllers/UserController');
 
 async function onConnected(io, socket) {
     const { userID } = socket.handshake.query;
@@ -63,6 +64,9 @@ async function onConnected(io, socket) {
     });
 
     socket.on("disconnect", async () => {
+        // const chatlist = User.findById(userID);
+        // console.log("Chatlist: ", chatlist);
+        //mình dự định sẽ gửi tới danh sách chat list, nhung có vẻ cần thêm time
         try {
             await User.findByIdAndUpdate(
                 userID,

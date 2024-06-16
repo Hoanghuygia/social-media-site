@@ -24,15 +24,9 @@ function SideBar() {
     const socket = useSelector((state) => state.window.socket);
 
     const logout = async() => {
-        // try {
-        //     await apiRequestPost('', accessToken, currentUserID);
-        // } catch (error) {
-        //     console.log("There error in change status: ", error);
-        //     return;
-        // }
         if(socket){
             console.log("huy dep trai logout");
-            socket.emit("disconnect", (currentUserID));
+            socket.disconnect()
         }
 
         Object.keys(Cookies.get()).forEach(function (cookieName) {
@@ -43,7 +37,7 @@ function SideBar() {
 
     const fetchUserData = async () => {
         const username = localStorage.username
-        console.log(username)
+        // console.log(username)
         try {
             const token = localStorage.getItem('token');
             const response = await fetch(`https://sugar-cube.onrender.com/user/${username}`, {

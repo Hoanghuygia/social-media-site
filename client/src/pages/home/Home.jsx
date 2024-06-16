@@ -12,9 +12,6 @@ function Home() {
     const currentUserID = Cookies.get("userId");
     const dispatch = useDispatch();
 
-
-    console.log(currentUserID);
-
     useEffect(() => {
         dispatch(setCurrentPage("Home"));
     }, []);
