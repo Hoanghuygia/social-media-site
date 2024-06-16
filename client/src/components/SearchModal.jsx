@@ -32,6 +32,9 @@ function SearchModal({ filteredUsers, setQuery }) {
         } else {
             navigate(`/user/${username}`);
         }
+    const handleUserClick = (username) => {
+        navigate(`/profile/${username}`);
+        window.location.reload();
     };
 
     return (
