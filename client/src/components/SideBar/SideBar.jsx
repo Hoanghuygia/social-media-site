@@ -14,11 +14,27 @@ import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import SideBarNav from "./SideBarNav";
 import Cookies from 'js-cookie';
+import { apiRequestPost } from '../../utils/helper';
+import { useSelector } from 'react-redux';
 
 function SideBar() {
     const [userData, setUserData] = useState(null);
+    const currentUserID = Cookies.get("userId");
 
-    const logout = () => {
+    const socket = useSelector((state) => state.window.socket);
+
+    const logout = async() => {
+        // try {
+        //     await apiRequestPost('', accessToken, currentUserID);
+        // } catch (error) {
+        //     console.log("There error in change status: ", error);
+        //     return;
+        // }
+        if(socket){
+            console.log("huy dep trai logout");
+            socket.emit("disconnect", (currentUserID));
+        }
+
         Object.keys(Cookies.get()).forEach(function (cookieName) {
             Cookies.remove(cookieName);
         });
@@ -32,7 +48,7 @@ function SideBar() {
             const token = localStorage.getItem('token');
             const response = await fetch(`https://sugar-cube.onrender.com/user/${username}`, {
                 headers: {
-                    'Authorization': `Bearer ${token}` // Example of adding an authorization header
+                    'Authorization': `Bearer ${token}` 
                 }
             });
             if (!response.ok) {
@@ -51,7 +67,6 @@ function SideBar() {
             if (username) {
                 const data = await fetchUserData(username);
                 setUserData(data);
-                // Save necessary data to localStorage if needed
                 localStorage.setItem('name', `${data.firstName} ${data.lastName}`);
             }
         };

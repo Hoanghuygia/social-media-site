@@ -259,7 +259,6 @@ class UserController {
         const { currentUserID, addUserID } = req.body;
         console.log("hehehehe");
         try {
-            // Validate ObjectId
             if (!mongoose.Types.ObjectId.isValid(currentUserID) || !mongoose.Types.ObjectId.isValid(addUserID)) {
                 return res.status(400).json({ message: "Invalid User ID" });
             }
@@ -279,6 +278,24 @@ class UserController {
             res.status(500).json({ message: "Server Error" });
         }
     };
+
+    setOffline = async (req, res) => {
+        const { currentUserID } = req.params;
+    
+        try {
+            const updatedUser = await User.findOneAndUpdate(
+                { _id: currentUserID },
+                { $set: { status: 'Offline' } },
+                { new: true, runValidators: true }
+            );
+    
+            return res.status(200).json({ updatedUser });
+        } catch (error) {
+            console.error("Error when setting offline status:", error);
+            res.status(500).json({ message: "Server Error" });
+        }
+    };
+    
 }
 
 module.exports = new UserController();
