@@ -31,12 +31,10 @@ function SearchModal({ filteredUsers, setQuery }) {
             navigate("/message");
         } else {
             navigate(`/user/${username}`);
+            window.location.reload();
         }
-    const handleUserClick = (username) => {
-        navigate(`/profile/${username}`);
-        window.location.reload();
-    };
-
+    }
+    
     return (
         <div className="p-4 rounded-lg">
             {filteredUsers.map((user) => (
