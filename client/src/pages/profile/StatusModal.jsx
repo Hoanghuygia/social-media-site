@@ -128,7 +128,7 @@ const StatusModal = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
-      <div className="bg-pastel-pink-100 p-3 rounded-3xl w-1/3 relative">
+      <div className="bg-pastel-pink-100 p-3 rounded-3xl w-1/3 relative max-h-screen overflow-y-auto top-10">
         <button
           type="button"
           className="bg-gray-300 text-white text-lg px-[9px] pb-[0.1rem] rounded-full hover:bg-gray-400 absolute right-3"

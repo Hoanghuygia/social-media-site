@@ -13,6 +13,7 @@ import {
 import { useEffect, useState } from "react";
 import { HiUserCircle, HiCake, HiDotsHorizontal } from "react-icons/hi";
 import { Link as ReactRouterLink } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 
 function ProfileDetail() {
     const [sidebarHeight, setSidebarHeight] = useState(0);
@@ -30,9 +31,14 @@ function ProfileDetail() {
     const [phoneNumber, setPhoneNumber] = useState('+84783279012');
     const [address, setAddress] = useState('Thu Duc city, HCM city');
     const [introduction, setIntroduction] = useState('');
+    const navigate = useNavigate();
+
+    const handleSubmit = () => {
+        navigate('/profile')
+    }
 
     return (
-        <Center bg="bg-color.100" h={`${sidebarHeight}px`}>
+        <Center bg="bg-color.100" h={`${sidebarHeight}px`} className="font-inter">
             <Flex w="75%" flexDir="row" gap={12}>
                 <Box flex={1} className="leftCol">
                     <Flex flexDir="column" textAlign="center" gap={3}>
@@ -46,7 +52,6 @@ function ProfileDetail() {
                         <Heading as="h2" fontSize="2xl">
                             Swirl Lollipop
                         </Heading>
-                        <Text>Lorem ipsum dolor sit</Text>
 
                         <Box textAlign="left">
                             <Heading
@@ -72,6 +77,7 @@ function ProfileDetail() {
                                     }
                                 }}
                             />
+                            <Button bg="#ffe3f7" _hover={{ bg: "#ffcff1"}} className="w-full mt-5" onClick={handleSubmit}>Confirm</Button>
                         </Box>
                     </Flex>
                 </Box>
