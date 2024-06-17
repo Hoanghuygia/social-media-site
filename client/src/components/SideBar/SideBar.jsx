@@ -61,10 +61,34 @@ function SideBar() {
         }
     };
 
+    const fetchUserPosts = async () => {
+        const userId = localStorage.userId;
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch(`http://localhost:3000/post/${userId}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error("There was a problem with fetching user posts:", error);
+        }
+    };
+
     useEffect(() => {
         const fetchData = async () => {
             const username = localStorage.getItem("username");
             if (username) {
+                const userData = await fetchUserData(username);
+                setUserData(userData);
+                localStorage.setItem('name', `${userData.firstName} ${userData.lastName}`);
+                const userPostsData = await fetchUserPosts();
+                setUserPosts(userPostsData);
                 const data = await fetchUserData(username);
                 setUserData(data);
                 localStorage.setItem(
@@ -104,6 +128,8 @@ function SideBar() {
             </Flex>
 
             <Flex pt="24px" justifyContent="space-around" gap="20px">
+                <Box className='flex flex-col items-center justify-center font-inter'>
+                    <Heading fontSize="xl">{userPosts.length}</Heading>
                 <Box className="flex flex-col items-center justify-center font-inter">
                     <Heading fontSize="xl">60</Heading>
                     <Text fontSize="xs" color="RGBA(0, 0, 0, 0.48)">
@@ -121,6 +147,7 @@ function SideBar() {
                         {userData.followings.length}
                     </Heading>
                     <Text fontSize="xs" color="RGBA(0, 0, 0, 0.48)">
+                        Followings
                         Followings
                     </Text>
                 </Box>

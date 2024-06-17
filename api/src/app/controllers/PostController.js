@@ -121,7 +121,7 @@ async function deletePost(req, res) {
 }
 
 async function getAllPostsByUser(req, res) {
-    const userId = req.params.userId; // Assuming userId is passed as a parameter in the request
+    const userId = req.params.userId;
     console.log(userId)
     try {
         // Fetch posts for the specific userId and populate the Object_id field
@@ -202,9 +202,44 @@ const getFollowingPosts = async (req, res) => {
     }
   };
   
-  
-  
+  async function getAllPublicPosts(req, res) {
+    try {
+        // Aggregate posts with privacyLevel "Public" and join with User collection
+        const result = await PostModel.aggregate([
+            { $unwind: '$posts' },
+            { $match: { 'posts.privacyLevel': 'Public' } },
+            {
+                $lookup: {
+                    from: 'users', // Collection name in MongoDB
+                    localField: 'Object_id',
+                    foreignField: '_id',
+                    as: 'user'
+                }
+            },
+            { $unwind: '$user' }, // Unwind user array
+            {
+                $project: {
+                    _id: 0,
+                    userId: '$user._id',
+                    username: '$user.username',
+                    post: '$posts'
+                }
+            }
+        ]);
 
+        console.log("Result from aggregation:", JSON.stringify(result, null, 2));
+
+        if (result.length === 0) {
+            return res.status(404).json({ message: 'No public posts found' });
+        }
+
+        const publicPosts = shuffle(result);
+        res.json(publicPosts);
+    } catch (error) {
+        console.error("Error fetching public posts:", error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}
 async function getPostsWithImageURL(req, res) {
     try {
         const result = await PostModel.aggregate([
@@ -260,5 +295,6 @@ module.exports = {
   getAllPostsByUser,
   getFollowingPosts,
   getPostsWithImageURL,
-  getPostsWithMediaURL
+  getPostsWithMediaURL,
+  getAllPublicPosts,
 };

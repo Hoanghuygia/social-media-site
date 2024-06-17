@@ -6,7 +6,7 @@ const auth = require('./../app/controllers/middlewareController');
 router.use(auth.verifyToken);
 
 router.get('/images', postController.getPostsWithImageURL);
-router.get('/medias', postController.getPostsWithMediaURL);
+router.get('/', postController.getAllPublicPosts);
 
 router.post('/', postController.addPost); 
 
