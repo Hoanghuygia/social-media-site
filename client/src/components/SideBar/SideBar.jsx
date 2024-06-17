@@ -17,6 +17,7 @@ import Cookies from 'js-cookie';
 
 function SideBar() {
     const [userData, setUserData] = useState(null);
+    const [userPosts, setUserPosts] = useState([]);
 
     const logout = () => {
         Object.keys(Cookies.get()).forEach(function (cookieName) {
@@ -26,8 +27,7 @@ function SideBar() {
     };
 
     const fetchUserData = async () => {
-        const username = localStorage.username
-        console.log(username)
+        const username = localStorage.username;
         try {
             const token = localStorage.getItem('token');
             const response = await fetch(`https://sugar-cube.onrender.com/user/${username}`, {
@@ -45,14 +45,34 @@ function SideBar() {
         }
     };
 
+    const fetchUserPosts = async () => {
+        const userId = localStorage.userId;
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch(`http://localhost:3000/post/${userId}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error("There was a problem with fetching user posts:", error);
+        }
+    };
+
     useEffect(() => {
         const fetchData = async () => {
             const username = localStorage.getItem('username');
             if (username) {
-                const data = await fetchUserData(username);
-                setUserData(data);
-                // Save necessary data to localStorage if needed
-                localStorage.setItem('name', `${data.firstName} ${data.lastName}`);
+                const userData = await fetchUserData(username);
+                setUserData(userData);
+                localStorage.setItem('name', `${userData.firstName} ${userData.lastName}`);
+                const userPostsData = await fetchUserPosts();
+                setUserPosts(userPostsData);
             }
         };
         fetchData();
@@ -81,7 +101,7 @@ function SideBar() {
 
             <Flex pt="24px" justifyContent="space-around" gap="20px">
                 <Box className='flex flex-col items-center justify-center font-inter'>
-                    <Heading fontSize="xl">60</Heading>
+                    <Heading fontSize="xl">{userPosts.length}</Heading>
                     <Text fontSize="xs" color="RGBA(0, 0, 0, 0.48)">
                         Posts
                     </Text>
@@ -95,7 +115,7 @@ function SideBar() {
                 <Box className='flex flex-col items-center justify-center font-inter'>
                     <Heading fontSize="xl">{userData.followings.length}</Heading>
                     <Text fontSize="xs" color="RGBA(0, 0, 0, 0.48)">
-                   Followings
+                        Followings
                     </Text>
                 </Box>
             </Flex>

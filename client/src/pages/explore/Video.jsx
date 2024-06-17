@@ -7,6 +7,7 @@ const Video = ({ url, channel, description, likes, comment, shares }) => {
     const [isLiked, setIsLiked] = useState(false);
     const [isInView, setIsInView] = useState(false); // State to track if video is in view
     const vidRef = useRef(null);
+    console.log(likes, shares, comment);
 
     const handleVideoClick = () => {
         if (isVideoPlaying) {
@@ -35,7 +36,6 @@ const Video = ({ url, channel, description, likes, comment, shares }) => {
                         setIsInView(true);
                         setIsVideoPlaying(true);
                         vidRef.current.play();
-
                     } else {
                         setIsInView(false);
                     }
@@ -88,9 +88,7 @@ const Video = ({ url, channel, description, likes, comment, shares }) => {
                         <div className="video-text mb-2">
                             <h3 className="text-lg font-inter font-semibold">
                                 {channel}
-                                <button className="ml-2 px-2 py-1 border border-white rounded font-inter font-medium text-xs text-white" onClick={(e) => e.stopPropagation()}>
-                                    Follow
-                                </button>
+                        
                             </h3>
                         </div>
 
@@ -109,22 +107,21 @@ const Video = ({ url, channel, description, likes, comment, shares }) => {
                     </div>
                 )}
             </div>
-
-            {(likes || comment || shares) && (
+            {(likes !== undefined || comment !== undefined || shares !== undefined) && (
                 <div className="flex flex-col justify-end items-end p-5 gap-7 text-pastel-pink-300 text-lg font-bold font-khumb-sans">
-                    {likes && (
+                    {likes !== undefined && (
                         <div className="flex flex-col items-center">
                             <FaHeart size={32} className={isLiked ? 'fill-red-500' : ''} onClick={handleLikeClick} />
                             <span>{likes}</span>
                         </div>
                     )}
-                    {comment && (
+                    {comment !== undefined && (
                         <div className="flex flex-col items-center">
                             <FaRegCommentDots size={32} />
                             <span>{comment}</span>
                         </div>
                     )}
-                    {shares && (
+                    {shares !== undefined && (
                         <div className="flex flex-col items-center">
                             <FaRegShareFromSquare size={32} />
                             <span>{shares}</span>

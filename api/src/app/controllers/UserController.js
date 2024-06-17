@@ -70,7 +70,7 @@ class UserController {
         try {
             const user = await User.findOne({
                 username: req.params.username,
-            }).populate("followings.following_id", "username");
+            }).populate("followers.follower_id", "username profilePicture");
 
             if (!user) {
                 return res.status(404).json({ message: "User not found" });
@@ -98,7 +98,7 @@ class UserController {
         try {
             const user = await User.findOne({
                 username: req.params.username,
-            }).populate("followings.following_id", "username");
+            }).populate("followings.following_id", "username profilePicture");
             if (!user) {
                 return res.status(404).json({ message: "User not found" });
             }
