@@ -1,49 +1,52 @@
-import {
-    Flex,
-    Box,
-    Text,
-    Heading,
-    Avatar,
-} from "@chakra-ui/react";
-import { useState, useEffect } from 'react';
+import { Flex, Box, Text, Heading, Avatar } from "@chakra-ui/react";
+import { useState } from "react";
 
 function NotificationItem({ data }) {
     const { ava, name, descri } = data;
-    const [bgcolor, setBgColor] = useState("transparent");
-    const [textcolor, setTextColor] = useState("#000000");
-    const click = () => {
-        setBgColor("#eddae6");
-        setTextColor("#8a8a8a");
+    const [read, setRead] = useState(false);
+
+    const handleClick = () => {
+        setRead(true);
     };
-    return ( 
-    <>
-       <Box
-            minH="70px"
-            borderBottom="1px"
-            borderColor="RGBA(0, 0, 0, 0.16)"
-            maxW="100%"
-            maxH="70px"
-            overflow="hidden"
-            pt="10px"
-            style={{backgroundColor: bgcolor}}
-            onClick={click}
-            className="hover:shadow-[inset_0px_0px_10px_2px_rgb(0,0,0,0.25)]"
-        >
-            <Flex h="100%" alignItems={"top"}>
-                <Avatar src={ava} ml="16px" mb="20px" display="inline-block">
-                </Avatar>
-                <Box mx="16px" color={textcolor}>
-                    <Heading as="h2" fontSize="md">
-                        {name}
-                    </Heading>
-                    <Text>
-                        {descri}
-                    </Text>
-                </Box>
-            </Flex>
-        </Box>
-    </>
-);
+    return (
+        <>
+            <Box
+                minH="70px"
+                maxW="100%"
+                overflow="hidden"
+                pt="10px"
+                _hover={{ bg: "RGBA(0, 0, 0, 0.08)" }}
+                borderRadius="xl"
+                m="5px"
+                position="relative"
+                onClick={handleClick}
+            >
+                <Flex h="100%">
+                    <Avatar
+                        src={ava}
+                        ml="16px"
+                        mb="20px"
+                        display="inline-block"
+                    />
+                    <Box mx="16px">
+                        <Heading as="h2" fontSize="lg">
+                            {name}
+                        </Heading>
+                        <Text>{descri}</Text>
+                    </Box>
+                </Flex>
+                {!read && <Box
+                    position="absolute"
+                    top="35px" 
+                    right="16px" 
+                    w="12px"
+                    h="12px"
+                    bg="blue.500"
+                    borderRadius="50%"
+                />}
+            </Box>
+        </>
+    );
 }
 
 export default NotificationItem;
