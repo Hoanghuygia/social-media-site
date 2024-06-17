@@ -6,7 +6,6 @@ import {
     Text,
     Flex,
     Box,
-    Spacer,
     Icon,
 } from "@chakra-ui/react";
 import { BsBoxArrowInRight } from "react-icons/bs";
@@ -14,30 +13,28 @@ import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import SideBarNav from "./SideBarNav";
 import Cookies from "js-cookie";
-import { apiRequestPost } from "../../utils/helper";
 import { useSelector } from "react-redux";
 
 function SideBar() {
     const [userData, setUserData] = useState(null);
+    const [userPosts, setUserPosts] = useState([]);
     const currentUserID = Cookies.get("userId");
 
     const socket = useSelector((state) => state.window.socket);
 
-    const logout = async () => {
+    const logout = () => {
         if (socket) {
-            console.log("huy dep trai logout");
+            console.log("User logging out");
             socket.disconnect();
         }
 
-        Object.keys(Cookies.get()).forEach(function (cookieName) {
+        Object.keys(Cookies.get()).forEach(cookieName => {
             Cookies.remove(cookieName);
         });
         localStorage.clear();
     };
 
-    const fetchUserData = async () => {
-        const username = localStorage.username;
-        // console.log(username)
+    const fetchUserData = async (username) => {
         try {
             const token = localStorage.getItem("token");
             const response = await fetch(
@@ -54,15 +51,12 @@ function SideBar() {
             const data = await response.json();
             return data;
         } catch (error) {
-            console.error(
-                "There was a problem with the fetch operation:",
-                error
-            );
+            console.error("There was a problem with the fetch operation:", error);
         }
     };
 
     const fetchUserPosts = async () => {
-        const userId = localStorage.userId;
+        const userId = localStorage.getItem("userId");
         try {
             const token = localStorage.getItem('token');
             const response = await fetch(`http://localhost:3000/post/${userId}`, {
@@ -84,24 +78,23 @@ function SideBar() {
         const fetchData = async () => {
             const username = localStorage.getItem("username");
             if (username) {
-                const userData = await fetchUserData(username);
-                setUserData(userData);
-                localStorage.setItem('name', `${userData.firstName} ${userData.lastName}`);
-                const userPostsData = await fetchUserPosts();
-                setUserPosts(userPostsData);
-                const data = await fetchUserData(username);
-                setUserData(data);
-                localStorage.setItem(
-                    "name",
-                    `${data.firstName} ${data.lastName}`
-                );
+                try {
+                    const userData = await fetchUserData(username);
+                    setUserData(userData);
+                    localStorage.setItem('name', `${userData.firstName} ${userData.lastName}`);
+                    
+                    const userPostsData = await fetchUserPosts();
+                    setUserPosts(userPostsData);
+                } catch (error) {
+                    console.error("Error fetching data:", error);
+                }
             }
         };
         fetchData();
     }, []);
 
     if (!userData) {
-        return <div>Loading...</div>;
+        return <Center>Loading...</Center>;
     }
 
     return (
@@ -119,10 +112,10 @@ function SideBar() {
                         src={userData.profilePicture || "/img/avatar.png"}
                     />
                 </Center>
-                <p className="h3 font-khumb-sans tracking-wider pt-3 font-bold text-3xl">
+                <Heading as="h3" size="lg" pt={3} fontWeight="bold">
                     {userData.firstName} {userData.lastName}
-                </p>
-                <Text className="flex justify-between px-6">
+                </Heading>
+                <Text px={6}>
                     {userData.desc}
                 </Text>
             </Flex>
@@ -130,8 +123,6 @@ function SideBar() {
             <Flex pt="24px" justifyContent="space-around" gap="20px">
                 <Box className='flex flex-col items-center justify-center font-inter'>
                     <Heading fontSize="xl">{userPosts.length}</Heading>
-                <Box className="flex flex-col items-center justify-center font-inter">
-                    <Heading fontSize="xl">60</Heading>
                     <Text fontSize="xs" color="RGBA(0, 0, 0, 0.48)">
                         Posts
                     </Text>
@@ -148,14 +139,11 @@ function SideBar() {
                     </Heading>
                     <Text fontSize="xs" color="RGBA(0, 0, 0, 0.48)">
                         Followings
-                        Followings
                     </Text>
                 </Box>
             </Flex>
 
             <SideBarNav />
-
-            {/* <Spacer /> */}
 
             <Box display="flex" alignItems="center" gap="2" mb="10px" ml="25px">
                 <Icon as={BsBoxArrowInRight} />
