@@ -4,7 +4,7 @@ let socket;
 
 const connectSocket = (userID) => {
     if (!socket) {
-        socket = io("http://localhost:3000", {
+        socket = io("https://sugar-cube.onrender.com", {
             query: `userID=${userID}`
         });
 

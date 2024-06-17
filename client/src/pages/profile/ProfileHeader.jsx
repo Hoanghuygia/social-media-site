@@ -74,7 +74,7 @@ const fetchUserData = async (username) => {
 const fetchUserPosts = async (userId) => {
   try {
     const token = Cookies.get("token");
-    const response = await fetch(`http://localhost:3000/post/${userId}`, {
+    const response = await fetch(`https://sugar-cube.onrender.com/post/${userId}`, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
@@ -205,6 +205,7 @@ const ProfileHeader = () => {
         handleClose={handleClose}
         dataFollowers={dataFollowers}
         dataFollowings={dataFollowings}
+        userData={user}
       />
       <div className="w-full relative font-inter">
         <div className="bg-white h-72 relative group">
