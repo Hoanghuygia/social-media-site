@@ -29,6 +29,7 @@ function SearchModal({ filteredUsers, setQuery }) {
             }
             setQuery('');
             navigate("/message");
+            window.location.reload();
         } else {
             navigate(`/user/${username}`);
             window.location.reload();

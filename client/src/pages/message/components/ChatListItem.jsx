@@ -72,7 +72,7 @@ function ChatListItem({ data }) {
     return (
         <Box
             minH="12%"
-            bg={selecting ? "RGBA(0, 0, 0, 0.25)" : "transparent"}
+            bg={selecting ? "RGBA(0, 0, 0, 0.16)" : "transparent"}
             borderTop="1px"
             borderColor="RGBA(0, 0, 0, 0.16)"
             maxW="100%"

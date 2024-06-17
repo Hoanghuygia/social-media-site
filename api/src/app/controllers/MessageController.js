@@ -1,5 +1,6 @@
 const { default: mongoose } = require("mongoose");
 const MessageModel = require("../models/Message");
+const User = require("../models/user");
 
 async function addMessage(req, res) {
     const { userId1, userId2, username, content, imageURL } = req.body;
@@ -107,7 +108,12 @@ async function getRecentChatPairById(req, res) {
         if (recentChatPair) {
             return res.status(200).json(recentChatPair);
         } else {
-            return res.status(404).json({ message: "Pair not found" });
+            //nếu không có thì show ra chat list id gần nhất
+            const user = await User.findById(senderID);
+            return res.status(200).json({
+                user_id_1: senderID,
+                user_id_2: user.chat_list[0]
+            });
         }
     } catch (error) {
         console.error("Error getting the last chat id: " + error);
