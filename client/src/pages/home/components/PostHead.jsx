@@ -9,7 +9,7 @@ function PostHead({ channel, time, type }) {
     const fetchUser = async () => {
       try {
         const token = localStorage.token;
-        const response = await fetch(`http://localhost:3000/user/${channel}`, {
+        const response = await fetch(`https://sugar-cube.onrender.com/user/${channel}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }

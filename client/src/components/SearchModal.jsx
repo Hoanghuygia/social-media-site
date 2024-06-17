@@ -16,7 +16,7 @@ function SearchModal({ filteredUsers, setQuery }) {
         if (location === "Message") {
             try {
                 await apiRequestPost(
-                    "http://localhost:3000/user/chatlist",
+                    "https://sugar-cube.onrender.com/user/chatlist",
                     accessToken,
                     {
                         currentUserID,

@@ -30,7 +30,7 @@ function ExploreReels() {
     async function fetchData() {
       const token = localStorage.token;
       try {
-        const response = await fetch('http://localhost:3000/post/', {
+        const response = await fetch('https://sugar-cube.onrender.com//post/', {
           headers: {
             'Authorization': `Bearer ${token}`
           }

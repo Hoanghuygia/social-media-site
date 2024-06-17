@@ -22,7 +22,7 @@ function ChatMessage() {
 
     const fetchRecentChatPair = async () => {
         try {
-            const response = await axios.get(`http://localhost:3000/message/${currentUserId}`, {
+            const response = await axios.get(`https://sugar-cube.onrender.com/message/${currentUserId}`, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`
                 }
@@ -36,7 +36,7 @@ function ChatMessage() {
 
     const fetchMessages = async (userId1, userId2) => {
         try {
-            const response = await axios.get('http://localhost:3000/message', {
+            const response = await axios.get('https://sugar-cube.onrender.com/message', {
                 params: {
                     userId1,
                     userId2

@@ -27,7 +27,7 @@ const SearchBar = forwardRef(({ className }, ref) => {
             try {
                 const token = localStorage.getItem("token");
                 const response = await axios.get(
-                    "http://localhost:3000/user/userlist",
+                    "https://sugar-cube.onrender.com/user/userlist",
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,

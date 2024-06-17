@@ -18,7 +18,7 @@ import Cookies from "js-cookie";
 import { apiRequest } from "../../../utils/helper";
 
 const fetchChatList = async (currentUserId, accessToken) => {
-    const url = `http://localhost:3000/user/chatlist/${currentUserId}`;
+    const url = `https://sugar-cube.onrender.com/user/chatlist/${currentUserId}`;
     return await apiRequest(url, accessToken);
 };
 

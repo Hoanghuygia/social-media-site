@@ -20,7 +20,7 @@ import { useState, useEffect } from "react";
 
 const fetchUserFromId = async (recepientID, accessToken) => {
     if (recepientID) {
-        const URL = `http://localhost:3000/user/id/${recepientID}`;
+        const URL = `https://sugar-cube.onrender.com/user/id/${recepientID}`;
         return await apiRequest(URL, accessToken);
     }
 };

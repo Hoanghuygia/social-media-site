@@ -64,7 +64,7 @@ function ChatMessageBar() {
 
         try {
             await apiRequestPost(
-                "http://localhost:3000/message",
+                "https://sugar-cube.onrender.com/message",
                 accessToken,
                 message
             );

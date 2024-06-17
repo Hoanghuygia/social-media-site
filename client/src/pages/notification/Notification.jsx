@@ -6,7 +6,7 @@ import { useState, useEffect} from "react";
 import Cookies from "js-cookie";
 
 const fetchNotification = async (currentUserID, accessToken) => {
-    const url = `http://localhost:3000/notification/${currentUserID}`;
+    const url = `https://sugar-cube.onrender.com/notification/${currentUserID}`;
     return await apiRequest(url, accessToken);
 };
 

@@ -16,7 +16,7 @@ function NotificationItem({ data }) {
         };
         try {
             await apiRequestPost(
-                "http://localhost:3000/notification/setRead",
+                "https://sugar-cube.onrender.com/notification/setRead",
                 accessToken,
                 packge
             );
