@@ -7,11 +7,9 @@ function NotificationItem({ data }) {
     const currentUserID = Cookies.get("userId");
     const accessToken = Cookies.get("token");
 
-    const { avatar, name, content, read: isRead, notificationID } = data;
-    const [read, setRead] = useState(isRead);
+    const { avatar, name, content, read, notificationID } = data;
 
     const handleClick = async () => {
-        setRead(true);
         const packge = {
             user_id: currentUserID,
             notification_id: notificationID,

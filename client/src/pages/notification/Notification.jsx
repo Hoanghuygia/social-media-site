@@ -2,7 +2,7 @@ import NotificationItem from "./NotificationItem";
 import { Flex } from "@chakra-ui/react";
 import ButtonNot from "./ButtonNot";
 import { apiRequest } from "../../utils/helper";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect} from "react";
 import Cookies from "js-cookie";
 
 const fetchNotification = async (currentUserID, accessToken) => {
@@ -15,13 +15,14 @@ function Notification() {
     const currentUserID = Cookies.get("userId");
 
     const [data, setData] = useState([]);
-    const fetchedRef = useRef(false);
+    const [isUnread, setIsUnread] = useState(false);
 
     const bgColor = {
         backgroundColor: "#f7e9f1",
     };
 
     const handleUnread = (allNotifications) => {
+        setIsUnread(true);
         const unreadNotifications = allNotifications.filter(
             (notification) => !notification.read
         );
@@ -29,6 +30,7 @@ function Notification() {
     };
 
     const handleAll = () => {
+        setIsUnread(false);
         fetchData();
     };
 
@@ -45,7 +47,6 @@ function Notification() {
                 read: item.read,
                 notificationID: item.notification_id,
             }));
-            console.log("Notifications: ", notifications);
             setData(notifications);
         } catch (error) {
             console.error("Error happened when fetching data: ", error);
@@ -53,11 +54,8 @@ function Notification() {
     };
 
     useEffect(() => {
-        if (currentUserID) {
-            if (!fetchedRef.current) {
-                fetchedRef.current = true;
-                fetchData();
-            }
+        if(!isUnread){
+            fetchData();
         }
     }, []);
     return (
