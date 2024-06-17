@@ -5,6 +5,7 @@ const postRouter = require('./post');
 const userRouter = require('./user');
 const authRouter = require('./auth');
 const cameraRouter = require('./camera');
+const notificationRouter = require('./notification');
 
 
 function route(app) {
@@ -15,6 +16,7 @@ function route(app) {
     app.use('/user', userRouter);
     app.use('/', authRouter);
     app.use('/camera', cameraRouter);
+    app.use('/notification', notificationRouter);
 }
 
 module.exports = route;
