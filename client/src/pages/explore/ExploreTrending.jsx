@@ -29,7 +29,7 @@ const ExploreTrending = () => {
 
   useEffect(() => {
     const token = localStorage.token;
-    fetch("https://sugar-cube.onrender.com//post/", {
+    fetch("https://sugar-cube.onrender.com/post/", {
       headers: {
         'Authorization': `Bearer ${token}`
       }})

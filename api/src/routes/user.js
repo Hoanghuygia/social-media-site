@@ -22,5 +22,6 @@ router.get('/id/:id', userController.getUserById);
 router.get('/chatlist/:userId', userController.getChaList);
 router.post('/chatlist', userController.addToChatlist);
 router.post('/status/:currentUserID', userController.setOffline);
+router.post('/thought', userController.setThought);
 
 module.exports = router;

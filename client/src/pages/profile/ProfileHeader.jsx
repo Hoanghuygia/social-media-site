@@ -205,6 +205,7 @@ const ProfileHeader = () => {
         handleClose={handleClose}
         dataFollowers={dataFollowers}
         dataFollowings={dataFollowings}
+        userData={user}
       />
       <div className="w-full relative font-inter">
         <div className="bg-white h-72 relative group">
@@ -281,3 +282,6 @@ const ProfileHeader = () => {
 };
 
 export default ProfileHeader;
+
+
+

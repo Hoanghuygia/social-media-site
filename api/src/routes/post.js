@@ -16,6 +16,9 @@ router.get('/followings/:objectId', postController.getFollowingPosts);
 router.delete('/:objectId/:postId', postController.deletePost);
 router.put('/:objectId/:postId', postController.updatePost);
 
+router.post("/like", postController.likePost);
+router.post("/dislike", postController.dislikePost);
+
 
 
 

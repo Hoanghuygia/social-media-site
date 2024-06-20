@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { apiRequestPost } from "../utils/helper";
+import { setCurrentPage } from "../stores/windowSlice";
+import { setReRenderChatlist } from "../stores/messageSlice";
+import { useDispatch, } from 'react-redux';
 import Cookies from "js-cookie";
 
 function SearchModal({ filteredUsers, setQuery }) {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const currentUserID = Cookies.get("userId");
     const accessToken = Cookies.get("token");
@@ -28,11 +32,12 @@ function SearchModal({ filteredUsers, setQuery }) {
                 return;
             }
             setQuery('');
-            navigate("/message");
-            window.location.reload();
+            dispatch(setReRenderChatlist(true));
+            // setCounter((prev) => prev + 1);
+            // window.location.reload();
         } else {
-            navigate(`/user/${username}`);
-            window.location.reload();
+            navigate(`/profile/${username}`);
+            dispatch(setCurrentPage("UserPage"));
         }
     }
     

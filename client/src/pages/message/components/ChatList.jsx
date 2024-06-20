@@ -15,6 +15,8 @@ import SearchBar from "../../../components/SearchBar";
 import ChatListItem from "./ChatListItem";
 import React, { useRef, useEffect, useState } from "react";
 import Cookies from "js-cookie";
+import { setReRenderChatlist } from "../../../stores/messageSlice";
+import { useDispatch, useSelector } from "react-redux";
 import { apiRequest } from "../../../utils/helper";
 
 const fetchChatList = async (currentUserId, accessToken) => {
@@ -26,17 +28,20 @@ function ChatList() {
     const currentUserId = Cookies.get("userId");
     const accessToken = Cookies.get("token");
 
+    const dispatch = useDispatch();
+    const reRenderChalist = useSelector((state) => state.message.reRenderChalist);
+    console.log("Re: ", reRenderChalist);
+
     const [data, setData] = useState([]);
     const searchRef = useRef();
-    const fetchedRef = useRef(false);
-    const { isOpen, onOpen, onClose } = useDisclosure(); // useDisclosure hook to control modal
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
     const fetchData = async () => {
         try {
             const userData = await fetchChatList(currentUserId, accessToken);
             setData(userData);
             if (userData.length === 0) {
-                onOpen(); // Open modal if no data
+                onOpen();
             }
         } catch (error) {
             console.error("Error happened when fetching data: ", error);
@@ -44,6 +49,7 @@ function ChatList() {
     };
 
     const handleSearch = () => {
+        onClose();
         if (searchRef.current) {
             searchRef.current.focus();
         }
@@ -51,12 +57,13 @@ function ChatList() {
 
     useEffect(() => {
         if (currentUserId) {
-            if (!fetchedRef.current) {
-                fetchedRef.current = true;
-                fetchData();
-            }
+            fetchData();
         }
-    }, [currentUserId]);
+    }, [reRenderChalist]);
+
+    useEffect(() => {
+        dispatch(setReRenderChatlist(false));
+    }, []);
 
     return (
         <Flex

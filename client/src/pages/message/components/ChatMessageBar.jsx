@@ -12,7 +12,7 @@ import Cookies from "js-cookie";
 import EmojiPickerComponent from "./EmojiPickerComponent";
 import InputMessage from "./InputMessage";
 import { addMessage, changeLastMessage } from "../../../stores/messageSlice";
-import { setImageScreenShot } from "../../../stores/windowSlice";
+import { setImageScreenShot, setSocket } from "../../../stores/windowSlice";
 import { useNavigate } from "react-router-dom";
 
 function ChatMessageBar() {
@@ -86,6 +86,7 @@ function ChatMessageBar() {
             if (socket) {
                 socket.emit("send-message", message);
             }
+            
 
             const audio = new Audio("sound/sent_message.mp3");
             audio.play();
@@ -142,7 +143,7 @@ function ChatMessageBar() {
                 })
             );
         }
-    }, []);
+    }, [socket]);
 
     useEffect(() => {
         function handleClickOutside() {
@@ -153,7 +154,7 @@ function ChatMessageBar() {
         return () => {
             window.removeEventListener("click", handleClickOutside);
         };
-    }, [accessToken]);
+    }, [accessToken, socket]);
 
     useEffect(() => {
         if (socket) {
@@ -186,7 +187,16 @@ function ChatMessageBar() {
                 socket.off("verify-sent");
             };
         }
-    }, []);
+    }, [socket]);
+
+    // useEffect(() => {
+    //     if (!socket) {
+    //         connectSocket(currentUserId);
+    //         console.log("ABCDEF");
+    //         dispatch(setSocket(socket));
+    //     }
+        
+    // }, []);
 
     const sendImage = useRef();
 

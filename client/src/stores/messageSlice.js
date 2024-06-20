@@ -7,7 +7,8 @@ const initialState = {
 	lastMessageChat: {
 		content: "",
 		recepientID: ""
-	}
+	},
+    reRenderChalist: false
 };
 
 const messageSlice = createSlice({
@@ -31,7 +32,10 @@ const messageSlice = createSlice({
         },
 		changeLastMessage: (state, action) =>{
 			state.lastMessageChat = action.payload;
-		}
+		},
+        setReRenderChatlist: (state, action) =>{
+            state.reRenderChalist = action.payload;
+        }
     },
 });
 
@@ -41,6 +45,7 @@ export const {
     addMessages,
     deleteMessages,
     changeRecepient,
-	changeLastMessage
+	changeLastMessage,
+    setReRenderChatlist
 } = messageSlice.actions;
 export default messageSlice.reducer;

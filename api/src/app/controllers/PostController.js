@@ -60,9 +60,6 @@ async function addPost(req, res) {
     }
 }
 
-
-
-
 //undone
 async function updatePost(req, res) {
     const objectId = req.params.objectId;
@@ -288,6 +285,46 @@ async function getPostsWithMediaURL(req, res) {
     }
 }
 
+async function likePost(req, res){
+    try {
+        const { Object_id, post_id } = req.body;
+
+        const post = await PostModel.findOneAndUpdate(
+            { "Object_id": Object_id, "posts.post_id": post_id },
+            { $inc: { "posts.$.like": 1 } },
+            { new: true }
+        );
+
+        if (!post) {
+            return res.status(404).json({ error: "Post not found" });
+        }
+
+        res.json({ message: "Post liked successfully", post });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
+async function dislikePost(req, res){
+    try {
+        const { Object_id, post_id } = req.body;
+
+        const post = await PostModel.findOneAndUpdate(
+            { "Object_id": Object_id, "posts.post_id": post_id },
+            { $inc: { "posts.$.like": -1 } },
+            { new: true }
+        );
+
+        if (!post) {
+            return res.status(404).json({ error: "Post not found" });
+        }
+
+        res.json({ message: "Post disliked successfully", post });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
 module.exports = {
   addPost,
   updatePost,
@@ -297,4 +334,6 @@ module.exports = {
   getPostsWithImageURL,
   getPostsWithMediaURL,
   getAllPublicPosts,
+  likePost,
+  dislikePost
 };

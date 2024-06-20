@@ -1,8 +1,9 @@
 const User = require("../models/user");
-const UserController = require('../controllers/UserController');
+const Notification = require("../models/Notification");
 
 async function onConnected(io, socket) {
     const { userID } = socket.handshake.query;
+    console.log("Socket: ", socket.id);
 
     if (!userID || typeof userID !== "string" || userID.length !== 24) {
         console.log("Invalid ID format");
@@ -19,8 +20,48 @@ async function onConnected(io, socket) {
             { new: true }
         );
     } catch (e) {
-        console.log(e);
+        console.log("Error in set socket");
     }
+
+    socket.on("send-notification", async (notification) => {
+        try {
+            const thumperID = notification.senderID;
+            const userID = notification.userID;
+
+            const userNotifications = await Notification.findOne({
+                user_id: userID,
+            })
+                .select("content")
+                .lean();
+            const currentNotificationLengthById = userNotifications
+                ? userNotifications.content.length
+                : 0;
+
+            const thumper = await User.findById(thumperID);
+            // console.log("Thumper: ", thumper);
+
+            const toSocketUser = await User.findById(userID)
+                .select("socket_id")
+                .lean();
+            const toSocketID = toSocketUser ? toSocketUser.socket_id : null;
+            console.log("To Socket: ", toSocketID);
+
+            const packageNotification = {
+                avatar: thumper.profilePicture,
+                name: `${thumper.firstName} ${thumper.lastName}`,
+                content: notification.contentNotification,
+                read: false,
+                notificationID: currentNotificationLengthById,
+            };
+            console.log("Notification package: ", packageNotification);
+
+            if (toSocketID) {
+                io.to(toSocketID).emit("new-notification", packageNotification);
+            }
+        } catch (error) {
+            console.log("Error in send-message event:", error);
+        }
+    });
 
     socket.on("send-message", async (message) => {
         try {
@@ -47,7 +88,9 @@ async function onConnected(io, socket) {
             const fromSocketUser = await User.findById(senderID)
                 .select("socket_id")
                 .lean();
-            const fromSocketID = fromSocketUser ? fromSocketUser.socket_id : null;
+            const fromSocketID = fromSocketUser
+                ? fromSocketUser.socket_id
+                : null;
 
             if (toSocketID) {
                 io.to(toSocketID).emit("new-message", packageMessage);
@@ -68,12 +111,9 @@ async function onConnected(io, socket) {
         // console.log("Chatlist: ", chatlist);
         //mình dự định sẽ gửi tới danh sách chat list, nhung có vẻ cần thêm time
         try {
-            await User.findByIdAndUpdate(
-                userID,
-                {
-                    status: "Offline",
-                }
-            );
+            await User.findByIdAndUpdate(userID, {
+                status: "Offline",
+            });
         } catch (e) {
             console.log(e);
         }

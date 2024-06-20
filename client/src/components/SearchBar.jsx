@@ -3,8 +3,8 @@ import { SearchIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import SearchModal from "./SearchModal";
 
-const SearchBar = forwardRef(({ className }, ref) => {
-    const inputRef = useRef(null);
+function SearchBar(className, ref){
+    const inputRef = useRef();
     const searchBarRef = useRef(null);
     const [users, setUsers] = useState([]);
     const [filteredUsers, setFilteredUsers] = useState([]);
@@ -14,12 +14,9 @@ const SearchBar = forwardRef(({ className }, ref) => {
         focus: () => {
             if (inputRef.current) {
                 console.log('Focusing on input');
-                inputRef.current.focus();
+                inputRef.current.focus()
             }
         },
-        clear: () => {
-            setQuery("");
-        }
     }));
 
     useEffect(() => {
@@ -98,6 +95,6 @@ const SearchBar = forwardRef(({ className }, ref) => {
             )}
         </div>
     );
-});
+};
 
-export default SearchBar;
+export default forwardRef(SearchBar);

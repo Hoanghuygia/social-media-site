@@ -25,14 +25,14 @@ const fetchUserFromId = async (recepientID, accessToken) => {
     }
 };
 
-function ChatMessageHeader() {
+function ChatMessageHeader({onClick}) {
     const accessToken = Cookies.get("token");
     let recepientID;
 
     const messageState = useSelector((state) => state.message);
     recepientID = messageState.recepientID;
     const [user, setUser] = useState(null);
-
+    
     const fetchData = async () => {
         try {
             const userData = await fetchUserFromId(recepientID, accessToken);
@@ -53,6 +53,7 @@ function ChatMessageHeader() {
             borderBottom="1px"
             borderColor="RGBA(0, 0, 0, 0.16)"
             maxW="100%"
+            onClick={onClick}
         >
             <Flex h="100%" alignItems={"center"}>
                 <Avatar src={"/img/avatar.png"} ml="16px">
@@ -85,6 +86,8 @@ function ChatMessageHeader() {
                     <Icon as={HiDotsHorizontal} />
                 </Flex>
             </Flex>
+
+            
         </Box>
     );
 }

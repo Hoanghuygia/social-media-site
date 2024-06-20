@@ -1,29 +1,28 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const User = require("../models/user");
-const Message = require('../models/Message');
+const Message = require("../models/Message");
 
 class UserController {
     getUser = async (req, res) => {
         try {
-          let user;
-    
-          if (mongoose.Types.ObjectId.isValid(req.params.username)) {
-            user = await User.findById(req.params.username);
-          } else {
-            user = await User.findOne({ username: req.params.username });
-          }
-    
-          if (!user) {
-            return res.status(404).json({ message: "User not found" });
-          }
-    
-          res.status(200).json(user);
+            let user;
+
+            if (mongoose.Types.ObjectId.isValid(req.params.username)) {
+                user = await User.findById(req.params.username);
+            } else {
+                user = await User.findOne({ username: req.params.username });
+            }
+
+            if (!user) {
+                return res.status(404).json({ message: "User not found" });
+            }
+
+            res.status(200).json(user);
         } catch (err) {
-          console.error(err); // Log the actual error for debugging
-          res.status(500).json({ message: err.message });
+            console.error(err); // Log the actual error for debugging
+            res.status(500).json({ message: err.message });
         }
-      };
-    
+    };
 
     updateUser = async (req, res) => {
         try {
@@ -258,16 +257,21 @@ class UserController {
     addToChatlist = async (req, res) => {
         const { currentUserID, addUserID } = req.body;
         try {
-            if (!mongoose.Types.ObjectId.isValid(currentUserID) || !mongoose.Types.ObjectId.isValid(addUserID)) {
+            if (
+                !mongoose.Types.ObjectId.isValid(currentUserID) ||
+                !mongoose.Types.ObjectId.isValid(addUserID)
+            ) {
                 return res.status(400).json({ message: "Invalid User ID" });
             }
-    
+
             let filter = { _id: currentUserID };
             let update = { $addToSet: { chat_list: addUserID } };
-    
+
             //update the current user account
-            let currentUser = await User.findOneAndUpdate(filter, update, { new: true });
-    
+            let currentUser = await User.findOneAndUpdate(filter, update, {
+                new: true,
+            });
+
             if (!currentUser) {
                 return res.status(404).json({ message: "User not found" });
             }
@@ -275,15 +279,17 @@ class UserController {
             //update the other user chat list
             filter = { _id: addUserID };
             update = { $addToSet: { chat_list: currentUserID } };
-            let addUser = await User.findOneAndUpdate(filter, update, { new: true });
+            let addUser = await User.findOneAndUpdate(filter, update, {
+                new: true,
+            });
 
             if (!addUser) {
                 return res.status(404).json({ message: "User not found" });
             }
-    
+
             return res.status(200).json({
                 currentUser,
-                addUser
+                addUser,
             });
         } catch (error) {
             console.error("Error when adding user to chat list:", error);
@@ -293,21 +299,50 @@ class UserController {
 
     setOffline = async (req, res) => {
         const { currentUserID } = req.params;
-    
+
         try {
             const updatedUser = await User.findOneAndUpdate(
                 { _id: currentUserID },
-                { $set: { status: 'Offline' } },
+                { $set: { status: "Offline" } },
                 { new: true, runValidators: true }
             );
-    
+
             return res.status(200).json({ updatedUser });
         } catch (error) {
             console.error("Error when setting offline status:", error);
             res.status(500).json({ message: "Server Error" });
         }
     };
-    
+
+    setThought = async (req, res) => {
+        try {
+            const { user_id, thought } = req.body;
+
+            if (!user_id || thought === undefined) {
+                return res
+                    .status(400)
+                    .json({ error: "User ID and thought are required." });
+            }
+
+            const user = await User.findByIdAndUpdate(
+                user_id,
+                { thought },
+                { new: true }
+            );
+
+            if (!user) {
+                return res.status(404).json({ error: "User not found." });
+            }
+
+            res.status(200).json({
+                message: "Thought updated successfully.",
+                user,
+            });
+        } catch (error) {
+            console.error("Error updating thought:", error);
+            res.status(500).json({ error: "Internal server error." });
+        }
+    };
 }
 
 module.exports = new UserController();

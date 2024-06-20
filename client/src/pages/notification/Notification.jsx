@@ -2,8 +2,11 @@ import NotificationItem from "./NotificationItem";
 import { Flex } from "@chakra-ui/react";
 import ButtonNot from "./ButtonNot";
 import { apiRequest } from "../../utils/helper";
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import Cookies from "js-cookie";
+import { setCurrentPage } from "../../stores/windowSlice";
+import { useDispatch, } from 'react-redux';
 
 const fetchNotification = async (currentUserID, accessToken) => {
     const url = `https://sugar-cube.onrender.com/notification/${currentUserID}`;
@@ -13,6 +16,9 @@ const fetchNotification = async (currentUserID, accessToken) => {
 function Notification() {
     const accessToken = Cookies.get("token");
     const currentUserID = Cookies.get("userId");
+
+    const socket = useSelector((state) => state.window.socket);
+    const dispatch = useDispatch();
 
     const [data, setData] = useState([]);
     const [isUnread, setIsUnread] = useState(false);
@@ -54,10 +60,35 @@ function Notification() {
     };
 
     useEffect(() => {
-        if(!isUnread){
+        if (!isUnread) {
             fetchData();
         }
+    }, [data]);
+
+    useEffect(() => {
+        dispatch(setCurrentPage("Notification"));
     }, []);
+
+    useEffect(() => {
+        if (socket) {
+            socket.on("new-notification", (data) => {
+                console.log("Data: ", data);
+                if (Array.isArray(data)) {
+
+                    setData((prevData) => [...data, ...prevData]);
+                } else if (data && typeof data === 'object') {
+                    setData((prevData) => [data, ...prevData]);
+                }
+            });
+    
+            return () => {
+                socket.off("new-notification");
+            };
+        }
+    }, [socket]);
+    
+    
+    
     return (
         <>
             <div
@@ -72,8 +103,16 @@ function Notification() {
                 </div>
 
                 <Flex ml={"42px"} flexDir={"row"}>
-                    <ButtonNot contentText="All" onClick={handleAll} />
-                    <ButtonNot contentText="Unread" onClick={() => handleUnread(data)} />
+                    <ButtonNot
+                        contentText="All"
+                        onClick={handleAll}
+                        isUnread={isUnread}
+                    />
+                    <ButtonNot
+                        contentText="Unread"
+                        onClick={() => handleUnread(data)}
+                        isUnread={isUnread}
+                    />
                 </Flex>
 
                 {data.map((postData, index) => (
