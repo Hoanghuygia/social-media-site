@@ -9,7 +9,7 @@
 https://sugar-cube.onrender.com/
 
 ## Render link
-https://social-media-site-rosy.vercel.app/login
+https://social-media-site-rosy.vercel.app
 
 ## Test account: 
 * **Gmail**: tigerking@example.com
